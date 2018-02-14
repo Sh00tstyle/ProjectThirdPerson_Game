@@ -29,6 +29,15 @@
     <Filter Include="Assets\mge\shaders">
       <UniqueIdentifier>{9fd3c986-734d-4d83-9b35-3e914a4e8127}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MGE Source files\mge\managers">
+      <UniqueIdentifier>{0354e383-5e59-4f7e-bd6e-b01182ae9f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGE Source files\mge\player">
+      <UniqueIdentifier>{8c674ef2-a6b6-4775-b767-51f9e80fe1f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGE Source files\mge\level">
+      <UniqueIdentifier>{1dfc251d-6c8d-4d55-9be8-a21627b7d1a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\glm.hpp">
@@ -106,8 +115,17 @@
     <ClInclude Include="..\src\mge\materials\TerrainMaterial.h">
       <Filter>MGE Source files\mge\materials</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\mge\util\tinyxml2.h">
-      <Filter>MGE Source files\mge\util</Filter>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>MGE Source files\mge\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\behaviours\GridMovementBehavior.hpp">
+      <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\player\Pawn.hpp">
+      <Filter>MGE Source files\mge\player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\Tile.hpp">
+      <Filter>MGE Source files\mge\level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,8 +201,17 @@
     <ClCompile Include="..\src\mge\materials\TerrainMaterial.cpp">
       <Filter>MGE Source files\mge\materials</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mge\util\tinyxml2.cpp">
-      <Filter>MGE Source files\mge\util</Filter>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>MGE Source files\mge\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\behaviours\GridMovementBehavior.cpp">
+      <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\player\Pawn.cpp">
+      <Filter>MGE Source files\mge\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\Tile.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

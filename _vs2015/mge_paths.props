@@ -5,10 +5,10 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Nico\OneDrive\Dokumente\Quarter 2.3\2.3 Project Third Person\visualstudio2017_v3_2017_2018\vs_extended\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Saxion\2ndYear\2ndPeriod\3DRendering\visualstudio2017_v3_2017_2018\visualstudio2017_v3_2017_2018\vs_extended\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Nico\OneDrive\Dokumente\Quarter 2.3\2.3 Project Third Person\visualstudio2017_v3_2017_2018\vs_extended\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Saxion\2ndYear\2ndPeriod\3DRendering\visualstudio2017_v3_2017_2018\visualstudio2017_v3_2017_2018\vs_extended\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />
