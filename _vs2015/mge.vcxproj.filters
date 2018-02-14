@@ -127,6 +127,9 @@
     <ClInclude Include="..\src\mge\level\Tile.hpp">
       <Filter>MGE Source files\mge\level</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\util\tinyxml2.h">
+      <Filter>MGE Source files\mge\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -212,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\level\Tile.cpp">
       <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\util\tinyxml2.cpp">
+      <Filter>MGE Source files\mge\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

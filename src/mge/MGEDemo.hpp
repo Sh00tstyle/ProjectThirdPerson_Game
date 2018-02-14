@@ -34,6 +34,8 @@ class MGEDemo: public AbstractGame
 
         void _updateHud();
 
+		void _generateLevelFromFile(std::string filepath, Mesh* tileMesh, AbstractMaterial* tileMaterial);
+
         MGEDemo(const MGEDemo&);
         MGEDemo& operator=(const MGEDemo&);
 };
