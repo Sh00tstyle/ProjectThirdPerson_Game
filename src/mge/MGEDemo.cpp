@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "glm.hpp"
@@ -21,11 +22,14 @@
 #include "mge/behaviours/RotatingBehaviour.hpp"
 #include "mge/behaviours/KeysBehaviour.hpp"
 #include "mge/behaviours/LightControlBehaviour.hpp"
+#include "mge/behaviours/CameraOrbitBehaviour.h"
 
 #include "mge/util/DebugHud.hpp"
 
 #include "mge/config.hpp"
 #include "mge/MGEDemo.hpp"
+
+#include "mge/util/tinyxml2.h"
 
 //construct the game class into _window, _renderer and hud (other parts are initialized by build)
 MGEDemo::MGEDemo() :AbstractGame(), _hud(0) {
@@ -44,61 +48,68 @@ void MGEDemo::initialize() {
 //build the game _world
 void MGEDemo::_initializeScene() {
 	//Meshes
-	Mesh* planeMesh = Mesh::load(config::MGE_MODEL_PATH + "plane_8192.obj");
-	Mesh* cubeMeshF = Mesh::load(config::MGE_MODEL_PATH + "cube_flat.obj");
+	Mesh* planeMesh = Mesh::load(config::MGE_MODEL_PATH + "plane.obj");
 
 	//Materials
 	AbstractMaterial* whiteColorMat = new ColorMaterial(glm::vec3(1, 1, 1));
-	AbstractMaterial* litMat = new LitMaterial(glm::vec3(0, 1, 1), glm::vec3(1, 0, 1), glm::vec3(1, 1, 1), 256.0f);
-	AbstractMaterial* terrainMat = new TerrainMaterial(
-		glm::vec3(0.1f, 0.1f, 0.1f), //ambient color
-		glm::vec3(1, 1, 1), //specular color
-		256.0f, //shininess
-		Texture::load(config::MGE_TEXTURE_PATH + "diffuse1.jpg"), //diffuse texture 1
-		Texture::load(config::MGE_TEXTURE_PATH + "water.jpg"), //diffuse texture 2
-		Texture::load(config::MGE_TEXTURE_PATH + "diffuse3.jpg"), //diffuse texture 3
-		Texture::load(config::MGE_TEXTURE_PATH + "diffuse4.jpg"), //diffuse texture 4
-		Texture::load(config::MGE_TEXTURE_PATH + "heightmap.png"), //heightmap texture
-		Texture::load(config::MGE_TEXTURE_PATH + "splatmap.png") //splatmap texture
-	);
 
 	//Gameobjects
-	Camera* camera = new Camera("camera", glm::vec3(0, 5, 10));
-	camera->rotate(glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //rotate by -20° around the x axis
+	Camera* camera = new Camera("camera", glm::vec3(0, 20, 15));
 	_world->add(camera);
 	_world->setMainCamera(camera);
 
-	GameObject* plane = new GameObject("plane", glm::vec3(0, 0, 0));
-	plane->scale(glm::vec3(5, 5, 5));
-	plane->setMesh(planeMesh);
-	plane->setMaterial(terrainMat);
-	plane->setBehaviour(new KeysBehaviour(10)); //to rotate the terrain
-	_world->add(plane);
+	GameObject* worldPivot = new GameObject("worldPivot", glm::vec3(0, 0, 0));
+	_world->add(worldPivot);
 
-	Light* mainLight = new Light(LightType::DIRECTIONAL, //light type
-								 glm::vec3(1, 1, 0), //light color
-								 1.0f, //intensity
-								 0.5f, //ambientContribution 
-								 1.0f, //constantAttenutation
-								 0.3f, //linearAttenuation
-								 0.0f, //quadraticAttenuation
-								 45.0f, //outerConeAngle
-								 25.0f, //innerConeAngle
-								 "mainLight", //name
-								 glm::vec3(0, 6, 0) //position
-	);
-	mainLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
-	mainLight->setMesh(cubeMeshF);
-	mainLight->setBehaviour(new LightControlBehaviour(mainLight, 25));
-	_world->add(mainLight); //light gets automatically registered in the world
+	_generateLevelFromFile(config::MGE_LEVEL_PATH + "TestLevel.xml", planeMesh, whiteColorMat);
+}
 
-	GameObject* indicator = new GameObject("indicator", glm::vec3(0, 0, 1.0f));
-	indicator->scale(glm::vec3(0.5f, 0.5f, 0.5f));
-	indicator->setMesh(cubeMeshF);
-	indicator->setMaterial(whiteColorMat);
-	mainLight->add(indicator); //adding as a child of light
+void MGEDemo::_generateLevelFromFile(std::string filepath, Mesh* tileMesh, AbstractMaterial* tileMaterial) {
 
-	_renderer->setClearColor(52, 204, 255, 255); //changing clear color (background) to light blue
+	const char * charPath = filepath.c_str(); //converting the input string to a char so tinyxml can read it
+
+	//Reading the xml level file
+	tinyxml2::XMLDocument doc;
+	tinyxml2::XMLError eResult = doc.LoadFile(charPath);
+	if(eResult != tinyxml2::XML_SUCCESS) std::cout << "Failed to load xml file" << std::endl;
+
+	tinyxml2::XMLNode* dummyRoot = doc.FirstChild(); //dirty right now, has to change when we are adding new roots to the object
+
+	tinyxml2::XMLNode* playfieldNode = dummyRoot->NextSibling();
+	if(playfieldNode == nullptr) std::cout << "Null in root" << std::endl;
+
+	tinyxml2::XMLElement* playfieldElement = playfieldNode->FirstChildElement("Playfield");
+	if(playfieldElement == nullptr) std::cout << "Null in element" << std::endl;
+
+	int height, width;
+	playfieldElement->QueryIntAttribute("Height", &height);
+	playfieldElement->QueryIntAttribute("Width", &width);
+
+	const char* arraymap = playfieldElement->Attribute("Content");
+	std::string arrayString(arraymap); //converting char into a string
+
+	std::istringstream iss(arrayString);
+	// vector of chars that represent tile values, split arrayString by " "
+	std::vector<std::string> results((std::istream_iterator<std::string>(iss)), std::istream_iterator<std::string>());
+
+	//converting vector of string into 2d array of ints
+	for(unsigned i = 0; i < results.size(); i++) {
+		int parsedInt = std::stoi(results[i]); //parsing string to an int
+
+		//treating the vector as a 2d array
+		int col = i % width;
+		int row = i / width;
+
+		float tileSpace = 2.5;
+
+		//only create a tile when it should be visible
+		if(parsedInt == 1) {
+			GameObject* tile = new GameObject("tile" + std::to_string(i), glm::vec3(-(col - width / 2.0f) * tileSpace, 0, (row - height / 2.0f) * tileSpace));
+			tile->setMesh(tileMesh);
+			tile->setMaterial(tileMaterial);
+			_world->add(tile);
+		}
+	}
 }
 
 void MGEDemo::_render() {

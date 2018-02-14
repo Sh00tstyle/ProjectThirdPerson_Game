@@ -32,3 +32,6 @@
 *.exe
 *.out
 *.app
+_vs2015/.vs/
+_vs2015/debug_static_build/
+_vs2015/debug_static_exe/
