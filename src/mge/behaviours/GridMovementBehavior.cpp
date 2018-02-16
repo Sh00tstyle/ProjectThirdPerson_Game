@@ -24,9 +24,7 @@ void GridMovementBehavior::update(float pStep)
 	int moveAmountY = 0; 
 	//std::cout << "stopped Moving" << _currentPosition; 
 
-	CheckWalkable();
-		_active = false; 
-
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !_keyPressed) {
 			_newPosition.z = _currentPosition.z - _moveAmount;
 			//std::cout << "Moving" << _currentPosition;

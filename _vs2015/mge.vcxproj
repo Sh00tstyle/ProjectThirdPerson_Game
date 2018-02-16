@@ -172,6 +172,7 @@
     <ClInclude Include="..\src\mge\behaviours\GridMovementBehavior.hpp" />
     <ClInclude Include="..\src\mge\behaviours\KeysBehaviour.hpp" />
     <ClInclude Include="..\src\mge\behaviours\LightControlBehaviour.hpp" />
+    <ClInclude Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.h" />
     <ClInclude Include="..\src\mge\behaviours\RotatingBehaviour.hpp" />
     <ClInclude Include="..\src\mge\config.hpp" />
     <ClInclude Include="..\src\mge\core\AbstractGame.hpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="..\src\mge\behaviours\GridMovementBehavior.cpp" />
     <ClCompile Include="..\src\mge\behaviours\KeysBehaviour.cpp" />
     <ClCompile Include="..\src\mge\behaviours\LightControlBehaviour.cpp" />
+    <ClCompile Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.cpp" />
     <ClCompile Include="..\src\mge\behaviours\RotatingBehaviour.cpp" />
     <ClCompile Include="..\src\mge\core\AbstractGame.cpp" />
     <ClCompile Include="..\src\mge\core\Camera.cpp" />

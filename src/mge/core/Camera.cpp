@@ -15,3 +15,6 @@ glm::mat4& Camera::getProjection() {
     return _projection;
 }
 
+void Camera::setProjection(glm::mat4 newProjection) {
+	_projection = newProjection;
+}
