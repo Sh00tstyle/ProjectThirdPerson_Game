@@ -1,5 +1,5 @@
 #include "mge/player/Pawn.hpp"
-
+#include "mge/behaviours/GridMovementBehavior.hpp"
 
 
 Pawn::Pawn(std::string pName, glm::vec3 pPosition): GameObject(pName, pPosition)
@@ -11,7 +11,7 @@ Pawn::~Pawn()
 {
 }
 
-void Pawn::SetState(AbstractMaterial * material)
+void Pawn::ChangeState(AbstractMaterial * material)
 {
 	setMaterial(material);
 }

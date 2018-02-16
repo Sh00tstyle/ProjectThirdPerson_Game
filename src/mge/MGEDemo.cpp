@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include <vector>
 #include "glm.hpp"
 
 #include "mge/core/Renderer.hpp"
@@ -23,6 +23,10 @@
 #include "mge/behaviours/KeysBehaviour.hpp"
 #include "mge/behaviours/LightControlBehaviour.hpp"
 #include "mge/behaviours/CameraOrbitBehaviour.h"
+#include "mge/behaviours/GridMovementBehavior.hpp"
+
+#include "mge/level/Tile.hpp"
+#include "mge/player/Pawn.hpp"
 
 #include "mge/util/DebugHud.hpp"
 
@@ -49,22 +53,23 @@ void MGEDemo::initialize() {
 void MGEDemo::_initializeScene() {
 	//Meshes
 	Mesh* planeMesh = Mesh::load(config::MGE_MODEL_PATH + "plane.obj");
-
+	Mesh* cubeMesh = Mesh::load(config::MGE_MODEL_PATH + "cube_flat.obj");
 	//Materials
 	AbstractMaterial* whiteColorMat = new ColorMaterial(glm::vec3(1, 1, 1));
-
+	AbstractMaterial* blueColorMat = new ColorMaterial(glm::vec3(0, 0, 1)); 
 	//Gameobjects
 	Camera* camera = new Camera("camera", glm::vec3(0, 20, 15));
+	camera->rotate(-45, glm::vec3(1.0, 0, 0)); 
 	_world->add(camera);
 	_world->setMainCamera(camera);
 
 	GameObject* worldPivot = new GameObject("worldPivot", glm::vec3(0, 0, 0));
 	_world->add(worldPivot);
 
-	_generateLevelFromFile(config::MGE_LEVEL_PATH + "TestLevel.xml", planeMesh, whiteColorMat);
+	_generateLevelFromFile(config::MGE_LEVEL_PATH + "TestLevel.xml", planeMesh, cubeMesh ,whiteColorMat, blueColorMat);
 }
 
-void MGEDemo::_generateLevelFromFile(std::string filepath, Mesh* tileMesh, AbstractMaterial* tileMaterial) {
+void MGEDemo::_generateLevelFromFile(std::string filepath, Mesh* tileMesh, Mesh* cubeMesh ,AbstractMaterial* tileMaterial, AbstractMaterial* pawnMaterial) {
 
 	const char * charPath = filepath.c_str(); //converting the input string to a char so tinyxml can read it
 
@@ -103,14 +108,33 @@ void MGEDemo::_generateLevelFromFile(std::string filepath, Mesh* tileMesh, Abstr
 		float tileSpace = 2.5;
 
 		//only create a tile when it should be visible
-		if(parsedInt == 1) {
-			GameObject* tile = new GameObject("tile" + std::to_string(i), glm::vec3(-(col - width / 2.0f) * tileSpace, 0, (row - height / 2.0f) * tileSpace));
+		if(parsedInt == 1 || parsedInt == 2) {
+			Tile* tile = new Tile("tile" + std::to_string(i), glm::vec3(-(col - width / 2.0f) * tileSpace, 0, (row - height / 2.0f) * tileSpace));
 			tile->setMesh(tileMesh);
 			tile->setMaterial(tileMaterial);
+			tile->scale(glm::vec3(1.0f, 1.0f, 1.0f));
 			_world->add(tile);
 		}
+
+		if (parsedInt == 2) {
+			Pawn* pawn = new Pawn("pawn", glm::vec3(-(col - width / 2.0f) * tileSpace, 1, (row - height / 2.0f) * tileSpace));
+			pawn->setMesh(cubeMesh);
+			pawn->setMaterial(pawnMaterial); 
+			pawn->setBehaviour(new GridMovementBehavior(tileSpace,true, col, row, width, results)); 
+			_world->add(pawn); 
+		}
+	}
+	readOutVector(results);
+}
+
+void MGEDemo::readOutVector(std::vector<std::string>& pVector)
+{
+	for (unsigned i = 0; i < pVector.size(); i++)
+	{
+		std::cout << pVector[i];
 	}
 }
+
 
 void MGEDemo::_render() {
 	AbstractGame::_render();

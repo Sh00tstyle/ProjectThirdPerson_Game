@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayfieldContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Playfield Height="10" Width="4" Content="1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 0 1 0" />
+  <Playfield Height="10" Width="4" Content="1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 0 1 0" />
 </PlayfieldContainer>

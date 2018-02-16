@@ -1,9 +1,11 @@
+#include <iostream>
 #include "mge/behaviours/GridMovementBehavior.hpp"
 #include "mge/core/GameObject.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
 
-GridMovementBehavior::GridMovementBehavior(int pMoveAmout, bool pActive): AbstractBehaviour(), _moveAmount(pMoveAmout), _active(pActive)
+GridMovementBehavior::GridMovementBehavior(float pMoveAmout, bool pActive, int pOnCol, int pOnRow, int pLevelWidth, std::vector<std::string>& pLevelData)
+	: AbstractBehaviour(), _moveAmount(pMoveAmout), _active(pActive), _onCol(pOnCol), _onRow(pOnRow), _levelWidth(pLevelWidth) ,_levelData(pLevelData)
 {
 }
 
@@ -12,14 +14,18 @@ GridMovementBehavior::~GridMovementBehavior()
 {
 }
 
+
 void GridMovementBehavior::update(float pStep)
 {
 	if (!_active)
-		return;
+		return; 
 
 	int moveAmountX = 0;
 	int moveAmountY = 0; 
 	//std::cout << "stopped Moving" << _currentPosition; 
+
+	CheckWalkable();
+		_active = false; 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !_keyPressed) {
 			_newPosition.z = _currentPosition.z - _moveAmount;
@@ -56,7 +62,27 @@ void GridMovementBehavior::update(float pStep)
 	_owner->translate(_currentPosition);
 }
 
-bool GridMovementBehavior::CheckWalkable()
+
+void GridMovementBehavior::CheckWalkable(glm::vec3 pDesiredPosition)
 {
-	return false;
+	//read in the levelData and check if the desired position to the 
+	//value on the grid and return if that is walkable or not
+
+	/*
+		0 = None
+		1 = Uncolored
+		2 = Pawn Spawn Pos + uncolored tile
+		3 = Red Tile
+		4 = Blue Tile
+		5 = Destination
+		6 = PressurePlate
+		7 = ActivatableTile
+		8 = RedColorSwitch (the one that changes the color for the pawn)
+		9 = BlueColorSwitch
+	*/
+	int playPosOnGrid = _onCol + _levelWidth * _onRow; 
+	std::cout << "player thing" << playPosOnGrid; 
+
+
 }
+

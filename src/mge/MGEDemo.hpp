@@ -3,6 +3,8 @@
 
 #include "mge/core/AbstractGame.hpp"
 
+class Mesh; 
+class AbstractMaterial; 
 class DebugHud;
 
 /**
@@ -34,7 +36,8 @@ class MGEDemo: public AbstractGame
 
         void _updateHud();
 
-		void _generateLevelFromFile(std::string filepath, Mesh* tileMesh, AbstractMaterial* tileMaterial);
+		void _generateLevelFromFile(std::string filepath, Mesh* tileMesh, Mesh* cubeMesh , AbstractMaterial* tileMaterial, AbstractMaterial* pawnMaterial);
+		void readOutVector(std::vector<std::string>& pVector); 
 
         MGEDemo(const MGEDemo&);
         MGEDemo& operator=(const MGEDemo&);

@@ -10,11 +10,11 @@ class Pawn :
 		Pawn(std::string pName, glm::vec3 pPosition);
 		~Pawn();
 		
-		void SetState(AbstractMaterial* material); 
+		void ChangeState(AbstractMaterial* material); 
 		//void CheckWalkable(Tile pTile);
-
+		//void 
 
 	private:
-		
+		std::vector<std::string> _levelData; 
 };
 
