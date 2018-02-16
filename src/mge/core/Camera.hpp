@@ -21,6 +21,7 @@ class Camera : public GameObject
 		virtual ~Camera();
 
         glm::mat4& getProjection();
+		void setProjection(glm::mat4 newProjection);
 
 	private:
 		glm::mat4 _projection;

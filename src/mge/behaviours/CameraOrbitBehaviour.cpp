@@ -27,7 +27,7 @@ void CameraOrbitBehaviour::update(float step) {
 	} else if(currentMousePos.x > _prevMousePos.x) { //mouse moved right
 		_rotationYMatrix = glm::rotate(_rotationYMatrix, -_rotationSpeed * step, glm::vec3(0, 1, 0));
 	} 
-		
+	
 	if(currentMousePos.y < _prevMousePos.y && _xAngle < _maxAngle) { //mouse moved up
 		_rotationXMatrix = glm::rotate(_rotationXMatrix, step, glm::vec3(1, 0, 0)); //modifying the rotation matrix for the x axis based on the mouse movement
 		_xAngle += step; //keeping track of the angle

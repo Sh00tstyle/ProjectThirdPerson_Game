@@ -4,6 +4,8 @@
 #include "mge/core/AbstractGame.hpp"
 
 class DebugHud;
+class Mesh;
+class AbstractMaterial;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -32,9 +34,13 @@ class MGEDemo: public AbstractGame
 	private:
 		DebugHud* _hud;                   //hud display
 
+		float _screenRatio;
+		float _orthoSize;
+
         void _updateHud();
 
 		void _generateLevelFromFile(std::string filepath, Mesh* tileMesh, AbstractMaterial* tileMaterial);
+		std::vector<std::string> _readLevelVector(std::string filepath, int& levelWidth, int& levelHeight);
 
         MGEDemo(const MGEDemo&);
         MGEDemo& operator=(const MGEDemo&);
