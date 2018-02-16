@@ -130,14 +130,11 @@
     <ClInclude Include="..\src\mge\util\tinyxml2.h">
       <Filter>MGE Source files\mge\util</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="..\src\mge\tileProp.hpp">
-      <Filter>MGE Source files\mge</Filter>
-    </ClInclude>
->>>>>>> bd6bcc077fefb0bd945907f2e6569b1142338423
     <ClInclude Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.h">
       <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\tileProp.hpp">
+      <Filter>MGE Source files\mge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
