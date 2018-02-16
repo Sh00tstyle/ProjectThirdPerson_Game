@@ -5,10 +5,17 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>D:\Saxion\2ndYear\2ndPeriod\3DRendering\visualstudio2017_v3_2017_2018\visualstudio2017_v3_2017_2018\vs_extended\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\Saxion\2ndYear\2ndPeriod\3DRendering\visualstudio2017_v3_2017_2018\visualstudio2017_v3_2017_2018\vs_extended\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+=======
+      <AdditionalIncludeDirectories>..\..\visualstudio2017_v3_2017_2018\vs_extended\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\visualstudio2017_v3_2017_2018\vs_extended\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+>>>>>>> bd6bcc077fefb0bd945907f2e6569b1142338423
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

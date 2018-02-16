@@ -193,6 +193,10 @@
     <ClInclude Include="..\src\mge\materials\WobblingMaterial.h" />
     <ClInclude Include="..\src\mge\MGEDemo.hpp" />
     <ClInclude Include="..\src\mge\player\Pawn.hpp" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="..\src\mge\tileProp.hpp" />
+>>>>>>> bd6bcc077fefb0bd945907f2e6569b1142338423
     <ClInclude Include="..\src\mge\util\DebugHud.hpp" />
     <ClInclude Include="..\src\mge\util\tinyxml2.h" />
     <ClInclude Include="..\src\ShaderUtil.h" />
