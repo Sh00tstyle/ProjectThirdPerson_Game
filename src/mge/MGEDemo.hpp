@@ -41,8 +41,6 @@ class MGEDemo: public AbstractGame
 
         void _updateHud();
 
-		std::vector<std::string> _readLevelVector(std::string filepath, int& levelWidth, int& levelHeight);
-
         MGEDemo(const MGEDemo&);
         MGEDemo& operator=(const MGEDemo&);
 };

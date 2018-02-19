@@ -6,5 +6,9 @@ in vec2 texCoord;
 out vec4 fragment_color;
 
 void main( void ) {
-	fragment_color = texture(diffuseTexture,texCoord);
+	float alphaCutoff = 0.5f;
+	vec4 color = texture(diffuseTexture, texCoord);
+
+	if(color.a < alphaCutoff) discard;
+	fragment_color = color;
 }
