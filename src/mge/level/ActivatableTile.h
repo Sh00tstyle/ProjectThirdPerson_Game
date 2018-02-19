@@ -12,6 +12,7 @@ class ActivatableTile :public SpecialTile
 		~ActivatableTile();
 
 		void Activate();
+		void Reset();
 
 		bool IsActive();
 	private:

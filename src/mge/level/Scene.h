@@ -19,7 +19,7 @@ class Scene {
 		~Scene();
 
 		void ConstructScene();
-		void ResetScene();
+		void RemoveScene();
 
 		int GetLevelWidth();
 		int GetLevelHeight();
@@ -31,7 +31,7 @@ class Scene {
 		void SetPlayfieldColor(int colIndex, int rowIndex, std::string value); //for treating it like a 2d array
 
 	private:
-		World * _world;
+		World* _world;
 
 		//tiles
 		std::vector<GameObject*> _tileObjects;
@@ -87,4 +87,7 @@ class Scene {
 		AbstractMaterial* _blueColorSwitchMat;
 
 		void _loadSceneFromFile(std::string filepath);
+		void _setTileMaterial(GameObject* newTile, std::string tileProperty, float xPos, float zPos, int i);
+
+		void _destructScene();
 };

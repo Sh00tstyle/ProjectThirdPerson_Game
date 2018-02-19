@@ -32,7 +32,9 @@ Scene::Scene(std::string pFilepath, World* pWorld) {
 
 
 Scene::~Scene() {
-	//cleanup
+	//scene cleanup
+	_destructScene();
+
 	std::cout << "Destruct Scene" << std::endl;
 }
 
@@ -55,69 +57,29 @@ void Scene::ConstructScene() {
 		float xPos = -(col - _levelWidth / 2.0f) * tileSize;
 		float zPos = (row - _levelHeight / 2.0f) * tileSize;
 
-		//Create Tile
-		GameObject* newTile = new GameObject("tile" + std::to_string(i), glm::vec3(xPos, 0, zPos));
-		newTile->setMesh(_tileMesh);
-
-		int rnd = 0;
-
-		if(tileProperty == tileProp::Uncolored) {
-			rnd = rand() % (_uncoloredTileMats.size());
-			newTile->setMaterial(_uncoloredTileMats[rnd]);
-		} else if(tileProperty == tileProp::PlayerSpawn) {
-			//setting up the player
+		//setting up the player
+		if(tileProperty == tileProp::PlayerSpawn) {
 			_pawn = new Pawn("pawn", glm::vec3(xPos, 1, zPos));
 			_pawn->setMesh(_playerMesh);
 
 			//coloring tile and player
 			if(_spawnTile->GetStartingColor() == tileProp::RedTile) {
 				_pawn->setMaterial(_redPlayerMat);
-
-				rnd = rand() % (_redTileMats.size());
-				newTile->setMaterial(_redTileMats[rnd]);
 			} else {
 				_pawn->setMaterial(_bluePlayerMat);
-
-				rnd = rand() % (_blueTileMats.size());
-				newTile->setMaterial(_blueTileMats[rnd]);
 			}
 
 			_pawn->setBehaviour(new GridMovementBehavior(tileSize, true, col, row, _levelWidth, _playfieldData));
 			_world->add(_pawn);
-		} else if(tileProperty == tileProp::RedTile) {
-			rnd = rand() % (_redTileMats.size());
-			newTile->setMaterial(_redTileMats[rnd]);
-		} else if(tileProperty == tileProp::BlueTile) {
-			rnd = rand() % (_blueTileMats.size());
-			newTile->setMaterial(_blueTileMats[rnd]);
-		} else if(tileProperty == tileProp::Destination) {
-			if(_destinationTile->GetNeededColor() == tileProp::RedTile) newTile->setMaterial(_redDestinationMat);
-			else newTile->setMaterial(_blueDestinationMat);
-		} else if(tileProperty == tileProp::PressurePlate) {
-			for(unsigned j = 0; j < _pressurePlates.size(); j++) {
-				PressurePlate* myPlate = _pressurePlates[j];
-				
-				if(myPlate->GetVectorPos() == i) {
-					if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redPressurePlateMats[0]);
-					else newTile->setMaterial(_bluePressurePlateMats[0]); //error
-				}
-			}
-		} else if(tileProperty == tileProp::ActivatableTile) {
-			for(unsigned j = 0; j < _pressurePlates.size(); j++) {
-				PressurePlate* myPlate = _pressurePlates[j];
-				ActivatableTile* myTile = myPlate->GetTargetTile();
-
-				if(myTile->GetVectorPos() == i) {
-					if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redActivatableMats[0]);
-					else newTile->setMaterial(_blueActivatableMats[0]); //error
-				}
-			}
-		} else if(tileProperty == tileProp::RedColorSwitch) {
-			newTile->setMaterial(_redColorSwitchMat);
-		} else if(tileProperty == tileProp::BlueColorSwitch) {
-			newTile->setMaterial(_blueColorSwitchMat);
 		}
 
+		//Create Tile
+		GameObject* newTile = new GameObject("tile" + std::to_string(i), glm::vec3(xPos, 0, zPos));
+		newTile->setMesh(_tileMesh);
+
+		_setTileMaterial(newTile, tileProperty, xPos, zPos, i);
+
+		_tileObjects.push_back(newTile);
 		_world->add(newTile);
 	}
 
@@ -132,9 +94,35 @@ void Scene::ConstructScene() {
 	std::cout << "Constructed Scene" << std::endl;
 }
 
-void Scene::ResetScene() {
-	//copying the inital array back to our tracked playfield
+void Scene::RemoveScene() {
+	//restore old playfield data in case we reload the scene
 	_playfieldData = _unmodifedPlayfieldData;
+
+	//remove tiles from the scene
+	for(unsigned i = 0; i < _tileObjects.size(); i++) {
+		GameObject* myObj = _tileObjects[i];
+		if(myObj != nullptr) _world->remove(myObj);
+	}
+
+	_tileObjects.clear();
+
+	//remove the player from the scene
+	if(_pawn != nullptr) _world->remove(_pawn);
+	_pawn = nullptr;
+
+	//remove environment from the scene
+	for(unsigned i = 0; i < _sceneObjects.size(); i++) {
+		GameObject* myObj = _sceneObjects[i];
+		if(myObj != nullptr)_world->remove(myObj);
+	}
+
+	//reset all activatable tiles
+	for(unsigned i = 0; i < _activatableTiles.size(); i++) {
+		ActivatableTile* myTile = _activatableTiles[i];
+		myTile->Reset();
+	}
+
+	//reset some other properties
 }
 
 int Scene::GetLevelWidth() {
@@ -268,8 +256,6 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		readChar = listElement->Attribute("NeededColor");
 		std::string colorString(readChar);
 
-		std::cout << "Pressure Plate Vec" + std::to_string(colPos + rowPos * _levelWidth) << std::endl;
-
 		PressurePlate* newPlate = new PressurePlate(colPos, rowPos, colPos + rowPos * _levelWidth, colorString, id);
 		_pressurePlates.push_back(newPlate);
 
@@ -277,7 +263,7 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 	}
 
 	//activatable tiles
-	element = root->FirstChildElement("ActivatableTiles"); //gp to the next element
+	element = root->FirstChildElement("ActivatableTiles"); //go to the next element
 	if(element == nullptr) std::cout << "Null in ActivatableTiles" << std::endl;
 
 	listElement = element->FirstChildElement("ActivatableTile");
@@ -290,8 +276,6 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		listElement->QueryIntAttribute("ColPos", &colPos);
 		listElement->QueryIntAttribute("RowPos", &rowPos);
 		listElement->QueryIntAttribute("ID", &id);
-
-		std::cout << "Activatable Tile Vec" + std::to_string(colPos + rowPos * _levelWidth) << std::endl;
 
 		ActivatableTile* newActivatable = new ActivatableTile(colPos, rowPos, colPos + rowPos * _levelWidth, id);
 
@@ -518,5 +502,173 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 
 	_blueColorSwitchMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueColorSwitchTex));
 
-	std::cout << "Read Scene from XML" << std::endl;
+	std::cout << "Read Scene from " + filepath << std::endl;
+}
+
+void Scene::_setTileMaterial(GameObject* newTile, std::string tileProperty, float xPos, float zPos, int i) {
+	int rnd = 0;
+
+	if(tileProperty == tileProp::Uncolored) {
+		rnd = rand() % (_uncoloredTileMats.size());
+		newTile->setMaterial(_uncoloredTileMats[rnd]);
+	} else if(tileProperty == tileProp::PlayerSpawn) {
+		if(_spawnTile->GetStartingColor() == tileProp::RedTile) {
+			rnd = rand() % (_redTileMats.size());
+			newTile->setMaterial(_redTileMats[rnd]);
+		} else {
+			rnd = rand() % (_blueTileMats.size());
+			newTile->setMaterial(_blueTileMats[rnd]);
+		}
+	} else if(tileProperty == tileProp::RedTile) {
+		rnd = rand() % (_redTileMats.size());
+		newTile->setMaterial(_redTileMats[rnd]);
+	} else if(tileProperty == tileProp::BlueTile) {
+		rnd = rand() % (_blueTileMats.size());
+		newTile->setMaterial(_blueTileMats[rnd]);
+	} else if(tileProperty == tileProp::Destination) {
+		if(_destinationTile->GetNeededColor() == tileProp::RedTile) newTile->setMaterial(_redDestinationMat);
+		else newTile->setMaterial(_blueDestinationMat);
+	} else if(tileProperty == tileProp::PressurePlate) {
+		for(unsigned j = 0; j < _pressurePlates.size(); j++) {
+			PressurePlate* myPlate = _pressurePlates[j];
+
+			if(myPlate->GetVectorPos() == i) {
+				if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redPressurePlateMats[0]); //replace 0 with the correcct texture index
+				else newTile->setMaterial(_bluePressurePlateMats[0]); //replace 0 with the correcct texture index
+			}
+		}
+	} else if(tileProperty == tileProp::ActivatableTile) {
+		for(unsigned j = 0; j < _pressurePlates.size(); j++) {
+			PressurePlate* myPlate = _pressurePlates[j];
+			ActivatableTile* myTile = myPlate->GetTargetTile();
+
+			if(myTile->GetVectorPos() == i) {
+				if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redActivatableMats[0]); //replace 0 with the correcct texture index
+				else newTile->setMaterial(_blueActivatableMats[0]); //replace 0 with the correcct texture index
+			}
+		}
+	} else if(tileProperty == tileProp::RedColorSwitch) {
+		newTile->setMaterial(_redColorSwitchMat);
+	} else if(tileProperty == tileProp::BlueColorSwitch) {
+		newTile->setMaterial(_blueColorSwitchMat);
+	}
+}
+
+void Scene::_destructScene() {
+	//remove the player
+	_world->remove(_pawn);
+	delete _pawn;
+
+	//remove all tiles
+	for(unsigned i = 0; i < _tileObjects.size(); i++) {
+		if(_tileObjects[i] == nullptr) continue;
+
+		_world->remove(_tileObjects[i]);
+		delete _tileObjects[i];
+	}
+
+	//remove all scene objects
+	for(unsigned i = 0; i < _sceneObjects.size(); i++) {
+		if(_sceneObjects[i] == nullptr) continue;
+
+		_world->remove(_sceneObjects[i]);
+		delete _sceneObjects[i];
+	}
+
+	//remove all scene object meshes
+	for(unsigned i = 0; i < _sceneObjectMeshes.size(); i++) {
+		if(_sceneObjectMeshes[i] == nullptr) continue;
+
+		delete _sceneObjectMeshes[i];
+	}
+
+	//remove all scene object materials
+	for(unsigned i = 0; i < _sceneObjectMats.size(); i++) {
+		if(_sceneObjectMats[i] == nullptr) continue;
+
+		delete _sceneObjectMats[i];
+	}
+
+	//remove all pressure plates
+	for(unsigned i = 0; i < _pressurePlates.size(); i++) {
+		if(_pressurePlates[i] == nullptr) continue;
+
+		delete _pressurePlates[i];
+	}
+
+	//remove all activatable tiles
+	for(unsigned i = 0; i < _activatableTiles.size(); i++) {
+		if(_activatableTiles[i] == nullptr) continue;
+
+		delete _activatableTiles[i];
+	}
+
+	//remove spawn and destination tile
+	delete _spawnTile;
+	delete _destinationTile;
+
+	//remove player and tile mesh
+	delete _playerMesh;
+	delete _tileMesh;
+
+	//remove player mats
+	delete _redPlayerMat;
+	delete _bluePlayerMat;
+
+	//remove uncolored tile mats
+	for(unsigned i = 0; i < _uncoloredTileMats.size(); i++) {
+		if(_uncoloredTileMats[i] == nullptr) continue;
+
+		delete _uncoloredTileMats[i];
+	}
+
+	//remove red tile mats
+	for(unsigned i = 0; i < _redTileMats.size(); i++) {
+		if(_redTileMats[i] == nullptr) continue;
+
+		delete _redTileMats[i];
+	}
+
+	//remove blue tile mats
+	for(unsigned i = 0; i < _blueTileMats.size(); i++) {
+		if(_blueTileMats[i] == nullptr) continue;
+
+		delete _blueTileMats[i];
+	}
+
+	//remove destination tile mats
+	delete _redDestinationMat;
+	delete _blueDestinationMat;
+
+	//remove red pressure plate mats
+	for(unsigned i = 0; i < _redPressurePlateMats.size(); i++) {
+		if(_redPressurePlateMats[i] == nullptr) continue;
+
+		delete _redPressurePlateMats[i];
+	}
+
+	//remove blue pressure plate mats
+	for(unsigned i = 0; i < _bluePressurePlateMats.size(); i++) {
+		if(_bluePressurePlateMats[i] == nullptr) continue;
+
+		delete _bluePressurePlateMats[i];
+	}
+
+	//remove red activatable tile mats
+	for(unsigned i = 0; i < _redActivatableMats.size(); i++) {
+		if(_redActivatableMats[i] == nullptr) continue;
+
+		delete _redActivatableMats[i];
+	}
+
+	//remove blue activatable tile mats
+	for(unsigned i = 0; i < _blueActivatableMats.size(); i++) {
+		if(_blueActivatableMats[i] == nullptr) continue;
+
+		delete _blueActivatableMats[i];
+	}
+
+	//remove color switch mats
+	delete _redColorSwitchMat;
+	delete _blueColorSwitchMat;
 }

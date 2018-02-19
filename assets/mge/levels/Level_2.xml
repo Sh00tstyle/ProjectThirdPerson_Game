@@ -8,7 +8,7 @@
   <DestinationTile ColPos="2" RowPos="2" NeededColor="3" />
   <TileModel ModelFile="Tile.obj" />
   <PlayerModel ModelFile="cube_flat.obj" />
-  <RedPlayerTexture TextureFile="tileTexture.png" />
+  <RedPlayerTexture TextureFile="bricks.jpg" />
   <BluePlayerTexture TextureFile="land.jpg" />
   <UncoloredTileTextures>
     <UncoloredTileTexture TextureFile="tileTexture.png" />

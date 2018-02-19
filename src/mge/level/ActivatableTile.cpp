@@ -14,6 +14,12 @@ void ActivatableTile::Activate() {
 	//TODO: Do some visual stuff like changing material/transparency
 }
 
+void ActivatableTile::Reset() {
+	_active = false;
+
+	//TODO: Do some visual stuff like changing material/transparency
+}
+
 bool ActivatableTile::IsActive() {
 	return _active;
 }

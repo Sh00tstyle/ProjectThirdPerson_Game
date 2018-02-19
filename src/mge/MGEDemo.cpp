@@ -32,6 +32,8 @@
 
 #include "mge/level/Scene.h"
 
+#include "mge/managers/SceneManager.h"
+
 #include "mge/player/Pawn.hpp"
 
 #include "mge/util/DebugHud.hpp"
@@ -67,9 +69,9 @@ void MGEDemo::_initializeScene() {
 	_world->setMainCamera(camera);
 
 	//Make a SceneManager class here instead of a scene
-	std::unique_ptr<Scene> levelScene(new Scene(config::MGE_LEVEL_PATH + "Level_3.xml", _world)); //smart pointer
-	levelScene->ConstructScene();
-
+	_sceneManager = new SceneManager(_world);
+	_sceneManager->LoadFirstScene(); //loads level 1
+	
 	_renderer->setClearColor(119, 129, 136, 1); //grey background
 }
 
@@ -120,6 +122,16 @@ void MGEDemo::_processEvents() {
 			case sf::Event::KeyPressed:
 				if(event.key.code == sf::Keyboard::Escape) {
 					exit = true;
+				}
+
+				//load next level
+				if(event.key.code == sf::Keyboard::F) {
+					_sceneManager->LoadNextScene();
+				}
+
+				//reset current level
+				if(event.key.code == sf::Keyboard::R) {
+					_sceneManager->ReloadScene();
 				}
 
 				//Add own key press events here

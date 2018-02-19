@@ -31,9 +31,11 @@ class Mesh
          */
         void drawDebugInfo(const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix);
 
+		virtual ~Mesh();
+
 	protected:
 		Mesh();
-		virtual ~Mesh();
+		
 
         //OpenGL id's for the different buffers created for this mesh
 		GLuint _indexBufferId;
