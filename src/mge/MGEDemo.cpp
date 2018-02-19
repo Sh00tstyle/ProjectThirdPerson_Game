@@ -67,7 +67,7 @@ void MGEDemo::_initializeScene() {
 	_world->setMainCamera(camera);
 
 	//Make a SceneManager class here instead of a scene
-	std::unique_ptr<Scene> levelScene(new Scene(config::MGE_LEVEL_PATH + "TestLevel.xml", _world)); //smart pointer
+	std::unique_ptr<Scene> levelScene(new Scene(config::MGE_LEVEL_PATH + "Level_3.xml", _world)); //smart pointer
 	levelScene->ConstructScene();
 
 	_renderer->setClearColor(119, 129, 136, 1); //grey background

@@ -32,6 +32,8 @@ Scene::Scene(std::string pFilepath, World* pWorld) {
 
 
 Scene::~Scene() {
+	//cleanup
+	std::cout << "Destruct Scene" << std::endl;
 }
 
 void Scene::ConstructScene() {
@@ -96,8 +98,8 @@ void Scene::ConstructScene() {
 				PressurePlate* myPlate = _pressurePlates[j];
 				
 				if(myPlate->GetVectorPos() == i) {
-					if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redPressurePlateMats[myPlate->GetID()]);
-					else newTile->setMaterial(_bluePressurePlateMats[myPlate->GetID()]);
+					if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redPressurePlateMats[0]);
+					else newTile->setMaterial(_bluePressurePlateMats[0]); //error
 				}
 			}
 		} else if(tileProperty == tileProp::ActivatableTile) {
@@ -106,8 +108,8 @@ void Scene::ConstructScene() {
 				ActivatableTile* myTile = myPlate->GetTargetTile();
 
 				if(myTile->GetVectorPos() == i) {
-					if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redActivatableMats[myPlate->GetID()]);
-					else newTile->setMaterial(_blueActivatableMats[myPlate->GetID()]);
+					if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redActivatableMats[0]);
+					else newTile->setMaterial(_blueActivatableMats[0]); //error
 				}
 			}
 		} else if(tileProperty == tileProp::RedColorSwitch) {
@@ -126,6 +128,8 @@ void Scene::ConstructScene() {
 		myObj->setMaterial(_sceneObjectMats[i]);
 		_world->add(myObj);
 	}
+
+	std::cout << "Constructed Scene" << std::endl;
 }
 
 void Scene::ResetScene() {
@@ -264,6 +268,8 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		readChar = listElement->Attribute("NeededColor");
 		std::string colorString(readChar);
 
+		std::cout << "Pressure Plate Vec" + std::to_string(colPos + rowPos * _levelWidth) << std::endl;
+
 		PressurePlate* newPlate = new PressurePlate(colPos, rowPos, colPos + rowPos * _levelWidth, colorString, id);
 		_pressurePlates.push_back(newPlate);
 
@@ -285,6 +291,8 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		listElement->QueryIntAttribute("RowPos", &rowPos);
 		listElement->QueryIntAttribute("ID", &id);
 
+		std::cout << "Activatable Tile Vec" + std::to_string(colPos + rowPos * _levelWidth) << std::endl;
+
 		ActivatableTile* newActivatable = new ActivatableTile(colPos, rowPos, colPos + rowPos * _levelWidth, id);
 
 		for(unsigned i = 0; i < _pressurePlates.size(); i++) {
@@ -293,7 +301,7 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 
 		_activatableTiles.push_back(newActivatable);
 
-		listElement = listElement->NextSiblingElement("PressurePlate");
+		listElement = listElement->NextSiblingElement("ActivatableTile");
 	}
 
 	//spawn tile
@@ -324,7 +332,7 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 	readChar = element->Attribute("NeededColor");
 	std::string neededColorString(readChar);
 
-	_destinationTile = new DestinationTile(spawnCol, spawnRow, spawnCol + spawnRow * _levelWidth, neededColorString);
+	_destinationTile = new DestinationTile(destCol, destRow, destCol + destRow * _levelWidth, neededColorString);
 
 	//tile model
 	element = root->FirstChildElement("TileModel");
@@ -509,4 +517,6 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 	std::string blueColorSwitchTex(readChar);
 
 	_blueColorSwitchMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueColorSwitchTex));
+
+	std::cout << "Read Scene from XML" << std::endl;
 }
