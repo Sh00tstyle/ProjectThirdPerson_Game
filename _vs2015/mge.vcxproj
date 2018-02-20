@@ -184,9 +184,19 @@
     <ClInclude Include="..\src\mge\core\ShaderProgram.hpp" />
     <ClInclude Include="..\src\mge\core\Texture.hpp" />
     <ClInclude Include="..\src\mge\core\World.hpp" />
+<<<<<<< HEAD
     <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp" />
     <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp" />
     <ClInclude Include="..\src\mge\level\Tile.hpp" />
+=======
+    <ClInclude Include="..\src\mge\level\ActivatableTile.h" />
+    <ClInclude Include="..\src\mge\level\DestinationTile.h" />
+    <ClInclude Include="..\src\mge\level\PressurePlate.h" />
+    <ClInclude Include="..\src\mge\level\Scene.h" />
+    <ClInclude Include="..\src\mge\level\SpawnTile.h" />
+    <ClInclude Include="..\src\mge\level\SpecialTile.h" />
+    <ClInclude Include="..\src\mge\managers\SceneManager.h" />
+>>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     <ClInclude Include="..\src\mge\materials\AbstractMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\ColorMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\LitMaterial.h" />
@@ -196,10 +206,10 @@
     <ClInclude Include="..\src\mge\MGEDemo.hpp" />
     <ClInclude Include="..\src\mge\player\Pawn.hpp" />
     <ClInclude Include="..\src\mge\tileProp.hpp" />
+    <ClInclude Include="..\src\mge\UI\UiElement.h" />
     <ClInclude Include="..\src\mge\util\DebugHud.hpp" />
     <ClInclude Include="..\src\mge\util\tinyxml2.h" />
     <ClInclude Include="..\src\ShaderUtil.h" />
-    <ClInclude Include="InputManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
@@ -219,9 +229,19 @@
     <ClCompile Include="..\src\mge\core\ShaderProgram.cpp" />
     <ClCompile Include="..\src\mge\core\Texture.cpp" />
     <ClCompile Include="..\src\mge\core\World.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp" />
     <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp" />
     <ClCompile Include="..\src\mge\level\Tile.cpp" />
+=======
+    <ClCompile Include="..\src\mge\level\ActivatableTile.cpp" />
+    <ClCompile Include="..\src\mge\level\DestinationTile.cpp" />
+    <ClCompile Include="..\src\mge\level\PressurePlate.cpp" />
+    <ClCompile Include="..\src\mge\level\Scene.cpp" />
+    <ClCompile Include="..\src\mge\level\SpawnTile.cpp" />
+    <ClCompile Include="..\src\mge\level\SpecialTile.cpp" />
+    <ClCompile Include="..\src\mge\managers\SceneManager.cpp" />
+>>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     <ClCompile Include="..\src\mge\materials\AbstractMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\ColorMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\LitMaterial.cpp" />
@@ -230,13 +250,12 @@
     <ClCompile Include="..\src\mge\materials\WobblingMaterial.cpp" />
     <ClCompile Include="..\src\mge\MGEDemo.cpp" />
     <ClCompile Include="..\src\mge\player\Pawn.cpp" />
+    <ClCompile Include="..\src\mge\UI\UiElement.cpp" />
     <ClCompile Include="..\src\mge\util\DebugHud.cpp" />
     <ClCompile Include="..\src\mge\util\tinyxml2.cpp" />
     <ClCompile Include="..\src\ShaderUtil.cpp" />
-    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\assets\fragmentshader.fs" />
     <None Include="..\assets\mge\shaders\color.fs" />
     <None Include="..\assets\mge\shaders\color.vs" />
     <None Include="..\assets\mge\shaders\lit.fs" />
@@ -247,9 +266,18 @@
     <None Include="..\assets\mge\shaders\texture.vs" />
     <None Include="..\assets\mge\shaders\wobbling.fs" />
     <None Include="..\assets\mge\shaders\wobbling.vs" />
-    <None Include="..\assets\vertexshader.vs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\lua.redist.5.3.4\build\native\lua.redist.targets" Condition="Exists('packages\lua.redist.5.3.4\build\native\lua.redist.targets')" />
+    <Import Project="packages\lua.5.3.4\build\native\lua.targets" Condition="Exists('packages\lua.5.3.4\build\native\lua.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\lua.redist.5.3.4\build\native\lua.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\lua.redist.5.3.4\build\native\lua.redist.targets'))" />
+    <Error Condition="!Exists('packages\lua.5.3.4\build\native\lua.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\lua.5.3.4\build\native\lua.targets'))" />
+  </Target>
 </Project>

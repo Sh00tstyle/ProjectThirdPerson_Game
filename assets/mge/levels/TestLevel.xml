@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="Windows-1252"?>
-<PlayfieldContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Playfield Height="10" Width="4" Content="1 0 0 0 2 0 0 0 1 0 0 0 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 0 1 0" />
-</PlayfieldContainer>
+<SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Playfield Height="5" Width="5" Content="1 1 1 1 1 9 1 1 8 7 1 1 1 1 1 1 1 1 1 1 6 5 4 3 2" />
+  <SceneObjects />
+  <PressurePlates>
+    <PressurePlate ColPos="0" RowPos="4" ID="0" NeededColor="3" />
+  </PressurePlates>
+  <ActivatableTiles>
+    <ActivatableTile ColPos="4" RowPos="1" ID="0" />
+  </ActivatableTiles>
+  <SpawnTile ColPos="4" RowPos="4" StartingColor="3" />
+  <DestinationTile ColPos="1" RowPos="4" NeededColor="4" />
+  <TileModel ModelFile="Tile.obj" />
+  <PlayerModel ModelFile="Placeholder_snail.obj" />
+  <RedPlayerTexture TextureFile="SnailTexture.png" />
+  <BluePlayerTexture TextureFile="SnailTexture.png" />
+  <UncoloredTileTextures>
+    <UncoloredTileTexture TextureFile="tileTexture.png" />
+  </UncoloredTileTextures>
+  <RedTileTextures>
+    <RedTileTexture TextureFile="redTileTexture.png" />
+  </RedTileTextures>
+  <BlueTileTextures>
+    <BlueTileTexture TextureFile="blueTileTexture.png" />
+  </BlueTileTextures>
+  <RedDestinationTileTexture TextureFile="redTileTexture.png" />
+  <BlueDestinationTileTexture TextureFile="blueTileTexture.png" />
+  <RedPressurePlateTextures>
+    <RedPressurePlateTexture TextureFile="redTileTexture.png" />
+  </RedPressurePlateTextures>
+  <BluePressurePlateTextures>
+    <BluePressurePlateTexture TextureFile="blueTileTexture.png" />
+  </BluePressurePlateTextures>
+  <RedActivatableTileTextures>
+    <RedActivatableTileTexture TextureFile="redTileTexture.png" />
+  </RedActivatableTileTextures>
+  <BlueActivatableTileTextures>
+    <BlueActivatableTileTexture TextureFile="blueTileTexture.png" />
+  </BlueActivatableTileTextures>
+  <RedColorSwitchTexture TextureFile="redTileTexture.png" />
+  <BlueColorSwitchTexture TextureFile="blueTileTexture.png" />
+</SceneContainer>

@@ -9,6 +9,7 @@ class AbstractMaterial;
 class DebugHud;
 class Mesh;
 class AbstractMaterial;
+class SceneManager;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -40,9 +41,9 @@ class MGEDemo: public AbstractGame
 		float _screenRatio;
 		float _orthoSize;
 
-        void _updateHud();
+		SceneManager* _sceneManager;
 
-		std::vector<std::string> _readLevelVector(std::string filepath, int& levelWidth, int& levelHeight);
+        void _updateHud();
 
         MGEDemo(const MGEDemo&);
         MGEDemo& operator=(const MGEDemo&);

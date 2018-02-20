@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Playfield Height="8" Width="7" Content="6 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 8 1 7 6 0 0 0 1 0 0 1 0 0 0 1 1 1 9 7 1 5 0 0 0 1 0 0 0 0 0 0 2 0 0 0" />
+  <SceneObjects />
+  <PressurePlates>
+    <PressurePlate ColPos="0" RowPos="0" ID="0" NeededColor="3" />
+    <PressurePlate ColPos="3" RowPos="3" ID="1" NeededColor="4" />
+  </PressurePlates>
+  <ActivatableTiles>
+    <ActivatableTile ColPos="2" RowPos="3" ID="1" />
+    <ActivatableTile ColPos="4" RowPos="5" ID="0" />
+  </ActivatableTiles>
+  <SpawnTile ColPos="3" RowPos="7" StartingColor="3" />
+  <DestinationTile ColPos="6" RowPos="5" NeededColor="4" />
+  <TileModel ModelFile="Tile.obj" />
+  <PlayerModel ModelFile="cube_flat.obj" />
+  <RedPlayerTexture TextureFile="bricks.jpg" />
+  <BluePlayerTexture TextureFile="land.jpg" />
+  <UncoloredTileTextures>
+    <UncoloredTileTexture TextureFile="tileTexture.png" />
+  </UncoloredTileTextures>
+  <RedTileTextures>
+    <RedTileTexture TextureFile="tileTexture.png" />
+  </RedTileTextures>
+  <BlueTileTextures>
+    <BlueTileTexture TextureFile="tileTexture.png" />
+  </BlueTileTextures>
+  <RedDestinationTileTexture TextureFile="tileTexture.png" />
+  <BlueDestinationTileTexture TextureFile="tileTexture.png" />
+  <RedPressurePlateTextures>
+    <RedPressurePlateTexture TextureFile="tileTexture.png" />
+  </RedPressurePlateTextures>
+  <BluePressurePlateTextures>
+    <BluePressurePlateTexture TextureFile="tileTexture.png" />
+  </BluePressurePlateTextures>
+  <RedActivatableTileTextures>
+    <RedActivatableTileTexture TextureFile="tileTexture.png" />
+  </RedActivatableTileTextures>
+  <BlueActivatableTileTextures>
+    <BlueActivatableTileTexture TextureFile="tileTexture.png" />
+  </BlueActivatableTileTextures>
+  <RedColorSwitchTexture TextureFile="tileTexture.png" />
+  <BlueColorSwitchTexture TextureFile="tileTexture.png" />
+</SceneContainer>

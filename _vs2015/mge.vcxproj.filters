@@ -38,8 +38,13 @@
     <Filter Include="MGE Source files\mge\level">
       <UniqueIdentifier>{1dfc251d-6c8d-4d55-9be8-a21627b7d1a5}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="MGE Source files\mge\eventSystem">
       <UniqueIdentifier>{f4bcbcb9-1143-46df-bd11-cdef97470e7c}</UniqueIdentifier>
+=======
+    <Filter Include="MGE Source files\mge\UI">
+      <UniqueIdentifier>{64c62a80-6fd2-4df6-ad72-c1f157e82ed0}</UniqueIdentifier>
+>>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,17 +123,11 @@
     <ClInclude Include="..\src\mge\materials\TerrainMaterial.h">
       <Filter>MGE Source files\mge\materials</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.hpp">
-      <Filter>MGE Source files\mge\managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\mge\behaviours\GridMovementBehavior.hpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
     </ClInclude>
     <ClInclude Include="..\src\mge\player\Pawn.hpp">
       <Filter>MGE Source files\mge\player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mge\level\Tile.hpp">
-      <Filter>MGE Source files\mge\level</Filter>
     </ClInclude>
     <ClInclude Include="..\src\mge\util\tinyxml2.h">
       <Filter>MGE Source files\mge\util</Filter>
@@ -139,11 +138,37 @@
     <ClInclude Include="..\src\mge\tileProp.hpp">
       <Filter>MGE Source files\mge</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
+=======
+    <ClInclude Include="..\src\mge\level\Scene.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\PressurePlate.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\ActivatableTile.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\SpawnTile.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\DestinationTile.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\SpecialTile.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\managers\SceneManager.h">
+      <Filter>MGE Source files\mge\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\UI\UiElement.h">
+      <Filter>MGE Source files\mge\UI</Filter>
+>>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,17 +244,11 @@
     <ClCompile Include="..\src\mge\materials\TerrainMaterial.cpp">
       <Filter>MGE Source files\mge\materials</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>MGE Source files\mge\managers</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\mge\behaviours\GridMovementBehavior.cpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
     </ClCompile>
     <ClCompile Include="..\src\mge\player\Pawn.cpp">
       <Filter>MGE Source files\mge\player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mge\level\Tile.cpp">
-      <Filter>MGE Source files\mge\level</Filter>
     </ClCompile>
     <ClCompile Include="..\src\mge\util\tinyxml2.cpp">
       <Filter>MGE Source files\mge\util</Filter>
@@ -237,11 +256,37 @@
     <ClCompile Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.cpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
+=======
+    <ClCompile Include="..\src\mge\level\Scene.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\PressurePlate.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\ActivatableTile.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\SpecialTile.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\SpawnTile.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\DestinationTile.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\managers\SceneManager.cpp">
+      <Filter>MGE Source files\mge\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\UI\UiElement.cpp">
+      <Filter>MGE Source files\mge\UI</Filter>
+>>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,12 +301,6 @@
     </None>
     <None Include="..\assets\mge\shaders\texture.vs">
       <Filter>Assets\mge\shaders</Filter>
-    </None>
-    <None Include="..\assets\fragmentshader.fs">
-      <Filter>Assets\mge</Filter>
-    </None>
-    <None Include="..\assets\vertexshader.vs">
-      <Filter>Assets\mge</Filter>
     </None>
     <None Include="..\assets\mge\shaders\wobbling.fs">
       <Filter>Assets\mge\shaders</Filter>
@@ -281,5 +320,6 @@
     <None Include="..\assets\mge\shaders\terrain.vs">
       <Filter>Assets\mge\shaders</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
