@@ -38,6 +38,9 @@
     <Filter Include="MGE Source files\mge\level">
       <UniqueIdentifier>{1dfc251d-6c8d-4d55-9be8-a21627b7d1a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MGE Source files\mge\eventSystem">
+      <UniqueIdentifier>{f4bcbcb9-1143-46df-bd11-cdef97470e7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\glm.hpp">
@@ -136,6 +139,12 @@
     <ClInclude Include="..\src\mge\tileProp.hpp">
       <Filter>MGE Source files\mge</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -227,6 +236,12 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.cpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

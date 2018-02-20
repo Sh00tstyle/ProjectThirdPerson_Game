@@ -25,6 +25,9 @@
 #include "mge/behaviours/CameraOrbitBehaviour.h"
 #include "mge/behaviours/GridMovementBehavior.hpp"
 
+#include "mge/eventSystem/SystemEventDispatcher.hpp"
+#include "mge/eventSystem/CppEvent.hpp"
+
 #include "mge/level/Tile.hpp"
 #include "mge/player/Pawn.hpp"
 #include "mge/behaviours/PlayfieldFocusBehaviour.h"
@@ -170,7 +173,8 @@ void MGEDemo::_updateHud() {
 void MGEDemo::_processEvents() {
 	sf::Event event;
 	bool exit = false;
-
+	_window->setKeyRepeatEnabled(false); 
+	
 	//we must empty the event queue
 	while(_window->pollEvent(event)) {
 		//give all system event listeners a chance to handle events
@@ -178,7 +182,7 @@ void MGEDemo::_processEvents() {
 		//SystemEventDispatcher / SystemEventListener pair which allows Listeners to
 		//register with the dispatcher and then do something like:
 		//SystemEventDispatcher::dispatchEvent(event);
-
+		
 		switch(event.type) {
 			case sf::Event::Closed:
 				exit = true;
@@ -187,7 +191,22 @@ void MGEDemo::_processEvents() {
 				if(event.key.code == sf::Keyboard::Escape) {
 					exit = true;
 				}
-
+				if (event.key.code == sf::Keyboard::W)
+				{
+					SystemEventDispatcher::SendKeyEvent(event); 
+				}
+				if (event.key.code == sf::Keyboard::A)
+				{
+					SystemEventDispatcher::SendKeyEvent(event);
+				}
+				if (event.key.code == sf::Keyboard::S)
+				{
+					SystemEventDispatcher::SendKeyEvent(event);
+				}
+				if (event.key.code == sf::Keyboard::D)
+				{
+					SystemEventDispatcher::SendKeyEvent(event);
+				}
 				//Add own key press events here
 				break;
 			case sf::Event::Resized:

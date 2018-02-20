@@ -184,6 +184,8 @@
     <ClInclude Include="..\src\mge\core\ShaderProgram.hpp" />
     <ClInclude Include="..\src\mge\core\Texture.hpp" />
     <ClInclude Include="..\src\mge\core\World.hpp" />
+    <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp" />
+    <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp" />
     <ClInclude Include="..\src\mge\level\Tile.hpp" />
     <ClInclude Include="..\src\mge\materials\AbstractMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\ColorMaterial.hpp" />
@@ -217,6 +219,8 @@
     <ClCompile Include="..\src\mge\core\ShaderProgram.cpp" />
     <ClCompile Include="..\src\mge\core\Texture.cpp" />
     <ClCompile Include="..\src\mge\core\World.cpp" />
+    <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp" />
+    <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp" />
     <ClCompile Include="..\src\mge\level\Tile.cpp" />
     <ClCompile Include="..\src\mge\materials\AbstractMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\ColorMaterial.cpp" />

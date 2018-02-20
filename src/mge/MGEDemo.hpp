@@ -2,6 +2,7 @@
 #define MGEDEMO_HPP
 
 #include "mge/core/AbstractGame.hpp"
+#include "mge/eventSystem/SystemEventDispatcher.hpp"
 
 class Mesh; 
 class AbstractMaterial; 
