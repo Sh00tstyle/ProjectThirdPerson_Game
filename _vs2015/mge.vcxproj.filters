@@ -38,13 +38,11 @@
     <Filter Include="MGE Source files\mge\level">
       <UniqueIdentifier>{1dfc251d-6c8d-4d55-9be8-a21627b7d1a5}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
-    <Filter Include="MGE Source files\mge\eventSystem">
-      <UniqueIdentifier>{f4bcbcb9-1143-46df-bd11-cdef97470e7c}</UniqueIdentifier>
-=======
     <Filter Include="MGE Source files\mge\UI">
       <UniqueIdentifier>{64c62a80-6fd2-4df6-ad72-c1f157e82ed0}</UniqueIdentifier>
->>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
+    </Filter>
+    <Filter Include="MGE Source files\mge\eventSystem">
+      <UniqueIdentifier>{e22418e4-5e89-4f8f-91b0-5b31e79e7887}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,13 +136,6 @@
     <ClInclude Include="..\src\mge\tileProp.hpp">
       <Filter>MGE Source files\mge</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp">
-      <Filter>MGE Source files\mge\eventSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp">
-      <Filter>MGE Source files\mge\eventSystem</Filter>
-=======
     <ClInclude Include="..\src\mge\level\Scene.h">
       <Filter>MGE Source files\mge\level</Filter>
     </ClInclude>
@@ -168,7 +159,12 @@
     </ClInclude>
     <ClInclude Include="..\src\mge\UI\UiElement.h">
       <Filter>MGE Source files\mge\UI</Filter>
->>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
+    </ClInclude>
+    <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -256,13 +252,6 @@
     <ClCompile Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.cpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp">
-      <Filter>MGE Source files\mge\eventSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp">
-      <Filter>MGE Source files\mge\eventSystem</Filter>
-=======
     <ClCompile Include="..\src\mge\level\Scene.cpp">
       <Filter>MGE Source files\mge\level</Filter>
     </ClCompile>
@@ -286,7 +275,12 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\UI\UiElement.cpp">
       <Filter>MGE Source files\mge\UI</Filter>
->>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
+    </ClCompile>
+    <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp">
+      <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

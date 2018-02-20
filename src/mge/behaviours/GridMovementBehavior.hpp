@@ -2,8 +2,6 @@
 #define GRIDMOVEMENTBEHAVIOUT_HPP
 
 #include  "mge/behaviours/AbstractBehaviour.hpp"
-//#include "mge/eventSystem/EventHandlerBase.hpp"
-#include "mge/eventSystem/Observer.hpp"
 #include "mge/eventSystem/SystemEventListener.hpp"
 #include "glm.hpp"
 #include <vector>

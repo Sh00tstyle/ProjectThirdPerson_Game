@@ -3,9 +3,6 @@
 #include <vector>
 #include "mge/behaviours/AbstractBehaviour.hpp"
 #include "mge/eventSystem/SystemEventListener.hpp"
-#include "mge/eventSystem/CppEvent.hpp"
-#include "mge/eventSystem/Subject.hpp"
-#include "mge/eventSystem/Observer.hpp"
 
 #pragma once
 class SystemEventDispatcher

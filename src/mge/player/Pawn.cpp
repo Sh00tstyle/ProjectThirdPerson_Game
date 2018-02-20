@@ -1,6 +1,5 @@
 #include "mge/player/Pawn.hpp"
 #include "mge/behaviours/GridMovementBehavior.hpp"
-#include "mge/eventSystem/EventHandler.hpp"
 
 Pawn::Pawn(std::string pName, glm::vec3 pPosition): GameObject(pName, pPosition)
 {

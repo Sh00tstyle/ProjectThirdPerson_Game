@@ -184,11 +184,8 @@
     <ClInclude Include="..\src\mge\core\ShaderProgram.hpp" />
     <ClInclude Include="..\src\mge\core\Texture.hpp" />
     <ClInclude Include="..\src\mge\core\World.hpp" />
-<<<<<<< HEAD
     <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp" />
     <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp" />
-    <ClInclude Include="..\src\mge\level\Tile.hpp" />
-=======
     <ClInclude Include="..\src\mge\level\ActivatableTile.h" />
     <ClInclude Include="..\src\mge\level\DestinationTile.h" />
     <ClInclude Include="..\src\mge\level\PressurePlate.h" />
@@ -196,7 +193,6 @@
     <ClInclude Include="..\src\mge\level\SpawnTile.h" />
     <ClInclude Include="..\src\mge\level\SpecialTile.h" />
     <ClInclude Include="..\src\mge\managers\SceneManager.h" />
->>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     <ClInclude Include="..\src\mge\materials\AbstractMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\ColorMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\LitMaterial.h" />
@@ -229,11 +225,8 @@
     <ClCompile Include="..\src\mge\core\ShaderProgram.cpp" />
     <ClCompile Include="..\src\mge\core\Texture.cpp" />
     <ClCompile Include="..\src\mge\core\World.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp" />
     <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp" />
-    <ClCompile Include="..\src\mge\level\Tile.cpp" />
-=======
     <ClCompile Include="..\src\mge\level\ActivatableTile.cpp" />
     <ClCompile Include="..\src\mge\level\DestinationTile.cpp" />
     <ClCompile Include="..\src\mge\level\PressurePlate.cpp" />
@@ -241,7 +234,6 @@
     <ClCompile Include="..\src\mge\level\SpawnTile.cpp" />
     <ClCompile Include="..\src\mge\level\SpecialTile.cpp" />
     <ClCompile Include="..\src\mge\managers\SceneManager.cpp" />
->>>>>>> b0fe5a5442bbe5bd63811900465b41f29a3f1be8
     <ClCompile Include="..\src\mge\materials\AbstractMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\ColorMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\LitMaterial.cpp" />

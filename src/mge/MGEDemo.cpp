@@ -90,6 +90,7 @@ void MGEDemo::_updateHud() {
 void MGEDemo::_processEvents() {
 	sf::Event event;
 	bool exit = false;
+	_window->setKeyRepeatEnabled(false);
 
 	//we must empty the event queue
 	while(_window->pollEvent(event)) {
@@ -107,6 +108,8 @@ void MGEDemo::_processEvents() {
 				if(event.key.code == sf::Keyboard::Escape) {
 					exit = true;
 				}
+
+				SystemEventDispatcher::SendKeyEvent(event);
 
 				//load next level
 				if(event.key.code == sf::Keyboard::F) {
