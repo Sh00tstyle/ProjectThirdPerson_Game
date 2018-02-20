@@ -1,15 +1,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <memory>
 #include "glm.hpp"
 
-//delete as soon as scene class is done
-#include <sstream>
-#include "mge/util/tinyxml2.h"
-
 #include "mge/core/Renderer.hpp"
-
 #include "mge/core/Mesh.hpp"
 #include "mge/core/World.hpp"
 #include "mge/core/Texture.hpp"
@@ -17,30 +11,18 @@
 #include "mge/core/Camera.hpp"
 #include "mge/core/GameObject.hpp"
 
-#include "mge/materials/AbstractMaterial.hpp"
-#include "mge/materials/ColorMaterial.hpp"
-#include "mge/materials/TextureMaterial.hpp"
-#include "mge/materials/LitMaterial.h"
-#include "mge/materials/TerrainMaterial.h"
-
-#include "mge/behaviours/RotatingBehaviour.hpp"
-#include "mge/behaviours/KeysBehaviour.hpp"
-#include "mge/behaviours/LightControlBehaviour.hpp"
-#include "mge/behaviours/CameraOrbitBehaviour.h"
-#include "mge/behaviours/GridMovementBehavior.hpp"
 #include "mge/behaviours/PlayfieldFocusBehaviour.h"
-
-#include "mge/level/Scene.h"
 
 #include "mge/managers/SceneManager.h"
 
-#include "mge/player/Pawn.hpp"
+#include "mge/UI/UiElement.h"
 
 #include "mge/util/DebugHud.hpp"
 
 #include "mge/config.hpp"
-#include "mge/tileProp.hpp"
 #include "mge/MGEDemo.hpp"
+
+#include <lua.h>
 
 //construct the game class into _window, _renderer and hud (other parts are initialized by build)
 MGEDemo::MGEDemo() :AbstractGame(), _hud(0) {
@@ -71,6 +53,8 @@ void MGEDemo::_initializeScene() {
 	//Make a SceneManager class here instead of a scene
 	_sceneManager = new SceneManager(_world);
 	_sceneManager->LoadFirstScene(); //loads level 1
+
+	UiElement* uiElement = new UiElement();
 	
 	_renderer->setClearColor(119, 129, 136, 1); //grey background
 }

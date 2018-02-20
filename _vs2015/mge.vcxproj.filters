@@ -38,6 +38,9 @@
     <Filter Include="MGE Source files\mge\level">
       <UniqueIdentifier>{1dfc251d-6c8d-4d55-9be8-a21627b7d1a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MGE Source files\mge\UI">
+      <UniqueIdentifier>{64c62a80-6fd2-4df6-ad72-c1f157e82ed0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\glm.hpp">
@@ -151,6 +154,9 @@
     <ClInclude Include="..\src\mge\managers\SceneManager.h">
       <Filter>MGE Source files\mge\managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\UI\UiElement.h">
+      <Filter>MGE Source files\mge\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -258,6 +264,9 @@
     <ClCompile Include="..\src\mge\managers\SceneManager.cpp">
       <Filter>MGE Source files\mge\managers</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\mge\UI\UiElement.cpp">
+      <Filter>MGE Source files\mge\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\mge\shaders\color.fs">
@@ -271,12 +280,6 @@
     </None>
     <None Include="..\assets\mge\shaders\texture.vs">
       <Filter>Assets\mge\shaders</Filter>
-    </None>
-    <None Include="..\assets\fragmentshader.fs">
-      <Filter>Assets\mge</Filter>
-    </None>
-    <None Include="..\assets\vertexshader.vs">
-      <Filter>Assets\mge</Filter>
     </None>
     <None Include="..\assets\mge\shaders\wobbling.fs">
       <Filter>Assets\mge\shaders</Filter>
@@ -296,5 +299,6 @@
     <None Include="..\assets\mge\shaders\terrain.vs">
       <Filter>Assets\mge\shaders</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

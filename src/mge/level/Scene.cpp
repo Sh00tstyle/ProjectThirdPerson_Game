@@ -30,7 +30,6 @@ Scene::Scene(std::string pFilepath, World* pWorld) {
 	_loadSceneFromFile(pFilepath);
 }
 
-
 Scene::~Scene() {
 	//scene cleanup
 	_destructScene();
@@ -59,7 +58,7 @@ void Scene::ConstructScene() {
 
 		//setting up the player
 		if(tileProperty == tileProp::PlayerSpawn) {
-			_pawn = new Pawn("pawn", glm::vec3(xPos, 1, zPos));
+			_pawn = new Pawn("pawn", glm::vec3(xPos, 0, zPos));
 			_pawn->setMesh(_playerMesh);
 
 			//coloring tile and player
@@ -218,6 +217,26 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		listElement->QueryFloatAttribute("yPos", &yPos);
 		listElement->QueryFloatAttribute("zPos", &zPos);
 
+		//rotation
+		float xRot;
+		float yRot;
+		float zRot;
+		float wRot;
+
+		listElement->QueryFloatAttribute("xRot", &xRot);
+		listElement->QueryFloatAttribute("yRot", &yRot);
+		listElement->QueryFloatAttribute("zRot", &zRot);
+		listElement->QueryFloatAttribute("wRot", &wRot);
+
+		//scale
+		float xScale;
+		float yScale;
+		float zScale;
+
+		listElement->QueryFloatAttribute("xScale", &xScale);
+		listElement->QueryFloatAttribute("yScale", &yScale);
+		listElement->QueryFloatAttribute("zScale", &zScale);
+
 		//model
 		readChar = listElement->Attribute("Model");
 		std::string modelString(readChar);
@@ -229,7 +248,13 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		//create mesh and material for the gameobjects
 		Mesh* objMesh = Mesh::load(config::MGE_MODEL_PATH + modelString);
 		AbstractMaterial* objMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + textureString));
-		GameObject* newGameObject = new GameObject(nameString, glm::vec3(-xPos, yPos, zPos)); //invert x pos
+		GameObject* newGameObject = new GameObject(nameString, glm::vec3(xPos, yPos, zPos));
+		
+		glm::quat rotation = glm::quat(wRot, xRot, yRot, zRot);
+
+		//apply rotation and scale
+		newGameObject->rotate(glm::angle(rotation), glm::axis(rotation));
+		newGameObject->scale(glm::vec3(xScale, yScale, zScale));
 
 		_sceneObjectMeshes.push_back(objMesh);
 		_sceneObjectMats.push_back(objMat);

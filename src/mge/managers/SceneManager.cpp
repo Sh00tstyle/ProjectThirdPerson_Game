@@ -74,11 +74,14 @@ int SceneManager::GetSceneCount() {
 	return (int)_allScenes.size();
 }
 
+//blocking call right now, maybe spawn a thread for loading a mesh in order to accelerate loading (probably not needed)
 void SceneManager::_loadAllScenes() {
 	int levelIndex = 1;
 	std::string filepath = config::MGE_LEVEL_PATH + "Level_" + std::to_string(levelIndex) + ".xml";
 
-	while(_fileExists(filepath)) {
+	filepath = config::MGE_LEVEL_PATH + "TestLevel.xml"; //debug level
+
+	while(_fileExists(filepath) && levelIndex == 1) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
 		_allScenes.push_back(newScene);
 
