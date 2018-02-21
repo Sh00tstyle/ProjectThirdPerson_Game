@@ -4,35 +4,38 @@
   <SceneObjects />
   <PressurePlates />
   <ActivatableTiles />
-  <SpawnTile ColPos="3" RowPos="3" StartingColor="0" />
+  <SpawnTile ColPos="3" RowPos="3" StartingColor="3" />
   <DestinationTile ColPos="0" RowPos="0" NeededColor="4" />
   <TileModel ModelFile="Tile.obj" />
-  <PlayerModel ModelFile="cube_flat.obj" />
-  <RedPlayerTexture TextureFile="bricks.jpg" />
-  <BluePlayerTexture TextureFile="land.jpg" />
+  <PlayerModel ModelFile="Placeholder_snail.obj" />
+  <RedPlayerTexture TextureFile="RedPlayer.png" />
+  <BluePlayerTexture TextureFile="BluePlayer.png" />
   <UncoloredTileTextures>
-    <UncoloredTileTexture TextureFile="tileTexture.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile2.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile4.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile5.png" />
   </UncoloredTileTextures>
   <RedTileTextures>
-    <RedTileTexture TextureFile="tileTexture.png" />
+    <RedTileTexture TextureFile="RedTile.png" />
   </RedTileTextures>
   <BlueTileTextures>
-    <BlueTileTexture TextureFile="tileTexture.png" />
+    <BlueTileTexture TextureFile="BlueTile.png" />
   </BlueTileTextures>
-  <RedDestinationTileTexture TextureFile="tileTexture.png" />
-  <BlueDestinationTileTexture TextureFile="tileTexture.png" />
+  <RedDestinationTileTexture TextureFile="RedDestinationTile.png" />
+  <BlueDestinationTileTexture TextureFile="BlueDestinationTile.png" />
   <RedPressurePlateTextures>
-    <RedPressurePlateTexture TextureFile="tileTexture.png" />
+    <RedPressurePlateTexture TextureFile="RedPressurePlate.png" />
   </RedPressurePlateTextures>
   <BluePressurePlateTextures>
-    <BluePressurePlateTexture TextureFile="tileTexture.png" />
+    <BluePressurePlateTexture TextureFile="BluePressurePlate.png" />
   </BluePressurePlateTextures>
   <RedActivatableTileTextures>
-    <RedActivatableTileTexture TextureFile="tileTexture.png" />
+    <RedActivatableTileTexture TextureFile="RedActivatableTile.png" />
   </RedActivatableTileTextures>
   <BlueActivatableTileTextures>
-    <BlueActivatableTileTexture TextureFile="tileTexture.png" />
+    <BlueActivatableTileTexture TextureFile="BlueActivatableTile.png" />
   </BlueActivatableTileTextures>
-  <RedColorSwitchTexture TextureFile="tileTexture.png" />
-  <BlueColorSwitchTexture TextureFile="tileTexture.png" />
+  <RedColorSwitchTexture TextureFile="RedColorSwitch.png" />
+  <BlueColorSwitchTexture TextureFile="BlueColorSwitch.png" />
 </SceneContainer>
