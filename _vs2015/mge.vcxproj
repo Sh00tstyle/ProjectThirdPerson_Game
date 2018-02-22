@@ -202,7 +202,8 @@
     <ClInclude Include="..\src\mge\MGEDemo.hpp" />
     <ClInclude Include="..\src\mge\player\Pawn.hpp" />
     <ClInclude Include="..\src\mge\tileProp.hpp" />
-    <ClInclude Include="..\src\mge\UI\UiElement.h" />
+    <ClInclude Include="..\src\mge\UI\Menu.h" />
+    <ClInclude Include="..\src\mge\UI\UiManager.h" />
     <ClInclude Include="..\src\mge\util\DebugHud.hpp" />
     <ClInclude Include="..\src\mge\util\tinyxml2.h" />
     <ClInclude Include="..\src\ShaderUtil.h" />
@@ -242,7 +243,8 @@
     <ClCompile Include="..\src\mge\materials\WobblingMaterial.cpp" />
     <ClCompile Include="..\src\mge\MGEDemo.cpp" />
     <ClCompile Include="..\src\mge\player\Pawn.cpp" />
-    <ClCompile Include="..\src\mge\UI\UiElement.cpp" />
+    <ClCompile Include="..\src\mge\UI\Menu.cpp" />
+    <ClCompile Include="..\src\mge\UI\UiManager.cpp" />
     <ClCompile Include="..\src\mge\util\DebugHud.cpp" />
     <ClCompile Include="..\src\mge\util\tinyxml2.cpp" />
     <ClCompile Include="..\src\ShaderUtil.cpp" />

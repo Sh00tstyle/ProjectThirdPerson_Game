@@ -10,6 +10,7 @@ class DebugHud;
 class Mesh;
 class AbstractMaterial;
 class SceneManager;
+class UiManager;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -42,6 +43,7 @@ class MGEDemo: public AbstractGame
 		float _orthoSize;
 
 		SceneManager* _sceneManager;
+		UiManager* _uiManager;
 
         void _updateHud();
 
