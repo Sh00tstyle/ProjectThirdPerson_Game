@@ -2,7 +2,8 @@
 
 PressurePlate::PressurePlate(int pColPos, int pRowPos, int pVectorPos, std::string pActivationColor, int pID): SpecialTile(pColPos, pRowPos, pVectorPos), 
 _activationColor(pActivationColor), _id(pID) {
-
+	_col = pColPos; 
+	_row = pRowPos; 
 }
 
 PressurePlate::~PressurePlate() {
@@ -25,6 +26,15 @@ ActivatableTile * PressurePlate::GetTargetTile() {
 	return _targetTile;
 }
 
+bool PressurePlate::CheckPositionOnGrid(int pCol, int pRow)
+{
+	if (_col == pCol && _row == pRow)
+		return true;
+	else
+		return false;
+}
+
 void PressurePlate::Activate() {
+	std::cout << "I am activated"; 
 	_targetTile->Activate();
 }

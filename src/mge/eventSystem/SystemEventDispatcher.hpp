@@ -12,7 +12,8 @@ public:
 	~SystemEventDispatcher();
 
 	static void SendKeyEvent(sf::Event pEvent); 
-	 static void AddListener( SystemEventListener* pListener); 
+	static void AddListener( SystemEventListener* pListener); 
+	static void RemoveListener();
 private: 
 	static std::vector<SystemEventListener*> _listenerVector; 
 

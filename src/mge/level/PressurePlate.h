@@ -14,11 +14,13 @@ class PressurePlate :public SpecialTile
 
 		void SetTargetTile(ActivatableTile* target);
 		ActivatableTile* GetTargetTile();
-
+		bool CheckPositionOnGrid(int pCol, int pRow); 
 		void Activate();
 	private:
 		std::string _activationColor;
 		int _id;
+		int _col; 
+		int _row; 
 
 		ActivatableTile* _targetTile;
 };

@@ -13,24 +13,24 @@ class SceneManager
 		SceneManager(World* pWorld);
 		~SceneManager();
 
-		void LoadFirstScene();
-		void LoadNextScene();
-		void LoadSceneAtIndex(int index);
-		void ReloadScene();
+		static void LoadFirstScene();
+		static void LoadNextScene();
+		static void LoadSceneAtIndex(int index);
+		static void ReloadScene();
 
-		Scene* GetCurrentScene();
-		int GetSceneCount();
+		static Scene* GetCurrentScene();
+		static int GetSceneCount();
 	private:
 
-		World* _world;
+		static World* _world;
 
-		int _levelCount;
+		static int _levelCount;
 
-		Scene* _currentScene;
-		std::vector<Scene*> _allScenes;
+		static Scene* _currentScene;
+		static std::vector<Scene*> _allScenes;
 
-		void _loadAllScenes();
-		bool _fileExists(std::string filepath);
+		static void _loadAllScenes();
+		static bool _fileExists(std::string filepath);
 };
 
 #endif

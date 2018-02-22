@@ -21,6 +21,8 @@
 #include "mge/level/SpawnTile.h"
 #include "mge/level/DestinationTile.h"
 
+#include "mge/eventSystem/SystemEventDispatcher.hpp"
+
 #include "mge/util/tinyxml2.h"
 #include "mge/tileProp.hpp"
 #include "mge/config.hpp"
@@ -68,7 +70,7 @@ void Scene::ConstructScene() {
 				_pawn->setMaterial(_bluePlayerMat);
 			}
 
-			_pawn->setBehaviour(new GridMovementBehavior(tileSize, true, col, row, _levelWidth, _playfieldData));
+			_pawn->setBehaviour(new GridMovementBehavior(tileSize, true,col, row,  *this));
 			_world->add(_pawn);
 		}
 
@@ -96,6 +98,7 @@ void Scene::ConstructScene() {
 void Scene::RemoveScene() {
 	//restore old playfield data in case we reload the scene
 	_playfieldData = _unmodifedPlayfieldData;
+	SystemEventDispatcher::RemoveListener();
 
 	//remove tiles from the scene
 	for(unsigned i = 0; i < _tileObjects.size(); i++) {
@@ -141,12 +144,12 @@ std::string Scene::GetPlayfieldValue(int vectorIndex) {
 }
 
 std::string Scene::GetPlayfieldValue(int colIndex, int rowIndex) {
+	
 	return _playfieldData[colIndex  + rowIndex * _levelWidth];
 }
 
 void Scene::SetPlayfieldColor(int vectorIndex, std::string value) {
 	_playfieldData[vectorIndex] = value;
-
 	//Assign new random material based on the new color
 	if(value == tileProp::RedTile) {
 		_tileObjects[vectorIndex]->setMaterial(_redTileMats[rand() % _redTileMats.size()]);
@@ -164,6 +167,46 @@ void Scene::SetPlayfieldColor(int colIndex, int rowIndex, std::string value) {
 		_tileObjects[colIndex + rowIndex * _levelWidth]->setMaterial(_blueTileMats[rand() % _blueTileMats.size()]);
 	}
 }
+
+void Scene::SetPawnColor(std::string value)
+{
+	if (value == tileProp::RedColorSwitch) {
+		_pawn->ChangeState(_redPlayerMat); 
+	}
+	else if (value == tileProp::BlueColorSwitch) {
+		_pawn->ChangeState(_bluePlayerMat); 
+	}
+}
+
+std::string Scene::GetPawnColor()
+{
+	if (_pawn->getMaterial() == _redPlayerMat)
+		return tileProp::RedTile; 
+	else if (_pawn->getMaterial() == _bluePlayerMat)
+		return tileProp::BlueTile; 
+}
+
+std::string Scene::GetDestinationColor()
+{
+	return _destinationTile->GetNeededColor(); 
+}
+
+std::string Scene::GetStartTileColor()
+{
+	return _spawnTile->GetStartingColor(); 
+}
+
+
+PressurePlate* Scene::GetPressurePlate(int pCol, int pRow)
+{
+	for (unsigned i = 0; i < _pressurePlates.size(); i++)
+		if (_pressurePlates[i]->CheckPositionOnGrid(pCol, pRow))
+			return _pressurePlates[i]; 
+}
+
+
+
+
 
 void Scene::_loadSceneFromFile(std::string filepath) {
 	//this method reads the XML file and fills all varibales with data

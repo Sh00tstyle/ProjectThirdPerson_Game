@@ -36,6 +36,11 @@ void SystemEventDispatcher::AddListener(SystemEventListener* pListener)
 	_listenerVector.push_back(pListener); 
 }
 
+void SystemEventDispatcher::RemoveListener()
+{
+	_listenerVector.clear(); 
+}
+
 
 
 /*

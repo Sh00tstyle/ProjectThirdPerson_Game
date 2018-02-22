@@ -17,7 +17,7 @@ class Scene {
 	public:
 		Scene(std::string filepath, World* pWorld);
 		~Scene();
-
+		
 		void ConstructScene();
 		void RemoveScene();
 
@@ -29,6 +29,12 @@ class Scene {
 		std::string GetPlayfieldValue(int colIndex, int rowIndex); //for treating it like a 2d array
 		void SetPlayfieldColor(int vectorIndex, std::string value); //for treating it like a vector
 		void SetPlayfieldColor(int colIndex, int rowIndex, std::string value); //for treating it like a 2d array
+		void SetPawnColor( std::string value); 
+		std::string GetPawnColor();
+		std::string GetDestinationColor();
+		std::string GetStartTileColor();
+		void NextLevel(); 
+		PressurePlate* GetPressurePlate(int colIndex, int rowIndex); 
 
 	private:
 		World* _world;

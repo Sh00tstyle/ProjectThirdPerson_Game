@@ -1,7 +1,13 @@
 #include "mge/managers/SceneManager.h"
 #include "mge/level/Scene.h"
+#include "mge/core/World.hpp"
 #include "mge/config.hpp"
 #include <fstream>
+
+World* SceneManager::_world; 
+Scene* SceneManager::_currentScene; 
+int SceneManager::_levelCount = int(); 
+std::vector<Scene*> SceneManager::_allScenes = std::vector<Scene*>(); 
 
 SceneManager::SceneManager(World* pWorld) {
 	_world = pWorld;
@@ -79,9 +85,9 @@ void SceneManager::_loadAllScenes() {
 	int levelIndex = 1;
 	std::string filepath = config::MGE_LEVEL_PATH + "Level_" + std::to_string(levelIndex) + ".xml";
 
-	filepath = config::MGE_LEVEL_PATH + "TestLevel.xml"; //debug level
+	//filepath = config::MGE_LEVEL_PATH + "TestLevel.xml"; //debug level
 
-	while(_fileExists(filepath) && levelIndex == 1) { //only load one level for now
+	while(_fileExists(filepath)) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
 		_allScenes.push_back(newScene);
 
