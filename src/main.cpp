@@ -3,6 +3,9 @@
 #include "mge/core/AbstractGame.hpp"
 #include "mge/MGEDemo.hpp"
 
+#include "mge/config.hpp"
+#include <lua.hpp>
+
 /**
  * Main entry point for the Micro Engine.
 
@@ -18,6 +21,7 @@
  * All documentation is contained within the HEADER files, not the CPP files if possible.
  *
  */
+
 int main()
 {
     std::cout << "Starting Game" << std::endl;

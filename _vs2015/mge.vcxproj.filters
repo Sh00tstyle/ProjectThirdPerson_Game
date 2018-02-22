@@ -157,14 +157,17 @@
     <ClInclude Include="..\src\mge\managers\SceneManager.h">
       <Filter>MGE Source files\mge\managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\mge\UI\UiElement.h">
-      <Filter>MGE Source files\mge\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\mge\eventSystem\SystemEventDispatcher.hpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\UI\Menu.h">
+      <Filter>MGE Source files\mge\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\UI\UiManager.h">
+      <Filter>MGE Source files\mge\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -273,14 +276,17 @@
     <ClCompile Include="..\src\mge\managers\SceneManager.cpp">
       <Filter>MGE Source files\mge\managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mge\UI\UiElement.cpp">
-      <Filter>MGE Source files\mge\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\mge\eventSystem\SystemEventDispatcher.cpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp">
       <Filter>MGE Source files\mge\eventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\UI\Menu.cpp">
+      <Filter>MGE Source files\mge\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\UI\UiManager.cpp">
+      <Filter>MGE Source files\mge\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

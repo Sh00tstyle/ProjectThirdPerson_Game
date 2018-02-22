@@ -15,7 +15,7 @@
 
 #include "mge/managers/SceneManager.h"
 
-#include "mge/UI/UiElement.h"
+#include "mge/UI/UiManager.h"
 
 #include "mge/util/DebugHud.hpp"
 
@@ -36,12 +36,17 @@ void MGEDemo::initialize() {
 	std::cout << "Initializing HUD" << std::endl;
 	_hud = new DebugHud(_window);
 	std::cout << "HUD initialized." << std::endl << std::endl;
+
+	//draws the hud and ui
+	std::cout << "Initializing MENU/UI" << std::endl;
+	_uiManager = new UiManager(_window);
+	std::cout << "MENU/UI initialized" << std::endl;
 }
 
 //build the game _world
 void MGEDemo::_initializeScene() {
 	//orthographic camera settings
-	_orthoSize = 12.0f;
+	_orthoSize = 9.0f;
 	_screenRatio = 4.0f / 3.0f; //default 800x 600
 
 	//setting up main camera here, since it should always be the same and does not have to be changed
@@ -53,8 +58,6 @@ void MGEDemo::_initializeScene() {
 	//Make a SceneManager class here instead of a scene
 	_sceneManager = new SceneManager(_world);
 	_sceneManager->LoadFirstScene(); //loads level 1
-
-	UiElement* uiElement = new UiElement();
 	
 	_renderer->setClearColor(119, 129, 136, 1); //grey background
 }
@@ -62,6 +65,9 @@ void MGEDemo::_initializeScene() {
 void MGEDemo::_render() {
 	AbstractGame::_render();
 	_updateHud();
+
+	//drawing menu/ui elements on the screen
+	//_uiManager->draw();
 }
 
 void MGEDemo::_updateHud() {
