@@ -5,7 +5,7 @@
   <PressurePlates>
     <PressurePlate ColPos="2" RowPos="5" ID="0" NeededColor="4" />
     <PressurePlate ColPos="7" RowPos="6" ID="1" NeededColor="4" />
-    <PressurePlate ColPos="3" RowPos="7" ID="1" NeededColor="3" />
+    <PressurePlate ColPos="3" RowPos="7" ID="2" NeededColor="3" />
   </PressurePlates>
   <ActivatableTiles>
     <ActivatableTile ColPos="3" RowPos="1" ID="2" />

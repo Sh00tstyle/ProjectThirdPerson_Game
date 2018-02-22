@@ -5,6 +5,7 @@
 #include "mge/tileProp.hpp"
 #include "mge/level/Scene.h"
 #include "mge/level/PressurePlate.h"
+#include "mge/level/ActivatableTile.h"
 #include "mge/managers/SceneManager.h"
 
 
@@ -263,10 +264,15 @@ bool GridMovementBehavior::CheckWalkable(Direction pDir)
 
 bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 {
-	if (pCol < 0 || pCol >= _scene.GetLevelWidth())
+
+	if (pCol < 0 || pCol >= _scene.GetLevelWidth()) {
+		std::cout << "You went too far " << std::endl; 
 		return false; 
-	if (pRow < 0 || pRow >= _scene.GetLevelWidth())
+	}
+	if (pRow < 0 || pRow >= _scene.GetLevelHeight()) {
+		std::cout << "You went too far " << std::endl;
 		return false; 
+	}
 
 	/*
 	std::string tileLeft = _scene.GetPlayfieldValue(_onCol + 1, _onRow); 
@@ -301,6 +307,16 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 		else
 			return false; 
 	}
+	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::ActivatableTile)
+	{
+		_activatableTile = _scene.GetActivatableTile(pCol, pRow);
+		if (_activatableTile->IsActive()) {
+			_scene.SetPlayfieldColor(pCol, pRow, _scene.GetPawnColor()); 
+			return true;
+		}
+		else
+			return false;
+	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::PlayerSpawn && _scene.GetStartTileColor() == _scene.GetPawnColor())
 	{
 		return true; 
@@ -312,6 +328,7 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 			SceneManager::LoadNextScene(); 
 		}
 	}
+
 	/*
 	if (pTile == tileProp::RedColorSwitch && _pawnColor == tileProp::BlueColorSwitch)
 	{

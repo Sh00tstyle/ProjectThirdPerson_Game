@@ -1,4 +1,5 @@
 #include "mge/eventSystem/SystemEventDispatcher.hpp"
+#include <iostream>
 
 std::vector<SystemEventListener*> SystemEventDispatcher::_listenerVector = std::vector<SystemEventListener*>();
 
@@ -10,21 +11,9 @@ SystemEventDispatcher::~SystemEventDispatcher()
 {
 }
 
-/*
-void SystemEventDispatcher::DispactchEvent(sf::Event pEvent)
-{
-
-	if (_behaviours.capacity != nullptr) {
-		for (unsigned i = 0; i < _behaviours.capacity - 1; i++)
-		{
-			_behaviours[i]->HandleInput(pEvent.key.code); 
-		}
-	}
-}
-*/
-
 void SystemEventDispatcher::SendKeyEvent(sf::Event pEvent)
 {
+	std::cout << "Key Event Called " << std::endl; 
 	for (unsigned i = 0; i < _listenerVector.size(); i++)
 	{
 		_listenerVector[i]->onNotify(pEvent); 
@@ -33,11 +22,14 @@ void SystemEventDispatcher::SendKeyEvent(sf::Event pEvent)
 
 void SystemEventDispatcher::AddListener(SystemEventListener* pListener)
 {
+	std::cout << " added to Vector  " << std::endl;
+	
 	_listenerVector.push_back(pListener); 
 }
 
 void SystemEventDispatcher::RemoveListener()
 {
+	std::cout << "Vector cleared " << std::endl;
 	_listenerVector.clear(); 
 }
 

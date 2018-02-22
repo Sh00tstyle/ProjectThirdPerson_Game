@@ -121,6 +121,10 @@ void MGEDemo::_processEvents() {
 					_sceneManager->ReloadScene();
 				}
 
+				if (event.key.code == sf::Keyboard::L) {
+					_sceneManager->LoadFirstScene();
+				}
+
 				//Add own key press events here
 				break;
 			case sf::Event::Resized:

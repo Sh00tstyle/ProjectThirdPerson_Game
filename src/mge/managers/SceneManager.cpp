@@ -23,6 +23,8 @@ SceneManager::~SceneManager() {
 }
 
 void SceneManager::LoadFirstScene() {
+	if (_currentScene != nullptr) _currentScene->RemoveScene();
+
 	_levelCount = 0;
 
 	//no first level (empty array)

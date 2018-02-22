@@ -33,9 +33,8 @@ class Scene {
 		std::string GetPawnColor();
 		std::string GetDestinationColor();
 		std::string GetStartTileColor();
-		void NextLevel(); 
 		PressurePlate* GetPressurePlate(int colIndex, int rowIndex); 
-
+		ActivatableTile* GetActivatableTile(int colIndex, int rowIndex); 
 	private:
 		World* _world;
 

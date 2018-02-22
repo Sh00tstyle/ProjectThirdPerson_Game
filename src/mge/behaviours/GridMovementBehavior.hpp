@@ -11,7 +11,7 @@
 class Scene; 
 class PressurePlate; 
 class Destination; 
-
+class ActivatableTile; 
 
 class GridMovementBehavior : public AbstractBehaviour, public SystemEventListener                        
 {
@@ -32,6 +32,7 @@ class GridMovementBehavior : public AbstractBehaviour, public SystemEventListene
 		int _onRow; 
 		Scene& _scene; 
 		PressurePlate* _pressurePlate; 
+		ActivatableTile* _activatableTile; 
 
 		enum Direction {Up, Left, Down, Right};
 		Direction _dir; 

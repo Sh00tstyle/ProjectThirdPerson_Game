@@ -204,6 +204,13 @@ PressurePlate* Scene::GetPressurePlate(int pCol, int pRow)
 			return _pressurePlates[i]; 
 }
 
+ActivatableTile * Scene::GetActivatableTile(int pCol, int pRow)
+{
+	for (unsigned i = 0; i < _activatableTiles.size(); i++)
+		if (_activatableTiles[i]->CheckPositionOnGrid(pCol, pRow))
+			return _activatableTiles[i];
+}
+
 
 
 

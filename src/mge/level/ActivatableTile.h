@@ -10,6 +10,7 @@ class ActivatableTile :public SpecialTile
 	public:
 		ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID);
 		~ActivatableTile();
+		bool CheckPositionOnGrid(int pCol, int pRow);
 
 		void Activate();
 		void Reset();
@@ -17,7 +18,8 @@ class ActivatableTile :public SpecialTile
 		bool IsActive();
 	private:
 		int _id;
-
+		int _col; 
+		int _row; 
 		bool _active;
 };
 

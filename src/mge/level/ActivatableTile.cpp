@@ -1,11 +1,20 @@
 #include "mge\level\ActivatableTile.h"
 
 ActivatableTile::ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID): SpecialTile(pColPos, pRowPos, pVectorPos), _id(pID), _active(false) {
-
+	_col = pColPos; 
+	_row = pRowPos;
 }
 
 ActivatableTile::~ActivatableTile() {
 
+}
+
+bool ActivatableTile::CheckPositionOnGrid(int pCol, int pRow)
+{
+	if (_col == pCol && _row == pRow)
+		return true;
+	else
+		return false;
 }
 
 void ActivatableTile::Activate() {
