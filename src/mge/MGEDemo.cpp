@@ -46,18 +46,18 @@ void MGEDemo::initialize() {
 //build the game _world
 void MGEDemo::_initializeScene() {
 	//orthographic camera settings
-	_orthoSize = 9.0f;
-	_screenRatio = 4.0f / 3.0f; //default 800x 600
+	_orthoSize = 8.0f;
+	_screenRatio = 16.0f / 9.0f; //default 1920x 1080
 
 	//setting up main camera here, since it should always be the same and does not have to be changed
 	Camera* camera = new Camera("camera", glm::vec3(0, 0, 0), glm::ortho(-_orthoSize * _screenRatio, _orthoSize * _screenRatio, -_orthoSize, _orthoSize, 0.1f, 1000.0f)); //orthographic camera
-	camera->setBehaviour(new PlayfieldFocusBehaviour(-40.0f, -60.0f, 12.0f, 12.0f, camera)); //focus world origin
+	camera->setBehaviour(new PlayfieldFocusBehaviour(-42.5f, -30.0f, 12.0f, 12.0f, camera)); //focus world origin
 	_world->add(camera);
 	_world->setMainCamera(camera);
 
 	//Make a SceneManager class here instead of a scene
-	_sceneManager = new SceneManager(_world);
-	_sceneManager->LoadFirstScene(); //loads level 1
+	_sceneManager = new SceneManager(_world); //need an instance to load the levels (!!)
+	//_sceneManager->LoadFirstScene(); //loads level 1
 	
 	_renderer->setClearColor(119, 129, 136, 1); //grey background
 }
@@ -67,7 +67,7 @@ void MGEDemo::_render() {
 	_updateHud();
 
 	//drawing menu/ui elements on the screen
-	//_uiManager->draw();
+	_uiManager->draw();
 }
 
 void MGEDemo::_updateHud() {
@@ -110,9 +110,10 @@ void MGEDemo::_processEvents() {
 			case sf::Event::Closed:
 				exit = true;
 				break;
+
 			case sf::Event::KeyPressed:
 				if(event.key.code == sf::Keyboard::Escape) {
-					exit = true;
+					//exit = true;
 				}
 
 				SystemEventDispatcher::SendKeyEvent(event);
