@@ -53,6 +53,8 @@ void SceneManager::LoadNextScene() {
 }
 
 void SceneManager::LoadSceneAtIndex(int index) {
+	if(_currentScene != nullptr) _currentScene->RemoveScene();
+
 	_levelCount = index;
 
 	//out of array range
@@ -87,9 +89,9 @@ void SceneManager::_loadAllScenes() {
 	int levelIndex = 1;
 	std::string filepath = config::MGE_LEVEL_PATH + "Level_" + std::to_string(levelIndex) + ".xml";
 
-	//filepath = config::MGE_LEVEL_PATH + "TestLevel.xml"; //debug level
+	filepath = config::MGE_LEVEL_PATH + "TestLevel.xml"; //debug level
 
-	while(_fileExists(filepath)) { //only load one level for now
+	while(_fileExists(filepath) && levelIndex == 1) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
 		_allScenes.push_back(newScene);
 

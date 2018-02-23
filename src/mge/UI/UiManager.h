@@ -3,16 +3,21 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "mge/eventSystem/SystemEventDispatcher.hpp"
 
 class lua_State;
 class Menu;
 
-class UiManager {
+class UiManager : public SystemEventListener {
 	public:
 		UiManager(sf::RenderWindow* pWindow);
 		~UiManager();
 
 		void draw();
+		
+		void CloseApp();
+		void SelectMenu(std::string target);
+
 	private:
 		sf::RenderWindow* _window;
 		Menu* _activeMenu;
@@ -26,6 +31,8 @@ class UiManager {
 
 		void _drawAll();
 		void _initMenus();
+
+		virtual void onNotify(sf::Event pEvent);
 };
 
 #endif

@@ -211,10 +211,6 @@ ActivatableTile * Scene::GetActivatableTile(int pCol, int pRow)
 			return _activatableTiles[i];
 }
 
-
-
-
-
 void Scene::_loadSceneFromFile(std::string filepath) {
 	//this method reads the XML file and fills all varibales with data
 
