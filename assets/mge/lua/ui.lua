@@ -5,12 +5,13 @@ Menu = {}
 
 -- MenuName = 1, Menu background = 2
 Menus = { 
+  {"LEVEL 1",               "resolutionscreen/background.png"}, 
   {"MainMenu",               "temp_bg.png"}, 
   {"Credits",                "temp_bg.png"}, 
   {"Controls",               "temp_bg.png"}, 
   {"PAUSE",                  "temp_bg.png"},
+  {"LevelSelect 0",          "temp_bg.png"},
   {"LevelSelect 1",          "temp_bg.png"},
-  {"LevelSelect 2",          "temp_bg.png"},
 }
 
 
@@ -38,8 +39,8 @@ Images = {
   {"HUD",             "hud/reset.png",                    1610,     980 },
   {"Controls",        "controls/controls.png",            105,      250 },
   {"Credits",         "credits/credits.png",              105,      250 },
-  {"LevelSelect0",    "levelselection/panel.png",         105,      250 },
-  {"LevelSelect1",    "levelselection/panel.png",         105,      250 },
+  {"LevelSelect 0",    "levelselection/panel.png",         105,      250 },
+  {"LevelSelect 1",    "levelselection/panel.png",         105,      250 },
 }
 
 -- Target Menu = 1 Font Name used = 2, Text Name/Key = 3, Drawn Text = 4, text size = 5, textcolor r = 6, textcolor g = 7, textcolor b = 9, boldness = 9, x pos = 10, y pos = 11
@@ -81,7 +82,7 @@ levelSelectionBackground = "levelselection/level_bg.png"
 
   for i=1, levelcount do
     -- Thumbnails
-    thumbnail = { "LevelSelect" .. LevelSelect,"LEVEL " .. i,"levelselection/thumbnails/level_".. i ..".png",
+    thumbnail = { "LevelSelect " .. LevelSelect,"LEVEL " .. i,"levelselection/thumbnails/level_".. i ..".png",
     "levelselection/thumbnails/level_".. i .."_deactivated.png", thumbnailX + imageOffset * offsetmodifier, thumbnailY}  
     table.insert(Buttons, thumbnail)
            
@@ -98,7 +99,7 @@ levelSelectionBackground = "levelselection/level_bg.png"
   end
   
   -- Additional Buttons
-  table.insert(Buttons,{ "LevelSelect 0", "LevelSelect1","nextbutton.png", "nextbutton_deactivated.png",  1754, 412 })
+  table.insert(Buttons,{ "LevelSelect 0", "LevelSelect 1","nextbutton.png", "nextbutton_deactivated.png",  1754, 412 })
   table.insert(Buttons,{ "LevelSelect 1", "MainMenu", "backbutton.png","backbutton_deactivated.png",      1700, 830 })
   table.insert(Buttons,{ "LevelSelect 0", "MainMenu", "backbutton.png","backbutton_deactivated.png",      1700, 830 }) 
   
