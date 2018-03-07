@@ -4,7 +4,6 @@
 #include "mge\core\GameObject.hpp"
 #include "mge/behaviours/AbstractBehaviour.hpp"
 #include "mge/materials/AbstractMaterial.hpp"
-//#include "mge/eventSystem/SystemEventListener.hpp"
 #include <SFML/Window/Event.hpp>
 #include <vector>
 #include "glm.hpp"

@@ -25,9 +25,9 @@ class GridMovementBehavior : public AbstractBehaviour, public SystemEventListene
 	private:
 
 		bool _active; 
+		bool _moving = false; 
 		float _moveAmount;
 
-		int _moveAmountY; 
 		int _onCol; 
 		int _onRow; 
 		Scene& _scene; 
@@ -40,10 +40,10 @@ class GridMovementBehavior : public AbstractBehaviour, public SystemEventListene
 		void Move(sf::Keyboard::Key pKey); 
 		bool CheckWalkable(Direction pDir);
 		bool CheckWalkableTile(int pCol, int pRow);
-		glm::vec3 _newPosition; 
-		glm::vec3 _currentPosition; 
-
-		//SystemEventDispatcher _eventDispatcher; 
+		void SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed);
+		
+		glm::vec3 _currentTile;
+		glm::vec3 _targetTile; 
 
 };
 

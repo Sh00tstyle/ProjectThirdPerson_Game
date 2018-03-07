@@ -50,7 +50,7 @@ void MGEDemo::_initializeScene() {
 	_screenRatio = 4.0f / 3.0f; //default 800x 600
 
 	//setting up main camera here, since it should always be the same and does not have to be changed
-	Camera* camera = new Camera("camera", glm::vec3(0, 0, 0), glm::ortho(-_orthoSize * _screenRatio, _orthoSize * _screenRatio, -_orthoSize, _orthoSize, 0.1f, 1000.0f)); //orthographic camera
+	Camera* camera = new Camera("camera", glm::vec3(0, 0, 0)); //orthographic camera
 	camera->setBehaviour(new PlayfieldFocusBehaviour(-40.0f, -60.0f, 12.0f, 12.0f, camera)); //focus world origin
 	_world->add(camera);
 	_world->setMainCamera(camera);

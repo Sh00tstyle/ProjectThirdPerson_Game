@@ -98,7 +98,7 @@ void Scene::ConstructScene() {
 void Scene::RemoveScene() {
 	//restore old playfield data in case we reload the scene
 	_playfieldData = _unmodifedPlayfieldData;
-	SystemEventDispatcher::RemoveListener();
+	SystemEventDispatcher::RemoveListener("MovementListener");
 
 	//remove tiles from the scene
 	for(unsigned i = 0; i < _tileObjects.size(); i++) {
@@ -146,6 +146,11 @@ std::string Scene::GetPlayfieldValue(int vectorIndex) {
 std::string Scene::GetPlayfieldValue(int colIndex, int rowIndex) {
 	
 	return _playfieldData[colIndex  + rowIndex * _levelWidth];
+}
+
+glm::vec3 Scene::GetTileWorldPos(int colIndex, int rowIndex, float pTileSize)
+{
+	return glm::vec3(-(colIndex - _levelWidth/2.0f) * pTileSize,0, (rowIndex - _levelWidth / 2.0f) * pTileSize);
 }
 
 void Scene::SetPlayfieldColor(int vectorIndex, std::string value) {

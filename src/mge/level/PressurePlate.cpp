@@ -35,6 +35,5 @@ bool PressurePlate::CheckPositionOnGrid(int pCol, int pRow)
 }
 
 void PressurePlate::Activate() {
-	std::cout << "I am activated"; 
 	_targetTile->Activate();
 }

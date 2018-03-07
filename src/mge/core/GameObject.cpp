@@ -21,6 +21,7 @@ GameObject::~GameObject()
     }
 
     //do not forget to delete behaviour, material, mesh, collider manually if required!
+	delete _behaviour; 
 }
 
 void GameObject::setName (const std::string& pName)

@@ -18,6 +18,7 @@ bool ActivatableTile::CheckPositionOnGrid(int pCol, int pRow)
 }
 
 void ActivatableTile::Activate() {
+	
 	_active = true;
 
 	//TODO: Do some visual stuff like changing material/transparency

@@ -38,10 +38,10 @@
     <BluePressurePlateTexture TextureFile="BluePressurePlate.png" />
   </BluePressurePlateTextures>
   <RedActivatableTileTextures>
-    <RedActivatableTileTexture TextureFile="RedActivatableTile.png" />
+    <RedActivatableTileTexture TextureFile="RedActivatableTile_NotActive.png" />
   </RedActivatableTileTextures>
   <BlueActivatableTileTextures>
-    <BlueActivatableTileTexture TextureFile="BlueActivatableTile.png" />
+    <BlueActivatableTileTexture TextureFile="BlueActivatableTile_NotActive.png" />
   </BlueActivatableTileTextures>
   <RedColorSwitchTexture TextureFile="RedColorSwitch.png" />
   <BlueColorSwitchTexture TextureFile="BlueColorSwitch.png" />

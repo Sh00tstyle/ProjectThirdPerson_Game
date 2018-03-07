@@ -12,86 +12,36 @@
 GridMovementBehavior::GridMovementBehavior(float pMoveAmout, bool pActive, int pCol, int pRow, Scene& pScene)
 	: AbstractBehaviour(), _moveAmount(pMoveAmout), _active(pActive), _onCol(pCol), _onRow(pRow) ,_scene(pScene)
 {
-	SystemEventDispatcher::AddListener(this); 
+	SystemEventDispatcher::AddListener(this,"MovementListener"); 
 	
 
 }
 
 GridMovementBehavior::~GridMovementBehavior()
 {
-	SystemEventDispatcher::RemoveListener(); 
+	SystemEventDispatcher::RemoveListener("MovementListener");
 }
 
 
 void GridMovementBehavior::update(float pStep)
 {
-	if (!_active)
-		return; 
-	/*
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !_keyPressed) {
-		if (CheckWalkable(Up)) {
-			_keyPressed = true; 
-
-			_newPosition.z = _currentPosition.z - _moveAmount;
-			//std::cout << "Moving" << _currentPosition;
-			std::cout << _newPosition;
-			if (_newPosition.z < _currentPosition.z - _moveAmount)
-				_newPosition.z = _currentPosition.z - _moveAmount;
-		}
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !_keyPressed) {
-		if (CheckWalkable(Left)) {
-			_keyPressed = true;
-
-			_newPosition.x = _currentPosition.x - _moveAmount;
-			//std::cout << "Moving" << _currentPosition;
-			std::cout << _newPosition;
-			if (_newPosition.x < _currentPosition.x - _moveAmount)
-				_newPosition.x = _currentPosition.x - _moveAmount;
-		}
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !_keyPressed) {
-		if (CheckWalkable(Down)) {
-			_keyPressed = true;
-
-			_newPosition.z = _currentPosition.z + _moveAmount;
-			if (_newPosition.z > _moveAmount + _moveAmount)
-				_newPosition.z = _currentPosition.z + _moveAmount;
-		}
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !_keyPressed) {
-		std::cout << "Key is being pressed " << std::endl; 
-		if (CheckWalkable(Right)) {
-			_keyPressed = true; 
-			_newPosition.x = _currentPosition.x + _moveAmount;
-			//std::cout << "Moving" << _currentPosition;
-			//std::cout << _newPosition;
-			if (_newPosition.x > _currentPosition.x + _moveAmount)
-				_newPosition.x = _currentPosition.x + _moveAmount;
-		}
-	}
-	else {
-		_keyPressed = false; 
-	}
-	if (!_keyPressed)
-	{
-		_currentPosition = _newPosition;
-		_newPosition = glm::vec3(0, 0, 0);
-	}
 	
-	_owner->translate(_currentPosition);
-	*/
+	if (_moving) {
+		SmoothMove(_currentTile, _targetTile, 8); 
+	}
+	//if certain key is pressed move in a direction 
 }
 
 
 void GridMovementBehavior::onNotify(sf::Event pEvent)
 {
-
-		Move(pEvent.key.code);
+	if(!_moving)
+	Move(pEvent.key.code);
 }
 
 void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 {
+	_currentTile = _owner->getWorldPosition();
 	/*
 	 tileLeft = _scene.GetPlayfieldValue(_onCol + 1, _onRow);
 	 tileRight = _scene.GetPlayfieldValue(_onCol - 1, _onRow);
@@ -99,28 +49,35 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 	 tileDown = _scene.GetPlayfieldValue(_onCol, _onRow + 1);
 	*/
 
-	if (pKey == sf::Keyboard::W && CheckWalkableTile(_onCol, _onRow - 1))
+	if (!_moving)
+		_targetTile = _owner->getWorldPosition(); 
+
+	if (pKey == sf::Keyboard::W  && CheckWalkableTile(_onCol, _onRow - 1))
 	{
-		_onRow--; 
-		_owner->translate(glm::vec3 (0,0,-_moveAmount));
+		_onRow--;
+		_targetTile.z = _currentTile.z - _moveAmount;
+		_moving = true; 
 	}
 
 	if (pKey == sf::Keyboard::A && CheckWalkableTile(_onCol + 1, _onRow))
 	{
 		_onCol++;
-		_owner->translate(glm::vec3(-_moveAmount, 0, 0));
+		_targetTile.x = _currentTile.x - _moveAmount;
+		_moving = true;
 	}
 
-	if (pKey == sf::Keyboard::S && CheckWalkableTile(_onCol, _onRow + 1))
+	if (pKey == sf::Keyboard::S  && CheckWalkableTile(_onCol, _onRow + 1))
 	{
 		_onRow++; 
-		_owner->translate(glm::vec3(0, 0,_moveAmount));
+		_targetTile.z = _currentTile.z + _moveAmount;
+		_moving = true;
 	}
 
 	if (pKey == sf::Keyboard::D && CheckWalkableTile(_onCol - 1, _onRow))
 	{
 		_onCol--; 
-		_owner->translate(glm::vec3(_moveAmount, 0, 0));
+		_targetTile.x = _currentTile.x + _moveAmount;
+		_moving = true;
 	}
 }
 
@@ -345,6 +302,21 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	*/
 	//if (pTile == tileProp::Destination)
 	return false;
+}
+
+void GridMovementBehavior::SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed)
+{
+	glm::vec3 delta = pEndTile - pStartTile; 
+	glm::vec3 moveSteps = delta / pSpeed; 
+
+	if (_owner->getWorldPosition() != pEndTile)
+	{
+		_owner->translate(moveSteps); 
+	}
+	else
+	{
+		_moving = false; 
+	}
 }
 
 
