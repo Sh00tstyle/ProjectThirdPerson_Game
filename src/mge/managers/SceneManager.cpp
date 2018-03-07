@@ -28,7 +28,7 @@ void SceneManager::LoadFirstScene() {
 	if (_currentScene != nullptr) _currentScene->RemoveScene();
 
 	_levelCount = 0;
-	_levelTries = 0;
+	_levelTries = 1;
 
 	//no first level (empty array)
 	if((int)_allScenes.size() == 0) {
@@ -42,7 +42,7 @@ void SceneManager::LoadFirstScene() {
 
 void SceneManager::LoadNextScene() {
 	_levelCount++;
-	_levelTries = 0;
+	_levelTries = 1;
 
 	//no more levels to load
 	if(_levelCount >= (int)_allScenes.size()) {
@@ -60,7 +60,7 @@ void SceneManager::LoadSceneAtIndex(int index) {
 	if(_currentScene != nullptr) _currentScene->RemoveScene();
 
 	_levelCount = index;
-	_levelTries = 0;
+	_levelTries = 1;
 
 	//out of array range
 	if(_levelCount >= (int)_allScenes.size()) {

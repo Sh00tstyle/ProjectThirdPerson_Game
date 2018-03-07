@@ -113,13 +113,12 @@ void Menu::AddImage(std::string filename, int xPos, int yPos) {
 	}
 }
 
-void Menu::AddText(sf::Font font, std::string text, int textSize, int r, int g, int b, bool isBold, int xPos, int yPos) {
+void Menu::AddText(std::string fontname, std::string text, int textSize, int r, int g, int b, bool isBold, int xPos, int yPos) {
 	for(unsigned i = 0; i < _menuTexts.size(); i++) {
 		//get first unsed text in the vector
 		if(_menuTexts[i].getString() == "") {
-			_usedFonts.push_back(font);
+			_menuTexts[i].setFont(UiContainer::GetFontByName(fontname));
 
-			_menuTexts[i].setFont(_usedFonts[i]);
 			_menuTexts[i].setString(text);
 			_menuTexts[i].setCharacterSize(textSize);
 			_menuTexts[i].setFillColor(sf::Color(r, g, b, 255));
@@ -152,7 +151,7 @@ int Menu::GetTextCount() {
 
 sf::Text Menu::GetTextAt(int index) {
 	//probbaly not the best place to do this, since this gets called every (!!) frame
-
+	
 	sf::Text myText = _menuTexts[index];
 	std::string textString = myText.getString();
 	std::istringstream iss(textString);
@@ -182,6 +181,10 @@ sf::Text Menu::GetTextAt(int index) {
 	myText.setString(newText);
 
 	return myText;
+}
+
+void Menu::SetTextAt(int index, std::string newString) {
+	_menuTexts[index].setString(newString);
 }
 
 int Menu::GetActiveButton() {

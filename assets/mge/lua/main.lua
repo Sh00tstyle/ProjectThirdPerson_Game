@@ -8,7 +8,7 @@ function Menu.init()
   
   --creating a new menu (menu name/key, image amount, button amount, text amount, horizontal navigation)
   --special keys: MAIN, PAUSE, HUD, LOADING, LEVEL 1, LEVEL 2, etc.
-  CreateMenu("MAIN", 0, 3, 1, false) --key for the main menu
+  CreateMenu("MAIN", 0, 3, 2, false) --key for the main menu
   CreateMenu("Options", 0, 0, 0, false)
   CreateMenu("PAUSE", 0, 1, 0, true) --key for the Pause menu, also has horizantal navigation
   CreateMenu("HUD", 0, 0, 1, false) --key for the HUD, it gets loaded whenever a level is selected by a button
@@ -35,6 +35,7 @@ function Menu.init()
   --special keys: TRIES (will replace the TRIES keyword with the actual number)
   AddText("MAIN", "MyFont", "Hello World", 12, 255, 255, 255, false, 50, 50) -- non bold, white text with size 12 saying "Hello World"
   AddText("HUD", "MyFont", "Tries: TRIES", 15, 0, 0, 0, true, 0, 0) -- bold, black text with size 15 displaying "Tries: X" (x is the amount of tries filled in by the engine)
+  AddText("MAIN", "MyFont", "Kappa123", 40, 0, 0, 0, true, 100, 100)
   
   --add new button (parent menu key, target (menu) key, image filename (active), image filename (inactive), x position, y position)
   --special target keys: EXIT, RESUME, RESET, LEVEL 1, LEVEL 2, etc.

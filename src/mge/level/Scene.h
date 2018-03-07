@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <glm.hpp>
 
 class World;
 class Mesh;
@@ -27,6 +28,7 @@ class Scene {
 		int GetPlayfieldDataCount();
 		std::string GetPlayfieldValue(int vectorIndex); //for treating it like a vector
 		std::string GetPlayfieldValue(int colIndex, int rowIndex); //for treating it like a 2d array
+		glm::vec3 GetTileWorldPos(int colIndex, int rowIndex, float pTileSize);
 		void SetPlayfieldColor(int vectorIndex, std::string value); //for treating it like a vector
 		void SetPlayfieldColor(int colIndex, int rowIndex, std::string value); //for treating it like a 2d array
 		void SetPawnColor( std::string value); 

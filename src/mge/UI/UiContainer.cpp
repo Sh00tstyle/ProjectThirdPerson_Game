@@ -26,7 +26,7 @@ UiContainer::UiContainer(sf::RenderWindow* pWindow) {
 	_initMenus();
 
 	//register this as a listener for key events
-	SystemEventDispatcher::AddListener(this);
+	SystemEventDispatcher::AddListener(this, "UI");
 
 	SelectMenu("LOADING"); //inital screen when starting the game
 }
@@ -37,8 +37,6 @@ UiContainer::~UiContainer() {
 	for(unsigned i = 0; i < _menus.size(); i++) {
 		delete _menus[i];
 	}
-
-	_menus.clear();
 }
 
 void UiContainer::draw() {
@@ -60,6 +58,8 @@ void UiContainer::CloseApp() {
 }
 
 void UiContainer::SelectMenu(std::string target) {
+	std::cout << "Selected menu " + target << std::endl;
+
 	if(target == "HUD") {
 		//disable menu input and enable game input
 		InputManager::SetGameInput(true);
@@ -78,6 +78,10 @@ void UiContainer::SelectMenu(std::string target) {
 			return;
 		}
 	}
+}
+
+sf::Font& UiContainer::GetFontByName(std::string fontname) {
+	return _fonts.at(fontname);
 }
 
 int UiContainer::_createMenu(lua_State * state) {
@@ -185,8 +189,7 @@ int UiContainer::_addText(lua_State * state) {
 		if(_menus[i]->GetMenuName() != parentMenu) continue;
 
 		Menu* myMenu = _menus[i];
-		sf::Font font = _fonts[usedFont];
-		myMenu->AddText(font, text, textSize, textColorR, textColorG, textColorB, isBold, xPos, yPos);
+		myMenu->AddText(usedFont, text, textSize, textColorR, textColorG, textColorB, isBold, xPos, yPos);
 
 		break; //menu found, no need to loop further
 	}
@@ -227,7 +230,7 @@ void UiContainer::_initMenus() {
 	lua_register(state, "AddImage", _addImage);
 	lua_register(state, "AddText", _addText);
 
-	std::string filename = config::MGE_LUA_PATH + "ui.lua";
+	std::string filename = config::MGE_LUA_PATH + "main.lua";
 	luaL_dofile(state, filename.c_str()); //execute lua file
 
 	//calling Menu.init() in lua

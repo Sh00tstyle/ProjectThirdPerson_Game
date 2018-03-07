@@ -1,5 +1,5 @@
-#ifndef UIMANAGER_H
-#define UIMANAGER_H
+#ifndef UICONTAINER_H
+#define UICONTAINER_H
 
 #include <vector>
 #include <map>
@@ -19,6 +19,8 @@ class UiContainer : public SystemEventListener {
 		
 		static void CloseApp();
 		static void SelectMenu(std::string target);
+
+		static sf::Font& GetFontByName(std::string fontname);
 
 	private:
 		static sf::RenderWindow* _window;

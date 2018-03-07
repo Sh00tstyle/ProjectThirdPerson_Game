@@ -23,13 +23,14 @@ class Menu {
 
 		void AddButton(std::string activeFilename, std::string inactiveFilename, int xPos, int yPos, std::string target);
 		void AddImage(std::string filename, int xPos, int yPos);
-		void AddText(sf::Font font, std::string text, int textSize, int r, int g, int b, bool isBold, int xPos, int yPos);
+		void AddText(std::string fontname, std::string text, int textSize, int r, int g, int b, bool isBold, int xPos, int yPos);
 
 		int GetButtonCount();
 		sf::Sprite GetButtonAt(int index);
 
 		int GetTextCount();
 		sf::Text GetTextAt(int index);
+		void SetTextAt(int index, std::string newString);
 
 		int GetActiveButton();
 		void SetActiveButton(int index);
@@ -58,7 +59,6 @@ class Menu {
 		std::vector<sf::Sprite> _buttonSprites;
 		std::vector<std::string> _buttonCommands;
 		std::vector<sf::Text> _menuTexts;
-		std::vector<sf::Font> _usedFonts;
 
 		std::vector<sf::Texture> _imageTextures;
 		std::vector<sf::Sprite> _imageSprites;

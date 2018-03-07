@@ -160,7 +160,6 @@ void MGEDemo::_processEvents() {
 				//reset current level
 				if(event.key.code == sf::Keyboard::R) {
 					SceneManager::ReloadScene();
-					SystemEventDispatcher::AddListener(_uiContainer); //temp bugfix, reregister the menu after clearing it in the scene destruction
 				}
 
 				//DEBUG
@@ -168,13 +167,11 @@ void MGEDemo::_processEvents() {
 				//load next level
 				if(event.key.code == sf::Keyboard::F) {
 					SceneManager::LoadNextScene();
-					SystemEventDispatcher::AddListener(_uiContainer); //temp bugfix, reregister the menu after clearing it in the scene destruction
 				}
 
 				//reset game to first level
 				if (event.key.code == sf::Keyboard::L) {
 					SceneManager::LoadFirstScene();
-					SystemEventDispatcher::AddListener(_uiContainer); //temp bugfix, reregister the menu after clearing it in the scene destruction
 				}
 				break;
 
@@ -201,4 +198,9 @@ void MGEDemo::_processEvents() {
 
 MGEDemo::~MGEDemo() {
 	//dtor
+
+	delete _hud;
+
+	delete _uiContainer;
+	delete _modelManager;
 }

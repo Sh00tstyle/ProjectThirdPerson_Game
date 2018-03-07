@@ -7,6 +7,8 @@
 #include "mge/level/PressurePlate.h"
 #include "mge/level/ActivatableTile.h"
 #include "mge/managers/SceneManager.h"
+#include "mge/managers/InputManager.h"
+#include "mge/UI/UiContainer.h"
 
 
 GridMovementBehavior::GridMovementBehavior(float pMoveAmout, bool pActive, int pCol, int pRow, Scene& pScene)
@@ -41,6 +43,8 @@ void GridMovementBehavior::onNotify(sf::Event pEvent)
 
 void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 {
+	if(!InputManager::GetGameInput()) return;
+
 	_currentTile = _owner->getWorldPosition();
 	/*
 	 tileLeft = _scene.GetPlayfieldValue(_onCol + 1, _onRow);
@@ -282,7 +286,10 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	{
 		if (_scene.GetDestinationColor() == _scene.GetPawnColor())
 		{
-			SceneManager::LoadNextScene(); 
+			UiContainer::SelectMenu("LEVEL " + std::to_string(SceneManager::GetLevelNumber()));
+			//SceneManager::LoadNextScene();
+
+			return true;
 		}
 	}
 
