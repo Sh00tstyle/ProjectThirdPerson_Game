@@ -338,12 +338,12 @@
     <None Include="..\assets\mge\shaders\terrain.vs">
       <Filter>Assets\mge\shaders</Filter>
     </None>
-    <None Include="packages.config" />
     <None Include="..\assets\mge\shaders\scrolling.fs">
       <Filter>Assets\mge\shaders</Filter>
     </None>
     <None Include="..\assets\mge\shaders\scrolling.vs">
       <Filter>Assets\mge\shaders</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

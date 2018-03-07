@@ -26,6 +26,8 @@ void ActivatableTile::Activate() {
 
 	GameObject* tile = _scene->GetTileObject(_col, _row);
 
+	if(tile == nullptr) return;
+
 	if(_color == tileProp::RedTile) {
 		tile->setMaterial(ModelManager::GetRedActivatableTileActiveMat(_index));
 	} else if(_color == tileProp::BlueTile) {
@@ -37,6 +39,8 @@ void ActivatableTile::Reset() {
 	_active = false;
 
 	GameObject* tile = _scene->GetTileObject(_col, _row);
+
+	if(tile == nullptr) return;
 
 	if(_color == tileProp::RedTile) {
 		tile->setMaterial(ModelManager::GetRedActivatableTileInactiveMat(_index));

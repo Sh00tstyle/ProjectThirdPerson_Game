@@ -216,7 +216,8 @@ ActivatableTile * Scene::GetActivatableTile(int pCol, int pRow)
 }
 
 GameObject * Scene::GetTileObject(int col, int row) {
-	return _tileObjects[col + row * _levelWidth];
+	if(col + row * _levelWidth >= _tileObjects.size()) return nullptr;
+	else return _tileObjects[col + row * _levelWidth];
 }
 
 void Scene::_loadSceneFromFile(std::string filepath) {
