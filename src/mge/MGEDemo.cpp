@@ -15,6 +15,7 @@
 
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/ModelManager.h"
+#include "mge/managers/InputManager.h"
 
 #include "mge/materials/ColorMaterial.hpp"
 #include "mge/materials/TextureMaterial.hpp"
@@ -158,19 +159,19 @@ void MGEDemo::_processEvents() {
 				SystemEventDispatcher::SendKeyEvent(event);
 
 				//reset current level
-				if(event.key.code == sf::Keyboard::R) {
+				if(event.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
 					SceneManager::ReloadScene();
 				}
 
 				//DEBUG
 
 				//load next level
-				if(event.key.code == sf::Keyboard::F) {
+				if(event.key.code == sf::Keyboard::F && InputManager::GetGameInput()) {
 					SceneManager::LoadNextScene();
 				}
 
 				//reset game to first level
-				if (event.key.code == sf::Keyboard::L) {
+				if (event.key.code == sf::Keyboard::L && InputManager::GetGameInput()) {
 					SceneManager::LoadFirstScene();
 				}
 				break;

@@ -20,14 +20,14 @@ class UiContainer : public SystemEventListener {
 		static void CloseApp();
 		static void SelectMenu(std::string target);
 
-		static sf::Font& GetFontByName(std::string fontname);
+		static sf::Font* GetFontByName(std::string fontname);
 
 	private:
 		static sf::RenderWindow* _window;
 		static Menu* _activeMenu;
 
 		static std::vector<Menu*> _menus;
-		static std::map<std::string, sf::Font> _fonts;
+		static std::map<std::string, sf::Font*> _fonts;
 
 		static int _createMenu(lua_State* state);
 		static int _createFont(lua_State* state);

@@ -19,8 +19,8 @@ void SystemEventDispatcher::SendKeyEvent(sf::Event pEvent)
 	
 	for (auto sysListener : _listenerMap)
 	{
-		std::cout << sysListener.second << std::endl; 
-		sysListener.second->onNotify(pEvent); 
+		//std::cout << sysListener.second << std::endl; 
+		if(sysListener.second != nullptr) sysListener.second->onNotify(pEvent); 
 	}
 
 	/*
@@ -33,9 +33,9 @@ void SystemEventDispatcher::SendKeyEvent(sf::Event pEvent)
 
 void SystemEventDispatcher::AddListener(SystemEventListener* pListener, std::string pName)
 {
-	std::cout << " added to Map  " << std::endl;
-	//_listenerMap[pListener] = pName; 
-	_listenerMap.insert(std::make_pair(pName, pListener)); 
+	std::cout << pName + " added to Map  " << std::endl;
+	_listenerMap[pName] = pListener;
+	//_listenerMap.insert(std::make_pair(pName, pListener)); 
 	//_listenerVector.push_back(pListener); 
 }
 
@@ -43,8 +43,10 @@ void SystemEventDispatcher::RemoveListener(std::string pName)
 {
 	std::cout << pName << " Removed to Map  " << std::endl;
 
-	std::map<std::string, SystemEventListener*>::iterator it = _listenerMap.find(pName);
-		_listenerMap.erase(pName);
+	//std::map<std::string, SystemEventListener*>::iterator it = _listenerMap.find(pName);
+	//	_listenerMap.erase(pName);
+
+	_listenerMap[pName] = nullptr;
 }
 
 void SystemEventDispatcher::ClearListenerMap()

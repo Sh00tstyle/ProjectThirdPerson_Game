@@ -14,7 +14,7 @@
 sf::RenderWindow* UiContainer::_window;
 Menu* UiContainer::_activeMenu;
 std::vector<Menu*> UiContainer::_menus = std::vector<Menu*>();
-std::map<std::string, sf::Font> UiContainer::_fonts = std::map<std::string, sf::Font>();
+std::map<std::string, sf::Font*> UiContainer::_fonts = std::map<std::string, sf::Font*>();
 
 UiContainer::UiContainer(sf::RenderWindow* pWindow) {
 	_window = pWindow;
@@ -72,16 +72,19 @@ void UiContainer::SelectMenu(std::string target) {
 
 	for(unsigned i = 0; i < _menus.size(); i++) {
 		if(_menus[i]->GetMenuName() == target) {
+			if(_activeMenu != nullptr) _activeMenu->SetActive(false);
+
 			_activeMenu = _menus[i];
 			_activeMenu->SetActiveButton(0);
 
+			_activeMenu->SetActive(true);
 			return;
 		}
 	}
 }
 
-sf::Font& UiContainer::GetFontByName(std::string fontname) {
-	return _fonts.at(fontname);
+sf::Font* UiContainer::GetFontByName(std::string fontname) {
+	return _fonts[fontname];
 }
 
 int UiContainer::_createMenu(lua_State * state) {
@@ -106,10 +109,10 @@ int UiContainer::_createFont(lua_State * state) {
 
 	lua_settop(state, 0); //clear the stack
 
-	sf::Font newFont;
-	newFont.loadFromFile(config::MGE_FONT_PATH + fontFilename);
+	sf::Font* newFont = new sf::Font();
+	newFont->loadFromFile(config::MGE_FONT_PATH + fontFilename);
 
-	_fonts.insert(std::make_pair(fontName, newFont)); //insert the new font with its identifier into the map
+	_fonts[fontName] = newFont; //insert the new font with its identifier into the map
 
 	return 0;
 }
@@ -260,8 +263,5 @@ void UiContainer::onNotify(sf::Event pEvent) {
 		} else if(_activeMenu->GetMenuName() == "PAUSE") {
 			SelectMenu("HUD");
 		}	
-	} else {
-		//forwards the event to the active menu so it can process it
-		_activeMenu->ProcessInput(pEvent);
 	}
 }

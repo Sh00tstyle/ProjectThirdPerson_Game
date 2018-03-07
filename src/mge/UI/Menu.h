@@ -8,7 +8,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Event.hpp>
 
-class Menu {
+class Menu : public SystemEventListener {
 	public:
 		Menu(std::string pMenuName);
 		~Menu();
@@ -40,8 +40,6 @@ class Menu {
 		bool IsActive();
 		void SetActive(bool value);
 
-		void ProcessInput(sf::Event event);
-
 	private:
 		bool _isActive;
 		bool _horizontalNavigation;
@@ -65,6 +63,8 @@ class Menu {
 
 		void _useButton(int index);
 		void _updateButtons();
+
+		virtual void onNotify(sf::Event pEvent);
 
 };
 

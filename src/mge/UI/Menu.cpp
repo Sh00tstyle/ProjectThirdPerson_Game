@@ -17,6 +17,7 @@ Menu::Menu(std::string pMenuName) {
 }
 
 Menu::~Menu() {
+	_menuTexts.clear();
 }
 
 void Menu::InitMenu(int imageCount, int buttonCount, int textCount, bool horizontalNav) {
@@ -117,7 +118,7 @@ void Menu::AddText(std::string fontname, std::string text, int textSize, int r, 
 	for(unsigned i = 0; i < _menuTexts.size(); i++) {
 		//get first unsed text in the vector
 		if(_menuTexts[i].getString() == "") {
-			_menuTexts[i].setFont(UiContainer::GetFontByName(fontname));
+			_menuTexts[i].setFont(*UiContainer::GetFontByName(fontname));
 
 			_menuTexts[i].setString(text);
 			_menuTexts[i].setCharacterSize(textSize);
@@ -207,25 +208,12 @@ bool Menu::IsActive() {
 
 void Menu::SetActive(bool value) {
 	_isActive = value;
-}
 
-void Menu::ProcessInput(sf::Event event) {
-	//only do it if the event was a keypress and if the menu is active
-	if(!InputManager::GetMenuInput() || !_isActive || _buttonCount == 0) return;
-
-	if((event.key.code == sf::Keyboard::W && !_horizontalNavigation) || (event.key.code == sf::Keyboard::A && _horizontalNavigation)) {
-		_activeButton--;
-
-		if(_activeButton < 0) _activeButton = _buttonCount - 1;
-	}else if((event.key.code == sf::Keyboard::S && !_horizontalNavigation) || (event.key.code == sf::Keyboard::D && _horizontalNavigation)) {
-		_activeButton++;
-
-		if(_activeButton >= _buttonCount) _activeButton = 0;
-	} else if(event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Return) {
-		_useButton(_activeButton);
+	if(_isActive) {
+		SystemEventDispatcher::AddListener(this, "Menu");
+	} else {
+		SystemEventDispatcher::RemoveListener("Menu");
 	}
-
-	_updateButtons();
 }
 
 void Menu::_useButton(int index) {
@@ -269,4 +257,23 @@ void Menu::_updateButtons() {
 			_buttonSprites[i].setTexture(_buttonInactiveTextures[i]);
 		}
 	}
+}
+
+void Menu::onNotify(sf::Event pEvent) {
+	//only do it if the event was a keypress and if the menu is active
+	if(!InputManager::GetMenuInput() || !_isActive || _buttonCount == 0) return;
+
+	if((pEvent.key.code == sf::Keyboard::W && !_horizontalNavigation) || (pEvent.key.code == sf::Keyboard::A && _horizontalNavigation)) {
+		_activeButton--;
+
+		if(_activeButton < 0) _activeButton = _buttonCount - 1;
+	} else if((pEvent.key.code == sf::Keyboard::S && !_horizontalNavigation) || (pEvent.key.code == sf::Keyboard::D && _horizontalNavigation)) {
+		_activeButton++;
+
+		if(_activeButton >= _buttonCount) _activeButton = 0;
+	} else if(pEvent.key.code == sf::Keyboard::Space || pEvent.key.code == sf::Keyboard::Return) {
+		_useButton(_activeButton);
+	}
+
+	_updateButtons();
 }
