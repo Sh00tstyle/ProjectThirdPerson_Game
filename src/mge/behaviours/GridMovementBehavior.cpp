@@ -6,7 +6,9 @@
 #include "mge/level/Scene.h"
 #include "mge/level/PressurePlate.h"
 #include "mge/level/ActivatableTile.h"
+#include "mge/managers/InputManager.h"
 #include "mge/managers/SceneManager.h"
+#include "mge/UI/UiContainer.h"
 
 
 GridMovementBehavior::GridMovementBehavior(float pMoveAmout, bool pActive, int pCol, int pRow, Scene& pScene)
@@ -92,6 +94,8 @@ void GridMovementBehavior::onNotify(sf::Event pEvent)
 
 void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 {
+	if(!InputManager::GetGameInput()) return; //dont process input, when the input manager doesnt allow it
+
 	/*
 	 tileLeft = _scene.GetPlayfieldValue(_onCol + 1, _onRow);
 	 tileRight = _scene.GetPlayfieldValue(_onCol - 1, _onRow);
@@ -325,7 +329,11 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	{
 		if (_scene.GetDestinationColor() == _scene.GetPawnColor())
 		{
-			SceneManager::LoadNextScene(); 
+			//Instead of loading the next level, we load the resolution screen first which allows us to go to the next level
+			UiContainer::SelectMenu("LEVEL " + std::to_string(SceneManager::GetLevelNumber()));
+			//SceneManager::LoadNextScene(); //enable this for debugging to ignore menus and comment the line above
+
+			return true; //make the snail move to the destination tile
 		}
 	}
 

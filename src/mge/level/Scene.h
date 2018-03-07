@@ -35,6 +35,8 @@ class Scene {
 		std::string GetStartTileColor();
 		PressurePlate* GetPressurePlate(int colIndex, int rowIndex); 
 		ActivatableTile* GetActivatableTile(int colIndex, int rowIndex); 
+		GameObject* GetTileObject(int col, int row);
+
 	private:
 		World* _world;
 
@@ -68,31 +70,9 @@ class Scene {
 		//destination tile
 		DestinationTile* _destinationTile;
 
-		//models
-		Mesh* _playerMesh;
-		Mesh* _tileMesh;
-
-		//textures
-		AbstractMaterial* _redPlayerMat;
-		AbstractMaterial* _bluePlayerMat;
-
-		std::vector<AbstractMaterial*> _uncoloredTileMats;
-		std::vector<AbstractMaterial*> _redTileMats;
-		std::vector<AbstractMaterial*> _blueTileMats;
-
-		AbstractMaterial* _redDestinationMat;
-		AbstractMaterial* _blueDestinationMat;
-
-		std::vector<AbstractMaterial*> _redPressurePlateMats;
-		std::vector<AbstractMaterial*> _bluePressurePlateMats;
-		std::vector<AbstractMaterial*> _redActivatableMats;
-		std::vector<AbstractMaterial*> _blueActivatableMats;
-
-		AbstractMaterial* _redColorSwitchMat;
-		AbstractMaterial* _blueColorSwitchMat;
-
 		void _loadSceneFromFile(std::string filepath);
 		void _setTileMaterial(GameObject* newTile, std::string tileProperty, float xPos, float zPos, int i);
+		void _setTileMesh(GameObject* newTile, std::string tileProperty);
 
 		void _destructScene();
 };

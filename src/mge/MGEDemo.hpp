@@ -10,7 +10,8 @@ class DebugHud;
 class Mesh;
 class AbstractMaterial;
 class SceneManager;
-class UiManager;
+class ModelManager;
+class UiContainer;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -30,6 +31,8 @@ class MGEDemo: public AbstractGame
 	    //override so we can construct the actual scene
         virtual void _initializeScene();
 
+		virtual void _drawLoadingScreen();
+
 	    //override render to render the hud as well.
 	    virtual void _render();
 
@@ -42,8 +45,9 @@ class MGEDemo: public AbstractGame
 		float _screenRatio;
 		float _orthoSize;
 
+		ModelManager* _modelManager;
 		SceneManager* _sceneManager;
-		UiManager* _uiManager;
+		UiContainer* _uiContainer;
 
         void _updateHud();
 

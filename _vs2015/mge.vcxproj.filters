@@ -166,8 +166,17 @@
     <ClInclude Include="..\src\mge\UI\Menu.h">
       <Filter>MGE Source files\mge\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\mge\UI\UiManager.h">
+    <ClInclude Include="..\src\mge\managers\ModelManager.h">
+      <Filter>MGE Source files\mge\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\UI\UiContainer.h">
       <Filter>MGE Source files\mge\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\materials\ScrollingMaterial.hpp">
+      <Filter>MGE Source files\mge\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\managers\InputManager.h">
+      <Filter>MGE Source files\mge\managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -285,8 +294,17 @@
     <ClCompile Include="..\src\mge\UI\Menu.cpp">
       <Filter>MGE Source files\mge\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mge\UI\UiManager.cpp">
+    <ClCompile Include="..\src\mge\managers\ModelManager.cpp">
+      <Filter>MGE Source files\mge\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\UI\UiContainer.cpp">
       <Filter>MGE Source files\mge\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\materials\ScrollingMaterial.cpp">
+      <Filter>MGE Source files\mge\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\managers\InputManager.cpp">
+      <Filter>MGE Source files\mge\managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -321,5 +339,11 @@
       <Filter>Assets\mge\shaders</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="..\assets\mge\shaders\scrolling.fs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\scrolling.vs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

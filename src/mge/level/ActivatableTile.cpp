@@ -1,6 +1,9 @@
 #include "mge\level\ActivatableTile.h"
+#include "mge\level\Scene.h"
+#include "mge\managers\ModelManager.h"
+#include "mge\tileProp.hpp"
 
-ActivatableTile::ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID): SpecialTile(pColPos, pRowPos, pVectorPos), _id(pID), _active(false) {
+ActivatableTile::ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID, Scene* pScene): SpecialTile(pColPos, pRowPos, pVectorPos), _id(pID), _scene(pScene), _active(false) {
 	_col = pColPos; 
 	_row = pRowPos;
 }
@@ -20,15 +23,39 @@ bool ActivatableTile::CheckPositionOnGrid(int pCol, int pRow)
 void ActivatableTile::Activate() {
 	_active = true;
 
-	//TODO: Do some visual stuff like changing material/transparency
+	GameObject* tile = _scene->GetTileObject(_col, _row);
+
+	if(_color == tileProp::RedTile) {
+		tile->setMaterial(ModelManager::GetRedActivatableTileActiveMat(_index));
+	} else if(_color == tileProp::BlueTile) {
+		tile->setMaterial(ModelManager::GetBlueActivatableTileActiveMat(_index));
+	}
 }
 
 void ActivatableTile::Reset() {
 	_active = false;
 
-	//TODO: Do some visual stuff like changing material/transparency
+	GameObject* tile = _scene->GetTileObject(_col, _row);
+
+	if(_color == tileProp::RedTile) {
+		tile->setMaterial(ModelManager::GetRedActivatableTileInactiveMat(_index));
+	} else if(_color == tileProp::BlueTile) {
+		tile->setMaterial(ModelManager::GetBlueActivatableTileInactiveMat(_index));
+	}
 }
 
 bool ActivatableTile::IsActive() {
 	return _active;
+}
+
+void ActivatableTile::SetColor(std::string color) {
+	_color = color;
+}
+
+void ActivatableTile::SetIndex(int index) {
+	_index = index;
+}
+
+int ActivatableTile::GetIndex() {
+	return _index;
 }

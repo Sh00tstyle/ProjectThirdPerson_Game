@@ -20,11 +20,16 @@ class SceneManager
 
 		static Scene* GetCurrentScene();
 		static int GetSceneCount();
+		static int GetLevelNumber();
+
+		static int GetLevelTries();
+
 	private:
 
 		static World* _world;
 
 		static int _levelCount;
+		static int _levelTries;
 
 		static Scene* _currentScene;
 		static std::vector<Scene*> _allScenes;

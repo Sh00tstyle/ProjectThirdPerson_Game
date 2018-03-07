@@ -27,6 +27,8 @@
 #include "mge/tileProp.hpp"
 #include "mge/config.hpp"
 
+#include "mge/managers/ModelManager.h"
+
 Scene::Scene(std::string pFilepath, World* pWorld) {
 	_world = pWorld;
 	_loadSceneFromFile(pFilepath);
@@ -55,19 +57,19 @@ void Scene::ConstructScene() {
 
 		float tileSize = 2.0f; //should be seamless, since every plane is 2 units wide
 
-		float xPos = -(col - _levelWidth / 2.0f) * tileSize;
-		float zPos = (row - _levelHeight / 2.0f) * tileSize;
+		float xPos = -(col - _levelWidth / 2.0f) * tileSize - 1;
+		float zPos = (row - _levelHeight / 2.0f) * tileSize + 1;
 
 		//setting up the player
 		if(tileProperty == tileProp::PlayerSpawn) {
 			_pawn = new Pawn("pawn", glm::vec3(xPos, 0, zPos));
-			_pawn->setMesh(_playerMesh);
+			_pawn->setMesh(ModelManager::GetPlayerMesh());
 
 			//coloring tile and player
 			if(_spawnTile->GetStartingColor() == tileProp::RedTile) {
-				_pawn->setMaterial(_redPlayerMat);
+				_pawn->setMaterial(ModelManager::GetRedPlayerMat());
 			} else {
-				_pawn->setMaterial(_bluePlayerMat);
+				_pawn->setMaterial(ModelManager::GetBluePlayerMat());
 			}
 
 			_pawn->setBehaviour(new GridMovementBehavior(tileSize, true,col, row,  *this));
@@ -76,8 +78,8 @@ void Scene::ConstructScene() {
 
 		//Create Tile
 		GameObject* newTile = new GameObject("tile" + std::to_string(i), glm::vec3(xPos, 0, zPos));
-		newTile->setMesh(_tileMesh);
 
+		_setTileMesh(newTile, tileProperty);
 		_setTileMaterial(newTile, tileProperty, xPos, zPos, i);
 
 		_tileObjects.push_back(newTile);
@@ -100,6 +102,12 @@ void Scene::RemoveScene() {
 	_playfieldData = _unmodifedPlayfieldData;
 	SystemEventDispatcher::RemoveListener();
 
+	//reset all activatable tiles
+	for(unsigned i = 0; i < _activatableTiles.size(); i++) {
+		ActivatableTile* myTile = _activatableTiles[i];
+		myTile->Reset();
+	}
+
 	//remove tiles from the scene
 	for(unsigned i = 0; i < _tileObjects.size(); i++) {
 		GameObject* myObj = _tileObjects[i];
@@ -117,14 +125,6 @@ void Scene::RemoveScene() {
 		GameObject* myObj = _sceneObjects[i];
 		if(myObj != nullptr)_world->remove(myObj);
 	}
-
-	//reset all activatable tiles
-	for(unsigned i = 0; i < _activatableTiles.size(); i++) {
-		ActivatableTile* myTile = _activatableTiles[i];
-		myTile->Reset();
-	}
-
-	//reset some other properties
 }
 
 int Scene::GetLevelWidth() {
@@ -152,9 +152,9 @@ void Scene::SetPlayfieldColor(int vectorIndex, std::string value) {
 	_playfieldData[vectorIndex] = value;
 	//Assign new random material based on the new color
 	if(value == tileProp::RedTile) {
-		_tileObjects[vectorIndex]->setMaterial(_redTileMats[rand() % _redTileMats.size()]);
+		_tileObjects[vectorIndex]->setMaterial(ModelManager::GetRndRedTileMat());
 	} else if(value == tileProp::BlueTile) {
-		_tileObjects[vectorIndex]->setMaterial(_blueTileMats[rand() % _blueTileMats.size()]);
+		_tileObjects[vectorIndex]->setMaterial(ModelManager::GetRndBlueTileMat());
 	}
 }
 
@@ -162,27 +162,27 @@ void Scene::SetPlayfieldColor(int colIndex, int rowIndex, std::string value) {
 	_playfieldData[colIndex + rowIndex * _levelWidth] = value;
 
 	if(value == tileProp::RedTile) {
-		_tileObjects[colIndex + rowIndex * _levelWidth]->setMaterial(_redTileMats[rand() % _redTileMats.size()]);
+		_tileObjects[colIndex + rowIndex * _levelWidth]->setMaterial(ModelManager::GetRndRedTileMat());
 	} else if(value == tileProp::BlueTile) {
-		_tileObjects[colIndex + rowIndex * _levelWidth]->setMaterial(_blueTileMats[rand() % _blueTileMats.size()]);
+		_tileObjects[colIndex + rowIndex * _levelWidth]->setMaterial(ModelManager::GetRndBlueTileMat());
 	}
 }
 
 void Scene::SetPawnColor(std::string value)
 {
 	if (value == tileProp::RedColorSwitch) {
-		_pawn->ChangeState(_redPlayerMat); 
+		_pawn->ChangeState(ModelManager::GetRedPlayerMat()); 
 	}
 	else if (value == tileProp::BlueColorSwitch) {
-		_pawn->ChangeState(_bluePlayerMat); 
+		_pawn->ChangeState(ModelManager::GetBluePlayerMat());
 	}
 }
 
 std::string Scene::GetPawnColor()
 {
-	if (_pawn->getMaterial() == _redPlayerMat)
+	if (_pawn->getMaterial() == ModelManager::GetRedPlayerMat())
 		return tileProp::RedTile; 
-	else if (_pawn->getMaterial() == _bluePlayerMat)
+	else if (_pawn->getMaterial() == ModelManager::GetBluePlayerMat())
 		return tileProp::BlueTile; 
 }
 
@@ -196,7 +196,6 @@ std::string Scene::GetStartTileColor()
 	return _spawnTile->GetStartingColor(); 
 }
 
-
 PressurePlate* Scene::GetPressurePlate(int pCol, int pRow)
 {
 	for (unsigned i = 0; i < _pressurePlates.size(); i++)
@@ -209,6 +208,10 @@ ActivatableTile * Scene::GetActivatableTile(int pCol, int pRow)
 	for (unsigned i = 0; i < _activatableTiles.size(); i++)
 		if (_activatableTiles[i]->CheckPositionOnGrid(pCol, pRow))
 			return _activatableTiles[i];
+}
+
+GameObject * Scene::GetTileObject(int col, int row) {
+	return _tileObjects[col + row * _levelWidth];
 }
 
 void Scene::_loadSceneFromFile(std::string filepath) {
@@ -315,6 +318,9 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 
 	listElement = element->FirstChildElement("PressurePlate");
 
+	int redColorCount = 0;
+	int blueColorCount = 0;
+
 	while(listElement != nullptr) {
 		int colPos;
 		int rowPos;
@@ -327,7 +333,16 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		readChar = listElement->Attribute("NeededColor");
 		std::string colorString(readChar);
 
-		PressurePlate* newPlate = new PressurePlate(colPos, rowPos, colPos + rowPos * _levelWidth, colorString, id);
+		PressurePlate* newPlate;
+		
+		if(colorString == tileProp::RedTile) {
+			newPlate = new PressurePlate(colPos, rowPos, colPos + rowPos * _levelWidth, colorString, id, redColorCount);
+			redColorCount++;
+		} else if(colorString == tileProp::BlueTile) {
+			newPlate = new PressurePlate(colPos, rowPos, colPos + rowPos * _levelWidth, colorString, id, blueColorCount);
+			blueColorCount++;
+		}
+
 		_pressurePlates.push_back(newPlate);
 
 		listElement = listElement->NextSiblingElement("PressurePlate");
@@ -339,6 +354,9 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 
 	listElement = element->FirstChildElement("ActivatableTile");
 
+	redColorCount = 0;
+	blueColorCount = 0;
+
 	while(listElement != nullptr) {
 		int colPos;
 		int rowPos;
@@ -348,10 +366,15 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 		listElement->QueryIntAttribute("RowPos", &rowPos);
 		listElement->QueryIntAttribute("ID", &id);
 
-		ActivatableTile* newActivatable = new ActivatableTile(colPos, rowPos, colPos + rowPos * _levelWidth, id);
+		ActivatableTile* newActivatable = new ActivatableTile(colPos, rowPos, colPos + rowPos * _levelWidth, id, this);
 
 		for(unsigned i = 0; i < _pressurePlates.size(); i++) {
-			if(_pressurePlates[i]->GetID() == id) _pressurePlates[i]->SetTargetTile(newActivatable); //assign the tile with the respective id to the pressure plate
+			if(_pressurePlates[i]->GetID() == id) {
+				_pressurePlates[i]->SetTargetTile(newActivatable); //assign the tile with the respective id to the pressure plate
+				newActivatable->SetIndex(_pressurePlates[i]->GetIndex());
+				newActivatable->SetColor(_pressurePlates[i]->GetActivationColor());
+				break; //end loop here since we found our item
+			}
 		}
 
 		_activatableTiles.push_back(newActivatable);
@@ -389,223 +412,32 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 
 	_destinationTile = new DestinationTile(destCol, destRow, destCol + destRow * _levelWidth, neededColorString);
 
-	//tile model
-	element = root->FirstChildElement("TileModel");
-	if(element == nullptr) std::cout << "Null in TileModel" << std::endl;
-
-	readChar = element->Attribute("ModelFile");
-	std::string tileModelFileString(readChar);
-
-	_tileMesh = Mesh::load(config::MGE_MODEL_PATH + tileModelFileString);
-
-	//player model
-	element = root->FirstChildElement("PlayerModel");
-	if(element == nullptr) std::cout << "Null in PlayerModel" << std::endl;
-
-	readChar = element->Attribute("ModelFile");
-	std::string playerModelFileString(readChar);
-
-	_playerMesh = Mesh::load(config::MGE_MODEL_PATH + playerModelFileString);
-
-	//red player texture
-	element = root->FirstChildElement("RedPlayerTexture");
-	if(element == nullptr) std::cout << "Null in RedPlayerTexture" << std::endl;
-
-	readChar = element->Attribute("TextureFile");
-	std::string redPlayerTex(readChar);
-
-	_redPlayerMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + redPlayerTex));
-
-	//blue player texture
-	element = root->FirstChildElement("BluePlayerTexture");
-	if(element == nullptr) std::cout << "Null in BluePlayerTexture" << std::endl;
-
-	readChar = element->Attribute("TextureFile");
-	std::string bluePlayerTex(readChar);
-
-	_bluePlayerMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + bluePlayerTex));
-
-	//uncolored tile textures
-	element = root->FirstChildElement("UncoloredTileTextures");
-	if(element == nullptr) std::cout << "Null in UncoloredTileTextures" << std::endl;
-
-	listElement = element->FirstChildElement("UncoloredTileTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string uncoloredTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + uncoloredTexture));
-		_uncoloredTileMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("UncoloredTileTexture");
-	}
-
-	//red tile textures
-	element = root->FirstChildElement("RedTileTextures");
-	if(element == nullptr) std::cout << "Null in RedTileTextures" << std::endl;
-
-	listElement = element->FirstChildElement("RedTileTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string redTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + redTexture));
-		_redTileMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("RedTileTexture");
-	}
-
-	//blue tile textures
-	element = root->FirstChildElement("BlueTileTextures");
-	if(element == nullptr) std::cout << "Null in BlueTileTextures" << std::endl;
-
-	listElement = element->FirstChildElement("BlueTileTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string blueTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueTexture));
-		_blueTileMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("BlueTileTexture");
-	}
-
-	//red destination texture
-	element = root->FirstChildElement("RedDestinationTileTexture");
-	if(element == nullptr) std::cout << "Null in RedDestinationTileTexture" << std::endl;
-
-	readChar = element->Attribute("TextureFile");
-	std::string redDestinationTileTex(readChar);
-
-	_redDestinationMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + redDestinationTileTex));
-
-	//blue destination texture
-	element = root->FirstChildElement("BlueDestinationTileTexture");
-	if(element == nullptr) std::cout << "Null in BlueDestinationTileTexture" << std::endl;
-
-	readChar = element->Attribute("TextureFile");
-	std::string blueDestinationTileTex(readChar);
-
-	_blueDestinationMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueDestinationTileTex));
-
-	//red pressure plate textures
-	element = root->FirstChildElement("RedPressurePlateTextures");
-	if(element == nullptr) std::cout << "Null in RedPressurePlateTextures" << std::endl;
-
-	listElement = element->FirstChildElement("RedPressurePlateTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string redTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + redTexture));
-		_redPressurePlateMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("RedPressurePlateTexture");
-	}
-
-	//blue pressure plate textures
-	element = root->FirstChildElement("BluePressurePlateTextures");
-	if(element == nullptr) std::cout << "Null in BluePressurePlateTextures" << std::endl;
-
-	listElement = element->FirstChildElement("BluePressurePlateTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string blueTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueTexture));
-		_bluePressurePlateMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("BluePressurePlateTexture");
-	}
-
-	//red activatable tile textures
-	element = root->FirstChildElement("RedActivatableTileTextures");
-	if(element == nullptr) std::cout << "Null in RedActivatableTileTextures" << std::endl;
-
-	listElement = element->FirstChildElement("RedActivatableTileTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string redTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + redTexture));
-		_redActivatableMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("RedActivatableTileTexture");
-	}
-
-	//blue activatable tile textures
-	element = root->FirstChildElement("BlueActivatableTileTextures");
-	if(element == nullptr) std::cout << "Null in BlueActivatableTileTextures" << std::endl;
-
-	listElement = element->FirstChildElement("BlueActivatableTileTexture");
-
-	while(listElement != nullptr) {
-		readChar = listElement->Attribute("TextureFile");
-		std::string blueTexture(readChar);
-
-		AbstractMaterial* newMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueTexture));
-		_blueActivatableMats.push_back(newMat);
-
-		listElement = listElement->NextSiblingElement("BlueActivatableTileTexture");
-	}
-
-	//red color switch texture
-	element = root->FirstChildElement("RedColorSwitchTexture");
-	if(element == nullptr) std::cout << "Null in RedColorSwitchTexture" << std::endl;
-
-	readChar = element->Attribute("TextureFile");
-	std::string redColorSwitchTex(readChar);
-
-	_redColorSwitchMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + redColorSwitchTex));
-
-	//blue color switch texture
-	element = root->FirstChildElement("BlueColorSwitchTexture");
-	if(element == nullptr) std::cout << "Null in BlueColorSwitchTexture" << std::endl;
-
-	readChar = element->Attribute("TextureFile");
-	std::string blueColorSwitchTex(readChar);
-
-	_blueColorSwitchMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueColorSwitchTex));
-
 	std::cout << "Read Scene from " + filepath << std::endl;
 }
 
 void Scene::_setTileMaterial(GameObject* newTile, std::string tileProperty, float xPos, float zPos, int i) {
-	int rnd = 0;
-
 	if(tileProperty == tileProp::Uncolored) {
-		rnd = rand() % (_uncoloredTileMats.size());
-		newTile->setMaterial(_uncoloredTileMats[rnd]);
+		newTile->setMaterial(ModelManager::GetRndUncoloredMat());
 	} else if(tileProperty == tileProp::PlayerSpawn) {
 		if(_spawnTile->GetStartingColor() == tileProp::RedTile) {
-			rnd = rand() % (_redTileMats.size());
-			newTile->setMaterial(_redTileMats[rnd]);
+			newTile->setMaterial(ModelManager::GetRndRedTileMat());
 		} else {
-			rnd = rand() % (_blueTileMats.size());
-			newTile->setMaterial(_blueTileMats[rnd]);
+			newTile->setMaterial(ModelManager::GetRndBlueTileMat());
 		}
 	} else if(tileProperty == tileProp::RedTile) {
-		rnd = rand() % (_redTileMats.size());
-		newTile->setMaterial(_redTileMats[rnd]);
+		newTile->setMaterial(ModelManager::GetRndRedTileMat());
 	} else if(tileProperty == tileProp::BlueTile) {
-		rnd = rand() % (_blueTileMats.size());
-		newTile->setMaterial(_blueTileMats[rnd]);
+		newTile->setMaterial(ModelManager::GetRndBlueTileMat());
 	} else if(tileProperty == tileProp::Destination) {
-		if(_destinationTile->GetNeededColor() == tileProp::RedTile) newTile->setMaterial(_redDestinationMat);
-		else newTile->setMaterial(_blueDestinationMat);
+		if(_destinationTile->GetNeededColor() == tileProp::RedTile) newTile->setMaterial(ModelManager::GetRedDestinationMat());
+		else newTile->setMaterial(ModelManager::GetBlueDestinationMat());
 	} else if(tileProperty == tileProp::PressurePlate) {
 		for(unsigned j = 0; j < _pressurePlates.size(); j++) {
 			PressurePlate* myPlate = _pressurePlates[j];
 
 			if(myPlate->GetVectorPos() == i) {
-				if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redPressurePlateMats[0]); //replace 0 with the correcct texture index
-				else newTile->setMaterial(_bluePressurePlateMats[0]); //replace 0 with the correcct texture index
+				if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(ModelManager::GetRedPressurePlateMat(myPlate->GetIndex())); //replace 0 with the correcct texture index
+				else newTile->setMaterial(ModelManager::GetBluePressurePlateMat(myPlate->GetIndex())); //replace 0 with the correcct texture index
 			}
 		}
 	} else if(tileProperty == tileProp::ActivatableTile) {
@@ -614,14 +446,29 @@ void Scene::_setTileMaterial(GameObject* newTile, std::string tileProperty, floa
 			ActivatableTile* myTile = myPlate->GetTargetTile();
 
 			if(myTile->GetVectorPos() == i) {
-				if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(_redActivatableMats[0]); //replace 0 with the correcct texture index
-				else newTile->setMaterial(_blueActivatableMats[0]); //replace 0 with the correcct texture index
+				if(myPlate->GetActivationColor() == tileProp::RedTile) newTile->setMaterial(ModelManager::GetRedActivatableTileInactiveMat(myTile->GetIndex())); //replace 0 with the correcct texture index
+				else newTile->setMaterial(ModelManager::GetBlueActivatableTileInactiveMat(myTile->GetIndex())); //replace 0 with the correcct texture index
 			}
 		}
 	} else if(tileProperty == tileProp::RedColorSwitch) {
-		newTile->setMaterial(_redColorSwitchMat);
+		newTile->setMaterial(ModelManager::GetRedColorSwitchMat());
 	} else if(tileProperty == tileProp::BlueColorSwitch) {
-		newTile->setMaterial(_blueColorSwitchMat);
+		newTile->setMaterial(ModelManager::GetBlueColorSwitchMat());
+	}
+}
+
+void Scene::_setTileMesh(GameObject * newTile, std::string tileProperty) {
+	//sett mesh of the tile based on the property/type
+	if(tileProperty == tileProp::Destination) {
+		newTile->setMesh(ModelManager::GetDestinationTileMesh());
+	} else if(tileProperty == tileProp::PressurePlate) {
+		newTile->setMesh(ModelManager::GetPressurePlateMesh());
+	} else if(tileProperty == tileProp::ActivatableTile) {
+		newTile->setMesh(ModelManager::GetActivatableTileMesh());
+	} else if(tileProperty == tileProp::BlueColorSwitch || tileProperty == tileProp::RedColorSwitch) {
+		newTile->setMesh(ModelManager::GetColorSwitchMesh());
+	} else {
+		newTile->setMesh(ModelManager::GetNormalTileMesh());
 	}
 }
 
@@ -677,69 +524,4 @@ void Scene::_destructScene() {
 	//remove spawn and destination tile
 	delete _spawnTile;
 	delete _destinationTile;
-
-	//remove player and tile mesh
-	delete _playerMesh;
-	delete _tileMesh;
-
-	//remove player mats
-	delete _redPlayerMat;
-	delete _bluePlayerMat;
-
-	//remove uncolored tile mats
-	for(unsigned i = 0; i < _uncoloredTileMats.size(); i++) {
-		if(_uncoloredTileMats[i] == nullptr) continue;
-
-		delete _uncoloredTileMats[i];
-	}
-
-	//remove red tile mats
-	for(unsigned i = 0; i < _redTileMats.size(); i++) {
-		if(_redTileMats[i] == nullptr) continue;
-
-		delete _redTileMats[i];
-	}
-
-	//remove blue tile mats
-	for(unsigned i = 0; i < _blueTileMats.size(); i++) {
-		if(_blueTileMats[i] == nullptr) continue;
-
-		delete _blueTileMats[i];
-	}
-
-	//remove destination tile mats
-	delete _redDestinationMat;
-	delete _blueDestinationMat;
-
-	//remove red pressure plate mats
-	for(unsigned i = 0; i < _redPressurePlateMats.size(); i++) {
-		if(_redPressurePlateMats[i] == nullptr) continue;
-
-		delete _redPressurePlateMats[i];
-	}
-
-	//remove blue pressure plate mats
-	for(unsigned i = 0; i < _bluePressurePlateMats.size(); i++) {
-		if(_bluePressurePlateMats[i] == nullptr) continue;
-
-		delete _bluePressurePlateMats[i];
-	}
-
-	//remove red activatable tile mats
-	for(unsigned i = 0; i < _redActivatableMats.size(); i++) {
-		if(_redActivatableMats[i] == nullptr) continue;
-
-		delete _redActivatableMats[i];
-	}
-
-	//remove blue activatable tile mats
-	for(unsigned i = 0; i < _blueActivatableMats.size(); i++) {
-		if(_blueActivatableMats[i] == nullptr) continue;
-
-		delete _blueActivatableMats[i];
-	}
-
-	//remove color switch mats
-	delete _redColorSwitchMat;
-	delete _blueColorSwitchMat;
 }
