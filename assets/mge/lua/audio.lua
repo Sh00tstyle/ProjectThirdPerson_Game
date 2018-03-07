@@ -30,6 +30,13 @@ local AudioIndexes = {}
 end
 
 
+function randomPitch(string)
+  math.randomseed(os.time())
+  return math.random(0.8, 1.2)
+end
+
+
+
 function PlaySound(event)
 audioindex = Audio[randomSound(event)]
 print(audioindex[2]) -- Audiopath

@@ -230,7 +230,7 @@ void UiContainer::_initMenus() {
 	lua_register(state, "AddImage", _addImage);
 	lua_register(state, "AddText", _addText);
 
-	std::string filename = config::MGE_LUA_PATH + "main.lua";
+	std::string filename = config::MGE_LUA_PATH + "ui.lua";
 	luaL_dofile(state, filename.c_str()); //execute lua file
 
 	//calling Menu.init() in lua
