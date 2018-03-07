@@ -24,7 +24,7 @@ void AbstractGame::initialize() {
     _initializeGlew();
     _initializeRenderer();
     _initializeWorld();
-    _initializeScene();
+    //_initializeScene(); //doing it manually in the superclass
     std::cout << std::endl << "Engine initialized." << std::endl << std::endl;
 }
 
@@ -32,7 +32,7 @@ void AbstractGame::initialize() {
 
 void AbstractGame::_initializeWindow() {
 	std::cout << "Initializing window..." << std::endl;
-	_window = new sf::RenderWindow( sf::VideoMode(1920,1080), "Snail Trail", sf::Style::Default, sf::ContextSettings(24,8,0,3,3));
+	_window = new sf::RenderWindow( sf::VideoMode(1920,1080), "Snail Trail", sf::Style::Default, sf::ContextSettings(24,8,4,3,3)); //4 in context settings is 4x MSAA
 	//_window->setVerticalSyncEnabled(true);
     std::cout << "Window initialized." << std::endl << std::endl;
 }
@@ -171,6 +171,3 @@ void AbstractGame::_processEvents()
         _window->close();
 	}
 }
-
-
-

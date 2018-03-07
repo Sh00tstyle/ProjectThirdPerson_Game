@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "glm.hpp"
 
 class World;
 class Mesh;
@@ -28,7 +27,6 @@ class Scene {
 		int GetPlayfieldDataCount();
 		std::string GetPlayfieldValue(int vectorIndex); //for treating it like a vector
 		std::string GetPlayfieldValue(int colIndex, int rowIndex); //for treating it like a 2d array
-		glm::vec3 GetTileWorldPos(int colIndex, int rowIndex, float pTileSize);
 		void SetPlayfieldColor(int vectorIndex, std::string value); //for treating it like a vector
 		void SetPlayfieldColor(int colIndex, int rowIndex, std::string value); //for treating it like a 2d array
 		void SetPawnColor( std::string value); 
@@ -37,9 +35,9 @@ class Scene {
 		std::string GetStartTileColor();
 		PressurePlate* GetPressurePlate(int colIndex, int rowIndex); 
 		ActivatableTile* GetActivatableTile(int colIndex, int rowIndex); 
-			
+		GameObject* GetTileObject(int col, int row);
 
-private:
+	private:
 		World* _world;
 
 		//tiles
@@ -72,31 +70,9 @@ private:
 		//destination tile
 		DestinationTile* _destinationTile;
 
-		//models
-		Mesh* _playerMesh;
-		Mesh* _tileMesh;
-
-		//textures
-		AbstractMaterial* _redPlayerMat;
-		AbstractMaterial* _bluePlayerMat;
-
-		std::vector<AbstractMaterial*> _uncoloredTileMats;
-		std::vector<AbstractMaterial*> _redTileMats;
-		std::vector<AbstractMaterial*> _blueTileMats;
-
-		AbstractMaterial* _redDestinationMat;
-		AbstractMaterial* _blueDestinationMat;
-
-		std::vector<AbstractMaterial*> _redPressurePlateMats;
-		std::vector<AbstractMaterial*> _bluePressurePlateMats;
-		std::vector<AbstractMaterial*> _redActivatableMats;
-		std::vector<AbstractMaterial*> _blueActivatableMats;
-
-		AbstractMaterial* _redColorSwitchMat;
-		AbstractMaterial* _blueColorSwitchMat;
-
 		void _loadSceneFromFile(std::string filepath);
 		void _setTileMaterial(GameObject* newTile, std::string tileProperty, float xPos, float zPos, int i);
+		void _setTileMesh(GameObject* newTile, std::string tileProperty);
 
 		void _destructScene();
 };

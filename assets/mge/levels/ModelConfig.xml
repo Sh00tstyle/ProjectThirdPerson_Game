@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<ModelContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <NormalTileModel ModelFile="Tile.obj" />
+  <DestinationTileModel ModelFile="Tile.obj" />
+  <PressurePlateModel ModelFile="Tile.obj" />
+  <ActivatableTileModel ModelFile="Tile.obj" />
+  <ColorSwitchModel ModelFile="Tile.obj" />
+  <PlayerModel ModelFile="Placeholder_snail.obj" />
+  <RedPlayerTexture TextureFile="RedPlayer.png" />
+  <BluePlayerTexture TextureFile="BluePlayer.png" />
+  <UncoloredTileTextures>
+    <UncoloredTileTexture TextureFile="NeutralTile.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile2.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile4.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile5.png" />
+  </UncoloredTileTextures>
+  <RedTileTextures>
+    <RedTileTexture TextureFile="RedTile.png" />
+  </RedTileTextures>
+  <BlueTileTextures>
+    <BlueTileTexture TextureFile="BlueTile.png" />
+  </BlueTileTextures>
+  <RedDestinationTileTexture TextureFile="RedDestinationTile.png" />
+  <BlueDestinationTileTexture TextureFile="BlueDestinationTile.png" />
+  <RedPressurePlateTextures>
+    <RedPressurePlateTexture TextureFile="RedPressurePlate1.png" />
+    <RedPressurePlateTexture TextureFile="RedPressurePlate2.png" />
+  </RedPressurePlateTextures>
+  <BluePressurePlateTextures>
+    <BluePressurePlateTexture TextureFile="BluePressurePlate1.png" />
+    <BluePressurePlateTexture TextureFile="BluePressurePlate2.png" />
+  </BluePressurePlateTextures>
+  <RedActivatableTileActiveTextures>
+    <RedActivatableTileActiveTexture TextureFile="RedActivatableTile_active_1.png" />
+    <RedActivatableTileActiveTexture TextureFile="RedActivatableTile_active_2.png" />
+  </RedActivatableTileActiveTextures>
+  <RedActivatableTileInactiveTextures>
+    <RedActivatableTileInactiveTexture TextureFile="RedActivatableTile_inactive_1.png" />
+    <RedActivatableTileInactiveTexture TextureFile="RedActivatableTile_inactive_2.png" />
+  </RedActivatableTileInactiveTextures>
+  <BlueActivatableTileActiveTextures>
+    <BlueActivatableTileActiveTexture TextureFile="BlueActivatableTile_active_1.png" />
+    <BlueActivatableTileActiveTexture TextureFile="BlueActivatableTile_active_2.png" />
+  </BlueActivatableTileActiveTextures>
+  <BlueActivatableTileInactiveTextures>
+    <BlueActivatableTileInactiveTexture TextureFile="BlueActivatableTile_inactive_1.png" />
+    <BlueActivatableTileInactiveTexture TextureFile="BlueActivatableTile_inactive_2.png" />
+  </BlueActivatableTileInactiveTextures>
+  <RedColorSwitchTexture TextureFile="RedColorSwitch.png" />
+  <BlueColorSwitchTexture TextureFile="BlueColorSwitch.png" />
+</ModelContainer>

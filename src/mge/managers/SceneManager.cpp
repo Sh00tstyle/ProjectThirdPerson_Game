@@ -2,11 +2,13 @@
 #include "mge/level/Scene.h"
 #include "mge/core/World.hpp"
 #include "mge/config.hpp"
+#include "mge/UI/UiContainer.h"
 #include <fstream>
 
 World* SceneManager::_world; 
 Scene* SceneManager::_currentScene; 
 int SceneManager::_levelCount = int(); 
+int SceneManager::_levelTries = int();
 std::vector<Scene*> SceneManager::_allScenes = std::vector<Scene*>(); 
 
 SceneManager::SceneManager(World* pWorld) {
@@ -26,6 +28,7 @@ void SceneManager::LoadFirstScene() {
 	if (_currentScene != nullptr) _currentScene->RemoveScene();
 
 	_levelCount = 0;
+	_levelTries = 0;
 
 	//no first level (empty array)
 	if((int)_allScenes.size() == 0) {
@@ -39,6 +42,7 @@ void SceneManager::LoadFirstScene() {
 
 void SceneManager::LoadNextScene() {
 	_levelCount++;
+	_levelTries = 0;
 
 	//no more levels to load
 	if(_levelCount >= (int)_allScenes.size()) {
@@ -53,7 +57,10 @@ void SceneManager::LoadNextScene() {
 }
 
 void SceneManager::LoadSceneAtIndex(int index) {
+	if(_currentScene != nullptr) _currentScene->RemoveScene();
+
 	_levelCount = index;
+	_levelTries = 0;
 
 	//out of array range
 	if(_levelCount >= (int)_allScenes.size()) {
@@ -71,6 +78,8 @@ void SceneManager::ReloadScene() {
 	if(_currentScene != nullptr) {
 		_currentScene->RemoveScene();
 		_currentScene->ConstructScene();
+
+		_levelTries++;
 	}
 }
 
@@ -82,14 +91,20 @@ int SceneManager::GetSceneCount() {
 	return (int)_allScenes.size();
 }
 
+int SceneManager::GetLevelNumber() {
+	return _levelCount + 1;
+}
+
+int SceneManager::GetLevelTries() {
+	return _levelTries;
+}
+
 //blocking call right now, maybe spawn a thread for loading a mesh in order to accelerate loading (probably not needed)
 void SceneManager::_loadAllScenes() {
 	int levelIndex = 1;
 	std::string filepath = config::MGE_LEVEL_PATH + "Level_" + std::to_string(levelIndex) + ".xml";
 
-	filepath = config::MGE_LEVEL_PATH + "TestLevel.xml"; //debug level
-
-	while(_fileExists(filepath)  && levelIndex == 1) { //only load one level for now
+	while(_fileExists(filepath)) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
 		_allScenes.push_back(newScene);
 

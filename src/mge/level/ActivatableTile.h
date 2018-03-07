@@ -5,10 +5,12 @@
 #include "mge\level\SpecialTile.h"
 #include "glm.hpp"
 
+class Scene;
+
 class ActivatableTile :public SpecialTile
 {
 	public:
-		ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID);
+		ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID, Scene* pScene);
 		~ActivatableTile();
 		bool CheckPositionOnGrid(int pCol, int pRow);
 
@@ -16,7 +18,18 @@ class ActivatableTile :public SpecialTile
 		void Reset();
 
 		bool IsActive();
+
+		void SetColor(std::string color);
+
+		void SetIndex(int index);
+		int GetIndex();
+
 	private:
+		Scene * _scene;
+
+		std::string _color;
+
+		int _index;
 		int _id;
 		int _col; 
 		int _row; 

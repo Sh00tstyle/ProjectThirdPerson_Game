@@ -1,7 +1,7 @@
 #include "mge\level\PressurePlate.h"
 
-PressurePlate::PressurePlate(int pColPos, int pRowPos, int pVectorPos, std::string pActivationColor, int pID): SpecialTile(pColPos, pRowPos, pVectorPos), 
-_activationColor(pActivationColor), _id(pID) {
+PressurePlate::PressurePlate(int pColPos, int pRowPos, int pVectorPos, std::string pActivationColor, int pID, int pIndex): SpecialTile(pColPos, pRowPos, pVectorPos), 
+_activationColor(pActivationColor), _id(pID), _index(pIndex) {
 	_col = pColPos; 
 	_row = pRowPos; 
 }
@@ -36,4 +36,8 @@ bool PressurePlate::CheckPositionOnGrid(int pCol, int pRow)
 
 void PressurePlate::Activate() {
 	_targetTile->Activate();
+}
+
+int PressurePlate::GetIndex() {
+	return _index;
 }

@@ -41,5 +41,5 @@ void DebugHud::draw()
 	glActiveTexture(GL_TEXTURE0);
     _window->pushGLStates();
     _window->draw(_debugText);
-	_window->popGLStates();
+	//_window->popGLStates();
 }
