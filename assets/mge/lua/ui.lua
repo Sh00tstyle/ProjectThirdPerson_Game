@@ -15,6 +15,7 @@ Menus = {
   {"LOADING",                "loading.png", false},
   {"LevelSelect 0",          "temp_bg.png", true},
   {"LevelSelect 1",          "temp_bg.png", true},
+  {"LEVEL 10",          "resolutionscreen/background.png", true}
 }
 
 -- Name = 1, Path == 2
@@ -36,6 +37,7 @@ Buttons = {
   { "PAUSE",            "RESUME",           "pausemenu/continue.png",     "pausemenu/continue_deactivated.png",         800,    400 },
   { "PAUSE",            "RESET",            "pausemenu/reset.png",        "pausemenu/reset_deactivated.png",         800,    600 },
   { "PAUSE",            "MAIN",             "pausemenu/menu.png",         "pausemenu/menu_deactivated.png",         800,    800 },
+  {"LEVEL 10",          "MAIN",             "backbutton.png",              "backbutton_deactivated.png", 950,  830 },
 }
 
 -- Parent = 1, Image = 2 PositionX = 3, PositionY = 4
@@ -47,8 +49,6 @@ Images = {
   {"LevelSelect 0",   "levelselection/panel.png",         105,      250 },
   {"LevelSelect 1",   "levelselection/panel.png",         105,      250 },
 }
-
-
 LevelRating = { 0, 1, 2, 1, 2, 1, 1, 1, 0, 0 }
 
 
@@ -67,6 +67,7 @@ Text = {
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 560},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 640},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 720},
+  { "LEVEL 10", "Shark", "You completed Level 10 in TRIES tries", 50, 0, 0, 0, true, 660, 540},
 }
 
 
@@ -75,7 +76,7 @@ function addLevelResolutionScreens()
   starX = 780
   starY = 400
   offset = 150
-  for i=1, levelcount do 
+  for i=1, levelcount  do 
     -- Levels menu
     newMenu = {"LEVEL " .. i, "resolutionscreen/background.png", true}
     table.insert(Menus, newMenu)
@@ -101,6 +102,8 @@ function addLevelResolutionScreens()
         table.insert(Images, deactivatedStar)
       end
     end
+    
+    
   end
  end
 
