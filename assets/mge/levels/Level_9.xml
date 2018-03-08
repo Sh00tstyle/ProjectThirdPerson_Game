@@ -1,45 +1,15 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Playfield Height="7" Width="8" Content="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 8 1 1 1 0 0 6 1 1 1 1 9 0 0 0 0 1 0 1 0 0 0 5 7 1 1 2 0 0 0" />
+  <Playfield Height="7" Width="8" Content="0 1 6 1 1 0 0 0 0 1 6 0 1 0 0 0 0 1 1 7 1 1 1 1 0 1 9 0 0 1 0 7 0 1 1 1 1 8 0 5 0 1 1 1 1 1 2 0 0 0 0 0 0 0 0 0" />
   <SceneObjects />
   <PressurePlates>
-    <PressurePlate ColPos="0" RowPos="4" ID="0" NeededColor="3" />
+    <PressurePlate ColPos="2" RowPos="0" ID="2" NeededColor="4" />
+    <PressurePlate ColPos="2" RowPos="1" ID="0" NeededColor="3" />
   </PressurePlates>
   <ActivatableTiles>
-    <ActivatableTile ColPos="1" RowPos="6" ID="0" />
+    <ActivatableTile ColPos="3" RowPos="2" ID="0" />
+    <ActivatableTile ColPos="7" RowPos="3" ID="2" />
   </ActivatableTiles>
-  <SpawnTile ColPos="4" RowPos="6" StartingColor="4" />
-  <DestinationTile ColPos="0" RowPos="6" NeededColor="4" />
-  <TileModel ModelFile="Tile.obj" />
-  <PlayerModel ModelFile="Placeholder_snail.obj" />
-  <RedPlayerTexture TextureFile="RedPlayer.png" />
-  <BluePlayerTexture TextureFile="BluePlayer.png" />
-  <UncoloredTileTextures>
-    <UncoloredTileTexture TextureFile="NeutralTile.png" />
-    <UncoloredTileTexture TextureFile="NeutralTile2.png" />
-    <UncoloredTileTexture TextureFile="NeutralTile4.png" />
-    <UncoloredTileTexture TextureFile="NeutralTile5.png" />
-  </UncoloredTileTextures>
-  <RedTileTextures>
-    <RedTileTexture TextureFile="RedTile.png" />
-  </RedTileTextures>
-  <BlueTileTextures>
-    <BlueTileTexture TextureFile="BlueTile.png" />
-  </BlueTileTextures>
-  <RedDestinationTileTexture TextureFile="RedDestinationTile.png" />
-  <BlueDestinationTileTexture TextureFile="BlueDestinationTile.png" />
-  <RedPressurePlateTextures>
-    <RedPressurePlateTexture TextureFile="RedPressurePlate.png" />
-  </RedPressurePlateTextures>
-  <BluePressurePlateTextures>
-    <BluePressurePlateTexture TextureFile="BluePressurePlate.png" />
-  </BluePressurePlateTextures>
-  <RedActivatableTileTextures>
-    <RedActivatableTileTexture TextureFile="RedActivatableTile.png" />
-  </RedActivatableTileTextures>
-  <BlueActivatableTileTextures>
-    <BlueActivatableTileTexture TextureFile="BlueActivatableTile.png" />
-  </BlueActivatableTileTextures>
-  <RedColorSwitchTexture TextureFile="RedColorSwitch.png" />
-  <BlueColorSwitchTexture TextureFile="BlueColorSwitch.png" />
+  <SpawnTile ColPos="6" RowPos="5" StartingColor="3" />
+  <DestinationTile ColPos="7" RowPos="4" NeededColor="3" />
 </SceneContainer>

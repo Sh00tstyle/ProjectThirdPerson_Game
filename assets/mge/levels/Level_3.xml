@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Playfield Height="5" Width="3" Content="1 7 6 1 0 9 5 0 1 0 0 1 0 0 2" />
+  <Playfield Height="8" Width="7" Content="6 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 8 1 7 6 0 0 0 1 0 0 1 0 0 0 1 1 1 9 7 1 5 0 0 0 1 0 0 0 0 0 0 2 0 0 0" />
   <SceneObjects>
-    <SceneObject Name="Scenery" xPos="-0.96" yPos="-0.24" zPos="-2.44" xRot="0" yRot="-0.287945539" zRot="0" wRot="0.9576468" xScale="1" yScale="1" zScale="1" Model="Level3.obj" Texture="Level3.png" />
+    <SceneObject Name="Scenery" xPos="0.21" yPos="0" zPos="0" xRot="0" yRot="0.211495683" zRot="0" wRot="-0.977378964" xScale="1" yScale="1" zScale="1" Model="Level3.obj" Texture="Level3.png" />
   </SceneObjects>
   <PressurePlates>
-    <PressurePlate ColPos="2" RowPos="0" ID="0" NeededColor="4" />
+    <PressurePlate ColPos="0" RowPos="0" ID="1" NeededColor="3" />
+    <PressurePlate ColPos="3" RowPos="3" ID="0" NeededColor="4" />
   </PressurePlates>
   <ActivatableTiles>
-    <ActivatableTile ColPos="1" RowPos="0" ID="0" />
+    <ActivatableTile ColPos="2" RowPos="3" ID="0" />
+    <ActivatableTile ColPos="4" RowPos="5" ID="1" />
   </ActivatableTiles>
-  <SpawnTile ColPos="2" RowPos="4" StartingColor="3" />
-  <DestinationTile ColPos="0" RowPos="2" NeededColor="4" />
+  <SpawnTile ColPos="3" RowPos="7" StartingColor="3" />
+  <DestinationTile ColPos="6" RowPos="5" NeededColor="4" />
 </SceneContainer>
