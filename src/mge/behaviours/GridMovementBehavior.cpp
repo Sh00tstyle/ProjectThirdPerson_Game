@@ -58,6 +58,11 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 
 	if (pKey == sf::Keyboard::W  && CheckWalkableTile(_onCol, _onRow - 1))
 	{
+		
+		glm::mat4 targetTrans;
+		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+		targetTrans = glm::rotate(targetTrans, glm::radians(0.0f), glm::vec3(0, 1, 0));
+		_owner->setTransform(targetTrans);
 		_onRow--;
 		_targetTile.z = _currentTile.z - _moveAmount;
 		_moving = true; 
@@ -65,6 +70,11 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 
 	if (pKey == sf::Keyboard::A && CheckWalkableTile(_onCol + 1, _onRow))
 	{
+		
+		glm::mat4 targetTrans;
+		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+		targetTrans = glm::rotate(targetTrans, glm::radians(90.0f), glm::vec3(0, 1, 0));
+		_owner->setTransform(targetTrans);
 		_onCol++;
 		_targetTile.x = _currentTile.x - _moveAmount;
 		_moving = true;
@@ -72,6 +82,11 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 
 	if (pKey == sf::Keyboard::S  && CheckWalkableTile(_onCol, _onRow + 1))
 	{
+		
+		glm::mat4 targetTrans;
+		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+		targetTrans = glm::rotate(targetTrans, glm::radians(180.0f), glm::vec3(0, 1, 0));
+		_owner->setTransform(targetTrans);
 		_onRow++; 
 		_targetTile.z = _currentTile.z + _moveAmount;
 		_moving = true;
@@ -79,6 +94,12 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 
 	if (pKey == sf::Keyboard::D && CheckWalkableTile(_onCol - 1, _onRow))
 	{
+
+		
+		glm::mat4 targetTrans;
+		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition()); 
+		targetTrans = glm::rotate(targetTrans, glm::radians(270.0f), glm::vec3(0, 1, 0));
+		_owner->setTransform(targetTrans);
 		_onCol--; 
 		_targetTile.x = _currentTile.x + _moveAmount;
 		_moving = true;
@@ -318,7 +339,8 @@ void GridMovementBehavior::SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, 
 
 	if (_owner->getWorldPosition() != pEndTile)
 	{
-		_owner->translate(moveSteps); 
+		//_owner->translate(moveSteps); 
+		_owner->setLocalPosition(_owner->getWorldPosition() + moveSteps);
 	}
 	else
 	{
