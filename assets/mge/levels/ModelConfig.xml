@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <ModelContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <NormalTileModel ModelFile="Tile.obj" />
-  <DestinationTileModel ModelFile="Tile.obj" />
-  <PressurePlateModel ModelFile="Tile.obj" />
-  <ActivatableTileModel ModelFile="Tile.obj" />
-  <ColorSwitchModel ModelFile="Tile.obj" />
+  <DestinationTileModel ModelFile="DestinationTile.obj" />
+  <PressurePlateModel ModelFile="PressurePlate.obj" />
+  <ActivatableTileModel ModelFile="ActivatableTile.obj" />
+  <ColorSwitchModel ModelFile="ColorSwitch.obj" />
   <PlayerModel ModelFile="Placeholder_snail.obj" />
   <RedPlayerTexture TextureFile="RedPlayer.png" />
   <BluePlayerTexture TextureFile="BluePlayer.png" />
   <UncoloredTileTextures>
-    <UncoloredTileTexture TextureFile="NeutralTile.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile1.png" />
     <UncoloredTileTexture TextureFile="NeutralTile2.png" />
+    <UncoloredTileTexture TextureFile="NeutralTile3.png" />
     <UncoloredTileTexture TextureFile="NeutralTile4.png" />
     <UncoloredTileTexture TextureFile="NeutralTile5.png" />
   </UncoloredTileTextures>
   <RedTileTextures>
-    <RedTileTexture TextureFile="RedTile.png" />
+    <RedTileTexture TextureFile="RedTile1.png" />
+    <RedTileTexture TextureFile="RedTile2.png" />
+    <RedTileTexture TextureFile="RedTile3.png" />
+    <RedTileTexture TextureFile="RedTile4.png" />
+    <RedTileTexture TextureFile="RedTile5.png" />
   </RedTileTextures>
   <BlueTileTextures>
     <BlueTileTexture TextureFile="BlueTile.png" />
+    <BlueTileTexture TextureFile="BlueTile2.png" />
+    <BlueTileTexture TextureFile="BlueTile3.png" />
+    <BlueTileTexture TextureFile="BlueTile4.png" />
+    <BlueTileTexture TextureFile="BlueTile5.png" />
   </BlueTileTextures>
   <RedDestinationTileTexture TextureFile="RedDestinationTile.png" />
   <BlueDestinationTileTexture TextureFile="BlueDestinationTile.png" />

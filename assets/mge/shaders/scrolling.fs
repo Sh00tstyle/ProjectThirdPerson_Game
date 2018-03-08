@@ -9,6 +9,6 @@ out vec4 fragment_color;
 
 void main( void ) {
 	//scroll the texture
-	vec4 color = texture(diffuseTexture, vec2(texCoord.x + time / 5.0f, texCoord.y));
+	vec4 color = texture(diffuseTexture, vec2(texCoord.x + time / 25.0f, texCoord.y));
 	fragment_color = color;
 }

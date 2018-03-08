@@ -21,6 +21,7 @@ bool ActivatableTile::CheckPositionOnGrid(int pCol, int pRow)
 }
 
 void ActivatableTile::Activate() {
+	if(_active) return;
 	
 	_active = true;
 

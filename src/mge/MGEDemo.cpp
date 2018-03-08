@@ -60,7 +60,7 @@ void MGEDemo::initialize() {
 //build the game _world
 void MGEDemo::_initializeScene() {
 	//orthographic camera settings
-	_orthoSize = 9.0f;
+	_orthoSize = 10.0f;
 	_screenRatio = 16.0f / 9.0f; //default 1920x 1080
 
 	//setting up main camera here, since it should always be the same and does not have to be changed
@@ -72,8 +72,8 @@ void MGEDemo::_initializeScene() {
 	//background "skybox" plane
 	Mesh* planeMesh = Mesh::load(config::MGE_MODEL_PATH + "plane.obj");
 	AbstractMaterial* planeMat = new ScrollingMaterial(Texture::load(config::MGE_TEXTURE_PATH + "skybox.png")); //replace this with another material and texture for a scrolling shader
-	GameObject* backgroundPlane = new GameObject("bgPlane", glm::vec3(0, 0, 0));
-	backgroundPlane->scale(glm::vec3(20, 1, 20)); //scale to screensize
+	GameObject* backgroundPlane = new GameObject("bgPlane", glm::vec3(0, -10, 0));
+	backgroundPlane->scale(glm::vec3(100, 1, 100)); //scale to screensize
 	backgroundPlane->rotate(glm::radians(-30.0f), glm::vec3(0, 1, 0)); //face the camera on the y axis
 	backgroundPlane->rotate(glm::radians(45.0f), glm::vec3(1, 0, 0)); //face the camera on the x axis
 	backgroundPlane->setMesh(planeMesh);

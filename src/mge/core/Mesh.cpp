@@ -84,6 +84,8 @@ Mesh* Mesh::load(std::string pFilename)
 		std::map <FaceIndexTriplet, unsigned int> mappedTriplets;
 
 		std::string line; // to store each line in
+
+		int lineCount = 1;
 		while(getline(file,line)) {
 
             // c-type string to store cmd read from obj file (cmd is v, vt, vn, f)
@@ -168,10 +170,12 @@ Mesh* Mesh::load(std::string pFilename)
 					}
 				} else {
 				    //If we read a different amount, something is wrong
-					std::cout << "Error reading obj, needing v,vn,vt" << std::endl;
+					std::cout << "Error reading obj at line " + std::to_string(lineCount) + " , needing v,vn,vt" << std::endl;
 					delete mesh;
 					return NULL;
 				}
+
+				lineCount++;
 			}
 
 		}
