@@ -43,16 +43,16 @@ void MGEDemo::initialize() {
 	_uiContainer = new UiContainer(_window);
 	std::cout << "MENU/UI initialized" << std::endl;
 
+	//setup the custom part so we can display some text
+	std::cout << "Initializing HUD" << std::endl;
+	_hud = new DebugHud(_window);
+	std::cout << "HUD initialized." << std::endl << std::endl;
+
 	//loading screen
 	_drawLoadingScreen();
 
 	//setup the scene
 	_initializeScene();
-
-	//setup the custom part so we can display some text
-	std::cout << "Initializing HUD" << std::endl;
-	_hud = new DebugHud(_window);
-	std::cout << "HUD initialized." << std::endl << std::endl;
 
 	UiContainer::SelectMenu("MAIN");
 }
@@ -94,12 +94,7 @@ void MGEDemo::_drawLoadingScreen() {
 	if(_window->isOpen()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//uncomment, if we use the debug hud
-		/**
-		glActiveTexture(GL_TEXTURE0);
-		_window->pushGLStates();
-		/**/
-
+		_updateHud();
 		_uiContainer->draw();
 
 		_window->display();
@@ -108,9 +103,12 @@ void MGEDemo::_drawLoadingScreen() {
 
 void MGEDemo::_render() {
 	AbstractGame::_render();
-	//_updateHud();
+
+	//glDisable( GL_CULL_FACE );
+
 
 	//drawing menu/ui elements on the screen
+	_updateHud();
 	_uiContainer->draw();
 }
 
@@ -134,6 +132,7 @@ void MGEDemo::_updateHud() {
 	}
 
 	_hud->setDebugInfo(debugInfo);
+
 	_hud->draw();
 }
 

@@ -94,6 +94,10 @@ void Scene::ConstructScene() {
 		_world->add(myObj);
 	}
 
+	for(unsigned i = 0; i < _activatableTiles.size(); i++) {
+		_activatableTiles[i]->Reset();
+	}
+
 	std::cout << "Constructed Scene" << std::endl;
 }
 

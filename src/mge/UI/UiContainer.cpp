@@ -40,13 +40,6 @@ UiContainer::~UiContainer() {
 }
 
 void UiContainer::draw() {
-	//uncomment this, if we disable the debug hud later
-	/**/
-	//glDisable( GL_CULL_FACE );
-	glActiveTexture(GL_TEXTURE0);
-	_window->pushGLStates();
-	/**/
-	
 	_drawAll();
 
 	_window->popGLStates();

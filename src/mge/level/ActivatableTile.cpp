@@ -29,11 +29,15 @@ void ActivatableTile::Activate() {
 
 	if(tile == nullptr) return;
 
+	/**
 	if(_color == tileProp::RedTile) {
 		tile->setMaterial(ModelManager::GetRedActivatableTileActiveMat(_index));
 	} else if(_color == tileProp::BlueTile) {
 		tile->setMaterial(ModelManager::GetBlueActivatableTileActiveMat(_index));
 	}
+	/**/
+
+	if(tile->getLocalPosition().y == -0.5f) tile->translate(glm::vec3(0, 0.5f, 0));
 }
 
 void ActivatableTile::Reset() {
@@ -43,11 +47,15 @@ void ActivatableTile::Reset() {
 
 	if(tile == nullptr) return;
 
+	/**
 	if(_color == tileProp::RedTile) {
 		tile->setMaterial(ModelManager::GetRedActivatableTileInactiveMat(_index));
 	} else if(_color == tileProp::BlueTile) {
 		tile->setMaterial(ModelManager::GetBlueActivatableTileInactiveMat(_index));
 	}
+	/**/
+
+	if(tile->getLocalPosition().y == 0.0f) tile->translate(glm::vec3(0, -0.5f, 0));
 }
 
 bool ActivatableTile::IsActive() {

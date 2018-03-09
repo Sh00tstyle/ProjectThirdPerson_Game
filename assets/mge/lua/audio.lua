@@ -1,46 +1,44 @@
 
--- Event = 1, Audiofile = 2, Volume = 3
-Audio = {
-  { "MenuBG",         "audio/menuBG.wav",           0.8 },
-  { "Pressureplate",  "audio/pressureplate_01.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_02.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_03.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_04.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_05.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_06.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_07.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_08.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_09.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_10.wav", 0.8 },
-  { "Pressureplate",  "audio/pressureplate_11.wav", 0.8 },
-}
+Audio = {}
 
-
-
-function randomSound(string)
-local AudioIndexes = {}
-  for i=1,#Audio do 
-    if(Audio[i][1] == string) then
-      table.insert(AudioIndexes, i)
-    end
-  end
+function Audio.init() 
+--[[
+  EVENTS:
   
-  math.randomseed(os.time())
-  return AudioIndexes[math.random(#AudioIndexes)]
+  UI:
+- Main menu music          MAIN_BGM
+- Button hover             BUTTON_HOVER
+- Button click             BUTTON_CLICK
+- Select level click       SELECT_LEVEL
+- Open pause menu          OPEN_PAUSE
+- Resolution               OPEN_RESOLUTION
+
+
+Gameplay:
+- Reset level               RESET_LEVEL
+- Pressure plate activate   ACTIVATE_PLATE
+- Activatable tile move     TILE_MOVE
+- Color change              CHANGE_COLOR
+- Start level               START_LEVEL
+- Reach level end           END_LEVEL
+- Background music          BGM_LEVEL
+
+
+Snail:
+- Move                      MOVE_SNAIL
+- Blocked Path(bearbeitet)  BLOCK_SNAIL
+
+--]]
+
+--filepath: mge/assets/audio
+  
+  
+  --1 = eventname, 2 = min pitch, 3 = max pitch, 4 = volume, 5 = loop
+  CreateEvent("EVENTNAME", 0.8, 1.2, 0.8, false)
+  
+  -- 1 = eventname, 2 = filename
+  AddSound("EVENTNAME", "filename")
+  AddSound("EVENTNAME", "filename")
+  AddSound("EVENTNAME", "filename")
+  AddSound("EVENTNAME", "filename")
 end
-
-
-function randomPitch(string)
-  math.randomseed(os.time())
-  return math.random(0.8, 1.2)
-end
-
-
-
-function PlaySound(event)
-audioindex = Audio[randomSound(event)]
-print(audioindex[2]) -- Audiopath
-print(audioindex[3]) -- Volume
-end
-
-PlaySound("Pressureplate")
