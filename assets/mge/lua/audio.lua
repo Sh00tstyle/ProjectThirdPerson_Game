@@ -34,11 +34,10 @@ Snail:
   
   
   --1 = eventname, 2 = min pitch, 3 = max pitch, 4 = volume, 5 = loop
-  CreateEvent("EVENTNAME", 0.8, 1.2, 0.8, false)
+  CreateEvent("MAIN_BGM", 1, 1, 20, true)
+  CreateEvent("MOVE_SNAIL", 0.8, 1.2, 20, false)
   
   -- 1 = eventname, 2 = filename
-  AddSound("EVENTNAME", "filename")
-  AddSound("EVENTNAME", "filename")
-  AddSound("EVENTNAME", "filename")
-  AddSound("EVENTNAME", "filename")
+  AddSound("MAIN_BGM", "Gwe_Gwe_Gwe.wav")
+  AddSound("MOVE_SNAIL", "player_move.wav")
 end

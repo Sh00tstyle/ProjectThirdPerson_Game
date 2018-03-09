@@ -6,6 +6,7 @@
 #include "mge/UI/Menu.h"
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/InputManager.h"
+#include "mge/audio/AudioContainer.h"
 #include "mge/config.hpp"
 #include <GL/glew.h>
 #include <lua.hpp>
@@ -57,6 +58,8 @@ void UiContainer::SelectMenu(std::string target) {
 		//disable menu input and enable game input
 		InputManager::SetGameInput(true);
 		InputManager::SetMenuInput(false);
+
+		AudioContainer::StopSound("MAIN_BGM");
 	} else {
 		//enable menu input and disable game input
 		InputManager::SetGameInput(false);

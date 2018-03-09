@@ -8,6 +8,7 @@
 #include "mge/level/ActivatableTile.h"
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/InputManager.h"
+#include "mge/audio/AudioContainer.h"
 #include "mge/UI/UiContainer.h"
 
 
@@ -66,6 +67,8 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 		_onRow--;
 		_targetTile.z = _currentTile.z - _moveAmount;
 		_moving = true; 
+
+		AudioContainer::PlaySound("MOVE_SNAIL");
 	}
 
 	if (pKey == sf::Keyboard::A && CheckWalkableTile(_onCol + 1, _onRow))
@@ -78,6 +81,8 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 		_onCol++;
 		_targetTile.x = _currentTile.x - _moveAmount;
 		_moving = true;
+
+		AudioContainer::PlaySound("MOVE_SNAIL");
 	}
 
 	if (pKey == sf::Keyboard::S  && CheckWalkableTile(_onCol, _onRow + 1))
@@ -90,6 +95,8 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 		_onRow++; 
 		_targetTile.z = _currentTile.z + _moveAmount;
 		_moving = true;
+
+		AudioContainer::PlaySound("MOVE_SNAIL");
 	}
 
 	if (pKey == sf::Keyboard::D && CheckWalkableTile(_onCol - 1, _onRow))
@@ -103,6 +110,8 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 		_onCol--; 
 		_targetTile.x = _currentTile.x + _moveAmount;
 		_moving = true;
+
+		AudioContainer::PlaySound("MOVE_SNAIL");
 	}
 }
 

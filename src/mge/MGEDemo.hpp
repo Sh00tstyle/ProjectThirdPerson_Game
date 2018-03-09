@@ -12,6 +12,7 @@ class AbstractMaterial;
 class SceneManager;
 class ModelManager;
 class UiContainer;
+class AudioContainer;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -48,6 +49,7 @@ class MGEDemo: public AbstractGame
 		ModelManager* _modelManager;
 		SceneManager* _sceneManager;
 		UiContainer* _uiContainer;
+		AudioContainer* _audioContainer;
 
         void _updateHud();
 

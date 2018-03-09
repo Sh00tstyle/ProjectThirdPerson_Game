@@ -22,6 +22,7 @@
 #include "mge/materials/ScrollingMaterial.hpp"
 
 #include "mge/UI/UiContainer.h"
+#include "mge/audio/AudioContainer.h"
 
 #include "mge/util/DebugHud.hpp"
 
@@ -38,10 +39,15 @@ void MGEDemo::initialize() {
 	//setup the core part
 	AbstractGame::initialize();
 
+	//load audio
+	std::cout << "Initializing Audio" << std::endl;
+	_audioContainer = new AudioContainer();
+	std::cout << "Audio initialized" << std::endl << std::endl;
+
 	//draws the hud and ui
 	std::cout << "Initializing MENU/UI" << std::endl;
 	_uiContainer = new UiContainer(_window);
-	std::cout << "MENU/UI initialized" << std::endl;
+	std::cout << "MENU/UI initialized" << std::endl << std::endl;
 
 	//setup the custom part so we can display some text
 	std::cout << "Initializing HUD" << std::endl;
@@ -55,6 +61,7 @@ void MGEDemo::initialize() {
 	_initializeScene();
 
 	UiContainer::SelectMenu("MAIN");
+	AudioContainer::PlaySound("MAIN_BGM");
 }
 
 //build the game _world

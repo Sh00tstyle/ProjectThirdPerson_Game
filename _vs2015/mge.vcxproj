@@ -167,6 +167,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\src\glm.hpp" />
+    <ClInclude Include="..\src\mge\audio\AudioContainer.h" />
+    <ClInclude Include="..\src\mge\audio\AudioSource.h" />
     <ClInclude Include="..\src\mge\behaviours\AbstractBehaviour.hpp" />
     <ClInclude Include="..\src\mge\behaviours\CameraOrbitBehaviour.h" />
     <ClInclude Include="..\src\mge\behaviours\GridMovementBehavior.hpp" />
@@ -213,6 +215,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\mge\audio\AudioContainer.cpp" />
+    <ClCompile Include="..\src\mge\audio\AudioSource.cpp" />
     <ClCompile Include="..\src\mge\behaviours\AbstractBehaviour.cpp" />
     <ClCompile Include="..\src\mge\behaviours\CameraOrbitBehaviour.cpp" />
     <ClCompile Include="..\src\mge\behaviours\GridMovementBehavior.cpp" />
