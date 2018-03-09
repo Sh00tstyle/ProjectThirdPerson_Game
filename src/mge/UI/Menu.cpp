@@ -7,6 +7,7 @@
 #include "mge/UI/Menu.h"
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/InputManager.h"
+#include "mge/audio/AudioContainer.h"
 #include "mge/config.hpp"
 
 Menu::Menu(std::string pMenuName) {
@@ -228,21 +229,25 @@ void Menu::_useButton(int index) {
 	std::string relevantString = results[0]; //should always be filled
 
 	if(relevantString == "EXIT") {
+		AudioContainer::PlaySound("BUTTON_CLICK");
 		UiContainer::CloseApp();
 	} else if(relevantString == "RESUME") {
 		//switch back to the hud menu
+		AudioContainer::PlaySound("BUTTON_CLICK");
 		UiContainer::SelectMenu("HUD");
 	} else if(relevantString == "RESET") {
 		//reset the scene and then go to the HUD menu
 		SceneManager::ReloadScene();
+		AudioContainer::PlaySound("BUTTON_CLICK");
 		UiContainer::SelectMenu("HUD");
 	} else if(relevantString == "LEVEL") {
 		int levelIndex = std::stoi(results[1]); //results[1] should always contain the level index
 
 		SceneManager::LoadSceneAtIndex(levelIndex - 1);
-
+		AudioContainer::PlaySound("SELECT_LEVEL");
 		UiContainer::SelectMenu("HUD");
 	} else {
+		AudioContainer::PlaySound("BUTTON_CLICK");
 		UiContainer::SelectMenu(buttonCmd);
 	}
 }
@@ -263,12 +268,14 @@ void Menu::onNotify(sf::Event pEvent) {
 	//only do it if the event was a keypress and if the menu is active
 	if(!InputManager::GetMenuInput() || !_isActive || _buttonCount == 0) return;
 
-	if((pEvent.key.code == sf::Keyboard::W && !_horizontalNavigation) || (pEvent.key.code == sf::Keyboard::A && _horizontalNavigation)) {
+	if(((pEvent.key.code == sf::Keyboard::W || pEvent.key.code == sf::Keyboard::Up) && !_horizontalNavigation) || ((pEvent.key.code == sf::Keyboard::A || pEvent.key.code == sf::Keyboard::Left) && _horizontalNavigation)) {
 		_activeButton--;
+		AudioContainer::PlaySound("BUTTON_HOVER");
 
 		if(_activeButton < 0) _activeButton = _buttonCount - 1;
-	} else if((pEvent.key.code == sf::Keyboard::S && !_horizontalNavigation) || (pEvent.key.code == sf::Keyboard::D && _horizontalNavigation)) {
+	} else if(((pEvent.key.code == sf::Keyboard::S || pEvent.key.code == sf::Keyboard::Down) && !_horizontalNavigation) || ((pEvent.key.code == sf::Keyboard::D || pEvent.key.code == sf::Keyboard::Right) && _horizontalNavigation)) {
 		_activeButton++;
+		AudioContainer::PlaySound("BUTTON_HOVER");
 
 		if(_activeButton >= _buttonCount) _activeButton = 0;
 	} else if(pEvent.key.code == sf::Keyboard::Space || pEvent.key.code == sf::Keyboard::Return) {

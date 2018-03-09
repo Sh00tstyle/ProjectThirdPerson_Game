@@ -2,6 +2,7 @@
 #include "mge\level\Scene.h"
 #include "mge\managers\ModelManager.h"
 #include "mge\tileProp.hpp"
+#include "mge/audio/AudioContainer.h"
 
 ActivatableTile::ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID, Scene* pScene): SpecialTile(pColPos, pRowPos, pVectorPos), _id(pID), _scene(pScene), _active(false) {
 	_col = pColPos; 
@@ -37,7 +38,10 @@ void ActivatableTile::Activate() {
 	}
 	/**/
 
-	if(tile->getLocalPosition().y == -0.5f) tile->translate(glm::vec3(0, 0.5f, 0));
+	if(tile->getLocalPosition().y == -0.5f) {
+		tile->translate(glm::vec3(0, 0.5f, 0));
+		AudioContainer::PlaySound("TILE_MOVE");
+	}
 }
 
 void ActivatableTile::Reset() {

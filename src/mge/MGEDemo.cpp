@@ -61,7 +61,6 @@ void MGEDemo::initialize() {
 	_initializeScene();
 
 	UiContainer::SelectMenu("MAIN");
-	AudioContainer::PlaySound("MAIN_BGM");
 }
 
 //build the game _world
@@ -167,6 +166,7 @@ void MGEDemo::_processEvents() {
 				//reset current level
 				if(event.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
 					SceneManager::ReloadScene();
+					AudioContainer::PlaySound("RESET_LEVEL");
 				}
 
 				//DEBUG
