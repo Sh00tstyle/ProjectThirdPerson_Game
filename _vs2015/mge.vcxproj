@@ -260,10 +260,14 @@
     <ClCompile Include="..\src\ShaderUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\assets\mge\shaders\blurshader.fs" />
+    <None Include="..\assets\mge\shaders\blurshader.vs" />
     <None Include="..\assets\mge\shaders\color.fs" />
     <None Include="..\assets\mge\shaders\color.vs" />
     <None Include="..\assets\mge\shaders\lit.fs" />
     <None Include="..\assets\mge\shaders\lit.vs" />
+    <None Include="..\assets\mge\shaders\screenshader.fs" />
+    <None Include="..\assets\mge\shaders\screenshader.vs" />
     <None Include="..\assets\mge\shaders\scrolling.fs" />
     <None Include="..\assets\mge\shaders\scrolling.vs" />
     <None Include="..\assets\mge\shaders\terrain.fs" />

@@ -14,9 +14,9 @@ out vec3 worldNormal;
 out vec3 worldVertex;
 
 void main( void ){
-    	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1.f);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1.f);
 
-		//0 for direction, 1 for position
-		worldNormal = vec3 (modelMatrix * vec4 (normal, 0)); 
-		worldVertex = vec3 (modelMatrix * vec4(vertex, 1)); //getting vertex position in world space
+	//0 for direction, 1 for position
+	worldNormal = vec3 (modelMatrix * vec4 (normal, 0)); 
+	worldVertex = vec3 (modelMatrix * vec4(vertex, 1)); //getting vertex position in world space
 }

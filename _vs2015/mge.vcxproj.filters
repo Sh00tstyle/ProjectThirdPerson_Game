@@ -360,5 +360,17 @@
       <Filter>Assets\mge\shaders</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="..\assets\mge\shaders\screenshader.fs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\screenshader.vs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\blurshader.fs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\blurshader.vs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

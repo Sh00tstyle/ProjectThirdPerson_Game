@@ -6,6 +6,7 @@
 #include "mge/core/World.hpp"
 #include "mge/core/Mesh.hpp"
 #include "mge/core/GameObject.hpp"
+#include "mge/core/Camera.hpp"
 #include "mge/core/ShaderProgram.hpp"
 #include "mge/config.hpp"
 
@@ -20,6 +21,10 @@ GLint TextureMaterial::_aUV = 0;
 
 TextureMaterial::TextureMaterial(Texture * pDiffuseTexture):_diffuseTexture(pDiffuseTexture) {
     _lazyInitializeShader();
+
+	_ambientColor = glm::vec3(0, 0, 0); 
+	_specularColor = glm::vec3(1, 1, 1);
+	_shininess = 16.0f;
 }
 
 TextureMaterial::~TextureMaterial() {}
@@ -50,11 +55,46 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
 
     _shader->use();
 
-    //Print the number of lights in the scene and the position of the first light.
-    //It is not used, but this demo is just meant to show you THAT materials can access the lights in a world
-    //if (pWorld->getLightCount() > 0) {
-    //    std::cout << "TextureMaterial has discovered light is at position:" << pWorld->getLightAt(0)->getLocalPosition() << std::endl;
-    //}
+	Camera* mainCam = pWorld->getMainCamera(); //needed for specular eye position
+	int lightAmount = pWorld->getLightCount();
+
+	//passing in light amount
+	glUniform1i(_shader->getUniformLocation("lightAmount"), lightAmount); //passing in the amount of light we have
+
+	//iterate through the lights and add them to the uniform array
+	for(int i = 0; i < lightAmount; i++) {
+		Light* currentLight = pWorld->getLightAt(i);
+		std::string lightString = "lights[" + std::to_string(i) + "]."; //"path" to the right array element
+
+		glUniform1i(_shader->getUniformLocation(lightString + "lightType"), (int)currentLight->getLightType()); //passing in the light type as an int
+
+		glUniform1f(_shader->getUniformLocation(lightString + "ambientContribution"), std::cos(currentLight->getInnerConeAngle()));
+
+		glUniform3fv(_shader->getUniformLocation(lightString + "lightForward"), 1, glm::value_ptr(currentLight->getTransform()[2])); //third row of the lights transform, represents local forward vector
+		glUniform3fv(_shader->getUniformLocation(lightString + "lightPosition"), 1, glm::value_ptr(currentLight->getLocalPosition())); //might need to be changed to world pos
+
+		glUniform1f(_shader->getUniformLocation(lightString + "constantAttenuation"), currentLight->getConstantAttenuation());
+		glUniform1f(_shader->getUniformLocation(lightString + "linearAttenuation"), currentLight->getLinearAttenuation());
+		glUniform1f(_shader->getUniformLocation(lightString + "quadraticAttenuation"), currentLight->getQuadraticAttenuation());
+
+		glUniform1f(_shader->getUniformLocation(lightString + "outerConeCos"), std::cos(currentLight->getOuterConeAngle()));
+		glUniform1f(_shader->getUniformLocation(lightString + "innerConeCos"), std::cos(currentLight->getInnerConeAngle()));
+
+		glUniform3fv(_shader->getUniformLocation(lightString + "lightColor"), 1, glm::value_ptr(currentLight->getLightColor() * currentLight->getIntensity())); //applying intensity, before passing it
+	}
+
+	//passing all material properties to the shader
+	glUniform3fv(_shader->getUniformLocation("ambientColor"), 1, glm::value_ptr(_ambientColor)); //applying contribution, before passing it
+	glUniform3fv(_shader->getUniformLocation("specularColor"), 1, glm::value_ptr(_specularColor));
+	glUniform1f(_shader->getUniformLocation("shininess"), _shininess);
+
+	//passing in camera position
+	glUniform3fv(_shader->getUniformLocation("eyePosition"), 1, glm::value_ptr(mainCam->getWorldPosition())); //might need to be changed to world pos
+
+	//pass in all MVP matrices separately
+	glUniformMatrix4fv(_shader->getUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(pProjectionMatrix));
+	glUniformMatrix4fv(_shader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(pViewMatrix));
+	glUniformMatrix4fv(_shader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(pModelMatrix));
 
     //setup texture slot 0
     glActiveTexture(GL_TEXTURE0);
@@ -62,10 +102,6 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
     glBindTexture(GL_TEXTURE_2D, _diffuseTexture->getId());
     //tell the shader the texture slot for the diffuse texture is slot 0
     glUniform1i (_uDiffuseTexture, 0);
-
-    //pass in a precalculate mvp matrix (see texture material for the opposite)
-    glm::mat4 mvpMatrix = pProjectionMatrix * pViewMatrix * pModelMatrix;
-    glUniformMatrix4fv ( _uMVPMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 
     //now inform mesh of where to stream its data
     pMesh->streamToOpenGL(_aVertex, _aNormal, _aUV);

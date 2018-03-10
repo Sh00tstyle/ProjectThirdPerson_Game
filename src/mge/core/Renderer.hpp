@@ -3,12 +3,14 @@
 
 #include <GL/glew.h>
 #include "glm.hpp"
+#include <float.h>
 
 class World;
 class GameObject;
 class Mesh;
 class AbstractMaterial;
 class Camera;
+class ShaderProgram;
 
 /**
 * Renderer implements a default single pass forward renderer.
@@ -16,7 +18,7 @@ class Camera;
 class Renderer
 {
 public:
-	Renderer();
+	Renderer(int windowWidth, int windowHeight);
 	virtual ~Renderer();
 
 	bool debug;
@@ -78,6 +80,14 @@ public:
 	 */
 	void renderMeshDebugInfo(Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix);
 
+	void useFramebuffer();
+
+	void unbindFramebuffer();
+
+	void drawFramebuffer();
+
+	void setScreenSizes(int windowSizeX, int windowSizeY);
+
 protected:
 
 	/**
@@ -94,6 +104,33 @@ protected:
 
 	//calls render on each and every child gameobject, material cannot be null!
 	void renderChildren(World* pWorld, GameObject* pGameObject, AbstractMaterial* pMaterial, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, bool pRecursive);
+
+private:
+
+	//setting up da framebuffer and the texture it should draw into
+	GLuint _framebufferId;
+	GLuint _renderbufferId;
+	GLuint _mainbufferId;
+	GLuint _glowbufferId;
+
+	GLuint _pingpongFBO[2];
+	GLuint _pingpongBuffers[2];
+
+	ShaderProgram* _blurShader;
+	ShaderProgram* _screenShader;
+
+	GLint _aVertexBlur;
+	GLint _aUVBlur;
+	GLint _uScreenTextureBlur;
+	GLint _uHorizontalBlur;
+
+	GLint _aVertexScreen;
+	GLint _aUVScreen;
+	GLint _uScreenTextureHDR;
+	GLint _uScreenTextureBloom;
+	GLint _uExposureScreen;
+
+	Mesh* _screenQuad;
 };
 
 #endif // RENDERER_HPP

@@ -35,7 +35,7 @@ class MGEDemo: public AbstractGame
 		virtual void _drawLoadingScreen();
 
 	    //override render to render the hud as well.
-	    virtual void _render();
+		virtual void _renderUi();
 
 		//override, to add own keypress events
 		virtual void _processEvents();

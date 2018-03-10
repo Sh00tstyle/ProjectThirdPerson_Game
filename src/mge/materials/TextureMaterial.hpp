@@ -36,6 +36,10 @@ class TextureMaterial : public AbstractMaterial
 
         Texture* _diffuseTexture;
 
+		glm::vec3 _ambientColor;
+		glm::vec3 _specularColor;
+		float _shininess;
+
         TextureMaterial(const TextureMaterial&);
         TextureMaterial& operator=(const TextureMaterial&);
 

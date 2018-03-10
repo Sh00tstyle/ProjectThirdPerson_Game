@@ -4,8 +4,11 @@
 #include "Mesh.hpp"
 #include "World.hpp"
 #include "mge/materials/AbstractMaterial.hpp"
+#include "mge/core/ShaderProgram.hpp"
+#include "mge/config.hpp"
+#include <iostream>
 
-Renderer::Renderer():debug(false)
+Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 {
     //make sure we test the depthbuffer
 	glEnable(GL_DEPTH_TEST);
@@ -26,10 +29,107 @@ Renderer::Renderer():debug(false)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor((float)0x2d / 0xff, (float)0x6b / 0xff, (float)0xce / 0xff, 1.0f);
+
+	//setup framebuffer, renderbuffer and texture
+	glGenFramebuffers(1, &_framebufferId); //generate framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebufferId);
+
+	//set two draw buffers
+	GLenum fboBuffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+	glDrawBuffers(2, fboBuffers);
+
+	//main buffer texture
+	glGenTextures(1, &_mainbufferId); //generate texture
+	glBindTexture(GL_TEXTURE_2D, _mainbufferId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, windowWidth, windowHeight, 0, GL_RGB, GL_FLOAT, 0); //generate empty texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _mainbufferId, 0); //attach image to framebuffer
+
+	//glow buffer texture
+	glGenTextures(1, &_glowbufferId); //generate texture
+	glBindTexture(GL_TEXTURE_2D, _glowbufferId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, windowWidth, windowHeight, 0, GL_RGB, GL_FLOAT, 0); //generate empty texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	//attach image to framebuffer
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _glowbufferId, 0);
+
+	//generate renderbuffer
+	glGenRenderbuffers(1, &_renderbufferId);
+	glBindRenderbuffer(GL_RENDERBUFFER, _renderbufferId);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowWidth, windowHeight);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderbufferId);
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "Framebuffer initialized" << std::endl;
+	}
+
+	//blur fbo and textures
+	glGenFramebuffers(2, _pingpongFBO);
+	glGenTextures(2, _pingpongBuffers);
+	for(unsigned int i = 0; i < 2; i++) {
+		glBindFramebuffer(GL_FRAMEBUFFER, _pingpongFBO[i]);
+		glBindTexture(GL_TEXTURE_2D, _pingpongBuffers[i]);
+		glTexImage2D(
+			GL_TEXTURE_2D, 0, GL_RGB16F, windowWidth, windowHeight, 0, GL_RGB, GL_FLOAT, NULL
+		);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glFramebufferTexture2D(
+			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _pingpongBuffers[i], 0
+		);
+	}
+
+	//unbind
+	glBindTexture(GL_TEXTURE_2D, 0); //unbind texture
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
+	glBindRenderbuffer(GL_RENDERBUFFER, 0); //unbind renderbuffer
+
+	//blur shader
+	_blurShader = new ShaderProgram();
+	_blurShader->addShader(GL_VERTEX_SHADER, config::MGE_SHADER_PATH + "blurshader.vs");
+	_blurShader->addShader(GL_FRAGMENT_SHADER, config::MGE_SHADER_PATH + "blurshader.fs");
+	_blurShader->finalize();
+
+	_aVertexBlur = _blurShader->getAttribLocation("vertex");
+	_aUVBlur = _blurShader->getAttribLocation("uv");
+	_uScreenTextureBlur = _blurShader->getUniformLocation("screenTexture");
+	_uHorizontalBlur = _blurShader->getUniformLocation("horizontal");
+
+	//screen shader
+	_screenShader = new ShaderProgram();
+	_screenShader->addShader(GL_VERTEX_SHADER, config::MGE_SHADER_PATH + "screenshader.vs");
+	_screenShader->addShader(GL_FRAGMENT_SHADER, config::MGE_SHADER_PATH + "screenshader.fs");
+	_screenShader->finalize();
+
+	_aVertexScreen = _screenShader->getAttribLocation("vertex");
+	_aUVScreen = _screenShader->getAttribLocation("uv");
+	_uScreenTextureHDR = _screenShader->getUniformLocation("screenTexture");
+	_uScreenTextureBloom = _screenShader->getUniformLocation("bloomTexture");
+	_uExposureScreen = _screenShader->getUniformLocation("exposure");
+
+	//screen space quad
+	_screenQuad = Mesh::load(config::MGE_MODEL_PATH + "screen_plane.obj");
 }
 
 Renderer::~Renderer()
 {
+	delete _screenQuad;
+	glDeleteFramebuffers(1, &_framebufferId);
+	glDeleteFramebuffers(2, _pingpongFBO);
+	glDeleteRenderbuffers(1, &_renderbufferId);
 }
 
 void Renderer::setClearColor(GLbyte pR, GLbyte pG, GLbyte pB) {
@@ -83,3 +183,118 @@ void Renderer::renderMeshDebugInfo(Mesh* pMesh, const glm::mat4& pModelMatrix, c
 	if (pMesh != nullptr) pMesh->drawDebugInfo(pModelMatrix, pViewMatrix, pProjectionMatrix);
 }
 
+void Renderer::useFramebuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebufferId);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+}
+
+void Renderer::unbindFramebuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Renderer::drawFramebuffer() {
+	//draws the scene to the screen (with post processing)
+
+	glDisable(GL_DEPTH_TEST);
+
+	//render to framebuffers and blur
+	bool horizontal = true, first_iteration = true;
+	int amount = 10;
+
+	_blurShader->use(); //blur
+	for(unsigned int i = 0; i < amount; i++) {
+		glBindFramebuffer(GL_FRAMEBUFFER, _pingpongFBO[horizontal]);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, first_iteration ? _glowbufferId : _pingpongBuffers[!horizontal]);
+		//pass in texture and horizontal uniforms to the shader
+		glUniform1i(_uScreenTextureBlur, 0);
+		glUniform1i(_uHorizontalBlur, horizontal);
+
+		//render quad to framebuffer
+		_screenQuad->streamToOpenGL(_aVertexBlur, -1, _aUVBlur);
+
+		horizontal = !horizontal;
+		if(first_iteration)
+			first_iteration = false;
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//render to screen
+	_screenShader->use(); //bloom
+
+	//pass in uniforms to the shader
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _mainbufferId); //screen texture
+	glUniform1i(_uScreenTextureHDR, 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, _pingpongBuffers[0]); //blurred texture
+	glUniform1i(_uScreenTextureBloom, 1);
+
+	glUniform1f(_uExposureScreen, 1.0f);
+	
+	//render quad to screen
+	_screenQuad->streamToOpenGL(_aVertexScreen, -1, _aUVScreen);
+}
+
+void Renderer::setScreenSizes(int windowSizeX, int windowSizeY) {
+	//main buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebufferId);
+	glBindTexture(GL_TEXTURE_2D, _mainbufferId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, windowSizeX, windowSizeY, 0, GL_RGB, GL_FLOAT, 0); //generate empty texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _mainbufferId, 0);
+
+	 //glowbuffer
+	glBindTexture(GL_TEXTURE_2D, _glowbufferId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, windowSizeX, windowSizeY, 0, GL_RGB, GL_FLOAT, 0); //generate empty texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _glowbufferId, 0);
+
+	//blurbuffers
+	glGenTextures(2, _pingpongBuffers);
+	for(unsigned int i = 0; i < 2; i++) {
+		glBindFramebuffer(GL_FRAMEBUFFER, _pingpongFBO[i]);
+		glBindTexture(GL_TEXTURE_2D, _pingpongBuffers[i]);
+		glTexImage2D(
+			GL_TEXTURE_2D, 0, GL_RGB16F, windowSizeX, windowSizeY, 0, GL_RGB, GL_FLOAT, NULL
+		);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glFramebufferTexture2D(
+			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _pingpongBuffers[i], 0
+		);
+	}
+
+	//renderbuffer
+	glBindRenderbuffer(GL_RENDERBUFFER, _renderbufferId);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowSizeX, windowSizeY);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderbufferId);
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "Framebuffer size update" << std::endl;
+	}
+
+	glBindTexture(GL_TEXTURE_2D, 0); //unbind texture
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
+	glBindRenderbuffer(GL_RENDERBUFFER, 0); //unbind renderbuffer
+}

@@ -71,7 +71,7 @@ void AbstractGame::_initializeGlew() {
 void AbstractGame::_initializeRenderer() {
     //setup our own renderer
 	std::cout << "Initializing renderer..." << std::endl;
-	_renderer = new Renderer();
+	_renderer = new Renderer(_window->getSize().x, _window->getSize().y);
     _renderer->setClearColor(0, 0, 0);
     std::cout << "Renderer done." << std::endl << std::endl;
 }
@@ -102,14 +102,20 @@ void AbstractGame::run()
 
 		if (timeSinceLastUpdate > timePerFrame)
 		{
-            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
 		    while (timeSinceLastUpdate > timePerFrame) {
                 timeSinceLastUpdate -= timePerFrame;
                 _update(timePerFrame.asSeconds());
 		    }
 
-            _render();
+			_renderer->useFramebuffer();
+
+            _renderScene(); //render scene
+
+			_renderer->unbindFramebuffer();
+			_renderer->drawFramebuffer();
+
+			_renderUi(); //render ui directly to the screen
+
             _window->display();
 
             //fps count is updated once every 1 second
@@ -132,8 +138,11 @@ void AbstractGame::_update(float pStep) {
     _world->update(pStep);
 }
 
-void AbstractGame::_render () {
-    _renderer->render(_world);
+void AbstractGame::_renderScene() {
+	_renderer->render(_world);
+}
+
+void AbstractGame::_renderUi() {
 }
 
 void AbstractGame::_processEvents()

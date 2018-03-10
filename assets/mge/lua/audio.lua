@@ -26,7 +26,7 @@ Gameplay:
 
 Snail:
 - Move                      MOVE_SNAIL 
-- Blocked Path(bearbeitet)  BLOCK_SNAIL 
+- Blocked Path              BLOCK_SNAIL 
 
 --]]
 
