@@ -90,6 +90,28 @@ sf::Font* UiContainer::GetFontByName(std::string fontname) {
 	return _fonts[fontname];
 }
 
+void UiContainer::drawLoading(int percentage) {
+	if(_window->isOpen()) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glActiveTexture(GL_TEXTURE0);
+
+		_window->pushGLStates();
+
+		//modify our percentage text in the loading screen
+		for(int i = 0; i < _menus.size(); i++) {
+			if(_menus[i]->GetMenuName() == "LOADING") {
+				_menus[i]->SetTextAt(0, std::to_string(percentage) + "%"); //hardcoded for at least one text in the loading menu
+
+				break; //no need to loop further since we found our object
+			}
+		}
+
+		draw();
+
+		_window->display();
+	}
+}
+
 int UiContainer::_createMenu(lua_State * state) {
 	std::string menuName = lua_tostring(state, 1);
 	int imageCount = (int)lua_tointeger(state, 2); //1 images = 1 texture
@@ -98,6 +120,10 @@ int UiContainer::_createMenu(lua_State * state) {
 	bool horizontalNav = lua_toboolean(state, 5);
 
 	lua_settop(state, 0); //clear the stack
+
+	if(menuName == "LOADING") {
+		textCount = 1;
+	}
 
 	Menu* newMenu = new Menu(menuName);
 	newMenu->InitMenu(imageCount, buttonCount, textCount, horizontalNav);

@@ -55,6 +55,7 @@ LevelRating = { 0, 1, 2, 1, 2, 1, 1, 1, 0, 0 }
 -- Target Menu = 1 Font Name used = 2, Drawn Text = 4, text size = 5, textcolor r = 6, textcolor g = 7, textcolor b = 8, boldness = 9, posX = 10, posY = 11
 Text = {
   { "HUD", "Arial", "Tries: TRIES", 25, 0, 0, 0, true, 80, 1000},
+  { "LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900},
   {"Credits", "Shark", "Daan Kemps", 75, 10, 10 , 10, true, 230, 320},
   {"Credits", "Shark", "Felix de Natris", 75, 10, 10 , 10, true, 230, 400},
   {"Credits", "Shark", "Lucia Dzediti", 75, 10, 10 , 10, true, 230, 480},

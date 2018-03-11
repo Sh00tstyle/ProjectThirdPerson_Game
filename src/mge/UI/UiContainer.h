@@ -22,6 +22,8 @@ class UiContainer : public SystemEventListener {
 
 		static sf::Font* GetFontByName(std::string fontname);
 
+		void drawLoading(int percentage);
+
 	private:
 		static sf::RenderWindow* _window;
 		static Menu* _activeMenu;

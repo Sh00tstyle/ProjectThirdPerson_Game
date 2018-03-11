@@ -3,6 +3,7 @@
 #include "mge/core/World.hpp"
 #include "mge/config.hpp"
 #include "mge/UI/UiContainer.h"
+#include "mge/MGEDemo.hpp"
 #include <fstream>
 
 World* SceneManager::_world; 
@@ -104,12 +105,17 @@ void SceneManager::_loadAllScenes() {
 	int levelIndex = 1;
 	std::string filepath = config::MGE_LEVEL_PATH + "Level_" + std::to_string(levelIndex) + ".xml";
 
-	while(_fileExists(filepath)) { //only load one level for now
+	int percentageCount = 0;
+
+	while(_fileExists(filepath)/* && levelIndex == 1*/) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
+		MGEDemo::UpdateLoadingScreen(64 + percentageCount);
 		_allScenes.push_back(newScene);
 
 		levelIndex++;
 		filepath = config::MGE_LEVEL_PATH + "Level_" + std::to_string(levelIndex) + ".xml";
+
+		percentageCount += 4;
 	}
 }
 

@@ -1,4 +1,4 @@
-//SCREEN SHADER VERTEX SHADER
+//DEPTH SHADER VERTEX SHADER
 #version 330 core
 in vec3 vertex;
 in vec3 normal;

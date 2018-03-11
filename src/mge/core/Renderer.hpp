@@ -82,7 +82,7 @@ public:
 
 	void useFramebuffer();
 	void unbindFramebuffer();
-	void drawFramebuffer();
+	void drawFramebuffer(bool usePP);
 
 	void setScreenSizes(int windowSizeX, int windowSizeY);
 

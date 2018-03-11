@@ -22,6 +22,7 @@ void AbstractGame::initialize() {
     _initializeWindow();
     _printVersionInfo();
     _initializeGlew();
+	_initializeMenu();
     _initializeRenderer();
     _initializeWorld();
     //_initializeScene(); //doing it manually in the superclass
@@ -83,6 +84,10 @@ void AbstractGame::_initializeWorld() {
     std::cout << "World initialized." << std::endl << std::endl;
 }
 
+void AbstractGame::_initializeMenu() {
+	//nothing
+}
+
 ///MAIN GAME LOOP
 
 void AbstractGame::run()
@@ -120,7 +125,7 @@ void AbstractGame::run()
 			_renderer->unbindFramebuffer();
 
 			//draw scene image on a screen space quad
-			_renderer->drawFramebuffer(); 
+			_renderer->drawFramebuffer(true); //false = no bloom, true = bloom
 
 			//render ui directly to the screen
 			_renderUi();
