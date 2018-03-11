@@ -1,5 +1,5 @@
 #include "mge\level\PressurePlate.h"
-
+#include "mge/audio/AudioContainer.h"
 PressurePlate::PressurePlate(int pColPos, int pRowPos, int pVectorPos, std::string pActivationColor, int pID, int pIndex): SpecialTile(pColPos, pRowPos, pVectorPos), 
 _activationColor(pActivationColor), _id(pID), _index(pIndex) {
 	_col = pColPos; 
@@ -35,6 +35,8 @@ bool PressurePlate::CheckPositionOnGrid(int pCol, int pRow)
 }
 
 void PressurePlate::Activate() {
+	AudioContainer::PlaySound("ACTIVATE_PLATE");
+
 	_targetTile->Activate();
 }
 

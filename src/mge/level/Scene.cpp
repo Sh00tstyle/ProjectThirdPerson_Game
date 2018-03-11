@@ -23,6 +23,8 @@
 
 #include "mge/eventSystem/SystemEventDispatcher.hpp"
 
+#include "mge/audio/AudioContainer.h"
+
 #include "mge/util/tinyxml2.h"
 #include "mge/tileProp.hpp"
 #include "mge/config.hpp"
@@ -93,6 +95,12 @@ void Scene::ConstructScene() {
 		myObj->setMaterial(_sceneObjectMats[i]);
 		_world->add(myObj);
 	}
+
+	for(unsigned i = 0; i < _activatableTiles.size(); i++) {
+		_activatableTiles[i]->Reset();
+	}
+
+	AudioContainer::PlaySound("START_LEVEL");
 
 	std::cout << "Constructed Scene" << std::endl;
 }

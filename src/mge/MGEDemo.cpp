@@ -12,6 +12,7 @@
 #include "mge/core/GameObject.hpp"
 
 #include "mge/behaviours/PlayfieldFocusBehaviour.h"
+#include "mge/behaviours/LightControlBehaviour.hpp"
 
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/ModelManager.h"
@@ -22,6 +23,7 @@
 #include "mge/materials/ScrollingMaterial.hpp"
 
 #include "mge/UI/UiContainer.h"
+#include "mge/audio/AudioContainer.h"
 
 #include "mge/util/DebugHud.hpp"
 
@@ -38,21 +40,26 @@ void MGEDemo::initialize() {
 	//setup the core part
 	AbstractGame::initialize();
 
+	//load audio
+	std::cout << "Initializing Audio" << std::endl;
+	_audioContainer = new AudioContainer();
+	std::cout << "Audio initialized" << std::endl << std::endl;
+
 	//draws the hud and ui
 	std::cout << "Initializing MENU/UI" << std::endl;
 	_uiContainer = new UiContainer(_window);
-	std::cout << "MENU/UI initialized" << std::endl;
+	std::cout << "MENU/UI initialized" << std::endl << std::endl;
+
+	//setup the custom part so we can display some text
+	std::cout << "Initializing HUD" << std::endl;
+	_hud = new DebugHud(_window);
+	std::cout << "HUD initialized." << std::endl << std::endl;
 
 	//loading screen
 	_drawLoadingScreen();
 
 	//setup the scene
 	_initializeScene();
-
-	//setup the custom part so we can display some text
-	std::cout << "Initializing HUD" << std::endl;
-	_hud = new DebugHud(_window);
-	std::cout << "HUD initialized." << std::endl << std::endl;
 
 	UiContainer::SelectMenu("MAIN");
 }
@@ -80,13 +87,40 @@ void MGEDemo::_initializeScene() {
 	backgroundPlane->setMaterial(planeMat);
 	_world->add(backgroundPlane);
 
+	/**
+	//directional light
+	Mesh* cubeMeshF = Mesh::load(config::MGE_MODEL_PATH + "cube_flat.obj");
+	Light* mainLight = new Light(LightType::DIRECTIONAL, //light type
+								 glm::vec3(1.0f, 244.0f/255.0f, 214.0f/255.0f), //light color (yellow)
+								 0.8f, //intensity = 1
+								 0.1f, //ambientContribution = 0.5
+								 1.0f, //constantAttenutation = 1
+								 0.3f, //linearAttenuation
+								 0.0f, //quadraticAttenuation
+								 45.0f, //outerConeAngle
+								 25.0f, //innerConeAngle
+								 "mainLight", //name
+								 glm::vec3(0, 6, 0) //position
+	);
+	mainLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
+	mainLight->setMesh(cubeMeshF);
+	mainLight->setBehaviour(new LightControlBehaviour(mainLight, 25));
+	_world->add(mainLight); //light gets automatically registered in the world
+
+	GameObject* indicator = new GameObject("indicator", glm::vec3(0, 0, 1.0f));
+	AbstractMaterial* whiteColorMat = new ColorMaterial(glm::vec3(1, 1, 1));
+	indicator->scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	indicator->setMesh(cubeMeshF);
+	indicator->setMaterial(whiteColorMat);
+	mainLight->add(indicator); //adding as a child of light
+	/**/
+
 	//create an instace of model manager to load the items (before creating the SceneManager
 	_modelManager = new ModelManager(config::MGE_LEVEL_PATH + "ModelConfig.xml");
 
 	//Make a SceneManager class here instead of a scene
 	_sceneManager = new SceneManager(_world); //need an instance to load the levels (!!)
-	//_sceneManager->LoadFirstScene(); //loads level 1, diable when the menu is implemented
-	
+
 	_renderer->setClearColor(119, 129, 136, 1); //grey background
 }
 
@@ -94,23 +128,16 @@ void MGEDemo::_drawLoadingScreen() {
 	if(_window->isOpen()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//uncomment, if we use the debug hud
-		/**
-		glActiveTexture(GL_TEXTURE0);
-		_window->pushGLStates();
-		/**/
-
+		_updateHud();
 		_uiContainer->draw();
 
 		_window->display();
 	}
 }
 
-void MGEDemo::_render() {
-	AbstractGame::_render();
-	//_updateHud();
-
+void MGEDemo::_renderUi() {
 	//drawing menu/ui elements on the screen
+	_updateHud();
 	_uiContainer->draw();
 }
 
@@ -134,6 +161,7 @@ void MGEDemo::_updateHud() {
 	}
 
 	_hud->setDebugInfo(debugInfo);
+
 	_hud->draw();
 }
 
@@ -161,6 +189,7 @@ void MGEDemo::_processEvents() {
 				//reset current level
 				if(event.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
 					SceneManager::ReloadScene();
+					AudioContainer::PlaySound("RESET_LEVEL");
 				}
 
 				//DEBUG
@@ -185,6 +214,8 @@ void MGEDemo::_processEvents() {
 				//readjust the projection matrix when resizing the screen
 				_screenRatio = (float)event.size.width / (float)event.size.height;
 				_world->getMainCamera()->setProjection(glm::ortho(-_orthoSize * _screenRatio, _orthoSize * _screenRatio, -_orthoSize, _orthoSize, 0.1f, 1000.0f));
+
+				_renderer->setScreenSizes(event.size.width, event.size.height);
 				break;
 
 			default:

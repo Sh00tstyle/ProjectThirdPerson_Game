@@ -12,6 +12,7 @@ class AbstractMaterial;
 class SceneManager;
 class ModelManager;
 class UiContainer;
+class AudioContainer;
 
 /**
  * An example subclass of AbstractGame showing how we can setup a scene.
@@ -34,7 +35,7 @@ class MGEDemo: public AbstractGame
 		virtual void _drawLoadingScreen();
 
 	    //override render to render the hud as well.
-	    virtual void _render();
+		virtual void _renderUi();
 
 		//override, to add own keypress events
 		virtual void _processEvents();
@@ -48,6 +49,7 @@ class MGEDemo: public AbstractGame
 		ModelManager* _modelManager;
 		SceneManager* _sceneManager;
 		UiContainer* _uiContainer;
+		AudioContainer* _audioContainer;
 
         void _updateHud();
 

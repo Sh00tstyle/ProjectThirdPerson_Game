@@ -8,6 +8,7 @@
 #include "mge/level/ActivatableTile.h"
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/InputManager.h"
+#include "mge/audio/AudioContainer.h"
 #include "mge/UI/UiContainer.h"
 
 
@@ -56,53 +57,74 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 	if (!_moving)
 		_targetTile = _owner->getWorldPosition(); 
 
-	if (pKey == sf::Keyboard::W  && CheckWalkableTile(_onCol, _onRow - 1))
+	if (pKey == sf::Keyboard::W)
 	{
-		
-		glm::mat4 targetTrans;
-		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
-		targetTrans = glm::rotate(targetTrans, glm::radians(0.0f), glm::vec3(0, 1, 0));
-		_owner->setTransform(targetTrans);
-		_onRow--;
-		_targetTile.z = _currentTile.z - _moveAmount;
-		_moving = true; 
+		if(CheckWalkableTile(_onCol, _onRow - 1)) {
+			glm::mat4 targetTrans;
+			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			targetTrans = glm::rotate(targetTrans, glm::radians(0.0f), glm::vec3(0, 1, 0));
+			_owner->setTransform(targetTrans);
+			_onRow--;
+			_targetTile.z = _currentTile.z - _moveAmount;
+			_moving = true;
+
+			AudioContainer::PlaySound("MOVE_SNAIL");
+		} else {
+			AudioContainer::PlaySound("BLOCK_SNAIL");
+		}
 	}
 
-	if (pKey == sf::Keyboard::A && CheckWalkableTile(_onCol + 1, _onRow))
+	if (pKey == sf::Keyboard::A)
 	{
-		
-		glm::mat4 targetTrans;
-		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
-		targetTrans = glm::rotate(targetTrans, glm::radians(90.0f), glm::vec3(0, 1, 0));
-		_owner->setTransform(targetTrans);
-		_onCol++;
-		_targetTile.x = _currentTile.x - _moveAmount;
-		_moving = true;
+		if(CheckWalkableTile(_onCol + 1, _onRow)) {
+			glm::mat4 targetTrans;
+			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			targetTrans = glm::rotate(targetTrans, glm::radians(90.0f), glm::vec3(0, 1, 0));
+			_owner->setTransform(targetTrans);
+			_onCol++;
+			_targetTile.x = _currentTile.x - _moveAmount;
+			_moving = true;
+
+			AudioContainer::PlaySound("MOVE_SNAIL");
+		} else {
+			AudioContainer::PlaySound("BLOCK_SNAIL");
+		}
 	}
 
-	if (pKey == sf::Keyboard::S  && CheckWalkableTile(_onCol, _onRow + 1))
+	if (pKey == sf::Keyboard::S)
 	{
-		
-		glm::mat4 targetTrans;
-		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
-		targetTrans = glm::rotate(targetTrans, glm::radians(180.0f), glm::vec3(0, 1, 0));
-		_owner->setTransform(targetTrans);
-		_onRow++; 
-		_targetTile.z = _currentTile.z + _moveAmount;
-		_moving = true;
+		if(CheckWalkableTile(_onCol, _onRow + 1)) {
+			glm::mat4 targetTrans;
+			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			targetTrans = glm::rotate(targetTrans, glm::radians(180.0f), glm::vec3(0, 1, 0));
+			_owner->setTransform(targetTrans);
+			_onRow++;
+			_targetTile.z = _currentTile.z + _moveAmount;
+			_moving = true;
+
+			AudioContainer::PlaySound("MOVE_SNAIL");
+		} else {
+			AudioContainer::PlaySound("BLOCK_SNAIL");
+		}	
 	}
 
-	if (pKey == sf::Keyboard::D && CheckWalkableTile(_onCol - 1, _onRow))
+	if (pKey == sf::Keyboard::D)
 	{
+		if(CheckWalkableTile(_onCol - 1, _onRow)) {
+			glm::mat4 targetTrans;
+			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			targetTrans = glm::rotate(targetTrans, glm::radians(270.0f), glm::vec3(0, 1, 0));
+			_owner->setTransform(targetTrans);
+			_onCol--;
+			_targetTile.x = _currentTile.x + _moveAmount;
+			_moving = true;
 
+			AudioContainer::PlaySound("MOVE_SNAIL");
+		} else {
+			AudioContainer::PlaySound("BLOCK_SNAIL");
+		}
 		
-		glm::mat4 targetTrans;
-		targetTrans = glm::translate(targetTrans, _owner->getWorldPosition()); 
-		targetTrans = glm::rotate(targetTrans, glm::radians(270.0f), glm::vec3(0, 1, 0));
-		_owner->setTransform(targetTrans);
-		_onCol--; 
-		_targetTile.x = _currentTile.x + _moveAmount;
-		_moving = true;
+		
 	}
 }
 
@@ -272,10 +294,12 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueTile && _scene.GetPawnColor() == tileProp::BlueTile)
 		return true;
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::RedColorSwitch) {
+		AudioContainer::PlaySound("CHANGE_COLOR");
 		 _scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
 		return true; 
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueColorSwitch) {
+		AudioContainer::PlaySound("START_LEVEL");
 		_scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
 		return true;
 	}
@@ -307,6 +331,7 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	{
 		if (_scene.GetDestinationColor() == _scene.GetPawnColor())
 		{
+			AudioContainer::PlaySound("END_LEVEL");
 			UiContainer::SelectMenu("LEVEL " + std::to_string(SceneManager::GetLevelNumber()));
 			//SceneManager::LoadNextScene();
 

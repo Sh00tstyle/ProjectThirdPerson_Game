@@ -18,7 +18,7 @@ void LightControlBehaviour::update(float pStep) {
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) _owner->rotate(-pStep, glm::vec3(1.0f, 0.0f, 0.0f));
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) _owner->rotate(pStep, glm::vec3(1.0f, 0.0f, 0.0f));
 
-	/**
+	/**/
 	//simple movement (for point light)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) _owner->translate(glm::vec3(0.0f, 0.0f, _moveSpeed * pStep));
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) _owner->translate(glm::vec3(0.0f, 0.0f, -_moveSpeed*pStep));

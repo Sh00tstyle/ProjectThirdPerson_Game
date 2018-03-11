@@ -6,6 +6,7 @@
 #include "mge/UI/Menu.h"
 #include "mge/managers/SceneManager.h"
 #include "mge/managers/InputManager.h"
+#include "mge/audio/AudioContainer.h"
 #include "mge/config.hpp"
 #include <GL/glew.h>
 #include <lua.hpp>
@@ -40,13 +41,6 @@ UiContainer::~UiContainer() {
 }
 
 void UiContainer::draw() {
-	//uncomment this, if we disable the debug hud later
-	/**/
-	//glDisable( GL_CULL_FACE );
-	glActiveTexture(GL_TEXTURE0);
-	_window->pushGLStates();
-	/**/
-	
 	_drawAll();
 
 	_window->popGLStates();
@@ -60,14 +54,23 @@ void UiContainer::CloseApp() {
 void UiContainer::SelectMenu(std::string target) {
 	std::cout << "Selected menu " + target << std::endl;
 
+	InputManager::SetGameInput(false);
+	InputManager::SetMenuInput(true);
+
 	if(target == "HUD") {
 		//disable menu input and enable game input
 		InputManager::SetGameInput(true);
 		InputManager::SetMenuInput(false);
-	} else {
-		//enable menu input and disable game input
-		InputManager::SetGameInput(false);
-		InputManager::SetMenuInput(true);
+
+		AudioContainer::StopSound("MAIN_BGM");
+		AudioContainer::PlaySound("BGM_LEVEL");
+	} else if (target == "MAIN") {
+		AudioContainer::StopSound("BGM_LEVEL");
+		AudioContainer::PlaySound("MAIN_BGM");
+	} else if(target == "PAUSE") {
+		AudioContainer::PlaySound("OPEN_PAUSE"); //no bgm
+	} else if(target.substr(0, 5) == "LEVEL") {
+		AudioContainer::PlaySound("OPEN_RESOLUTION");
 	}
 
 	for(unsigned i = 0; i < _menus.size(); i++) {

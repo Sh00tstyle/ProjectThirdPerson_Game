@@ -18,8 +18,7 @@ Events = {
 Audiofiles = {
   {"MAIN_BGM", "mainbmg.wav"},
   }
-
-
+  
 function Audio.init() 
 --[[
   EVENTS:
@@ -46,11 +45,29 @@ Gameplay:
 Snail:
 - Move                      MOVE_SNAIL
 - Blocked Path(bearbeitet)  BLOCK_SNAIL
+- Main menu music          MAIN_BGM 
+- Button hover             BUTTON_HOVER 
+- Button click             BUTTON_CLICK 
+- Select level click       SELECT_LEVEL 
+- Open pause menu          OPEN_PAUSE 
+- Resolution               OPEN_RESOLUTION 
 
+
+Gameplay:
+- Reset level               RESET_LEVEL 
+- Pressure plate activate   ACTIVATE_PLATE 
+- Activatable tile move     TILE_MOVE 
+- Color change              CHANGE_COLOR 
+- Start level               START_LEVEL 
+- Reach level end           END_LEVEL 
+- Background music          BGM_LEVEL 
+
+
+Snail:
+- Move                      MOVE_SNAIL 
+- Blocked Path              BLOCK_SNAIL 
 --]]
 
---filepath: mge/assets/audio
-  
   -- create Events
   for i=1,#Events do 
     CreateEvent(Events[i][1], Events[i][2], Events[i][3], Events[i][4], Events[i][5])

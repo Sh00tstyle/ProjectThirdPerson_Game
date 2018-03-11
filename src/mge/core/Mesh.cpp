@@ -234,7 +234,7 @@ void Mesh::streamToOpenGL(GLint pVerticesAttrib, GLint pNormalsAttrib, GLint pUV
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _indexBufferId );
 
-	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, (GLvoid*)0);
+	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, (GLvoid*)0); //this renders
 
 	// no current buffer, to avoid mishaps, very important for performance
 

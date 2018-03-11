@@ -44,6 +44,9 @@
     <Filter Include="MGE Source files\mge\eventSystem">
       <UniqueIdentifier>{e22418e4-5e89-4f8f-91b0-5b31e79e7887}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MGE Source files\mge\audio">
+      <UniqueIdentifier>{c89d11f5-552d-48ab-bf82-638f1567b4a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\glm.hpp">
@@ -178,6 +181,12 @@
     <ClInclude Include="..\src\mge\managers\InputManager.h">
       <Filter>MGE Source files\mge\managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\audio\AudioContainer.h">
+      <Filter>MGE Source files\mge\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\audio\AudioSource.h">
+      <Filter>MGE Source files\mge\audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -306,6 +315,12 @@
     <ClCompile Include="..\src\mge\managers\InputManager.cpp">
       <Filter>MGE Source files\mge\managers</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\mge\audio\AudioContainer.cpp">
+      <Filter>MGE Source files\mge\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\audio\AudioSource.cpp">
+      <Filter>MGE Source files\mge\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\mge\shaders\color.fs">
@@ -345,5 +360,17 @@
       <Filter>Assets\mge\shaders</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="..\assets\mge\shaders\screenshader.fs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\screenshader.vs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\blurshader.fs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\blurshader.vs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
