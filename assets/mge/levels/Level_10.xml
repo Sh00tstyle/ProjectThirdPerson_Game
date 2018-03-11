@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Playfield Height="7" Width="8" Content="0 5 1 1 1 1 1 1 0 0 0 1 0 1 0 1 0 1 1 1 1 1 1 1 0 1 8 1 7 0 0 1 0 1 9 3 1 4 1 1 0 1 0 1 0 1 0 6 0 1 1 1 1 2 0 0" />
+  <SceneObjects />
+  <PressurePlates>
+    <PressurePlate ColPos="7" RowPos="5" ID="1" NeededColor="3" />
+  </PressurePlates>
+  <ActivatableTiles>
+    <ActivatableTile ColPos="4" RowPos="3" ID="1" />
+  </ActivatableTiles>
+  <SpawnTile ColPos="5" RowPos="6" StartingColor="4" />
+  <DestinationTile ColPos="1" RowPos="0" NeededColor="0" />
+</SceneContainer>
