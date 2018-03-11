@@ -30,7 +30,7 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 
 	glClearColor((float)0x2d / 0xff, (float)0x6b / 0xff, (float)0xce / 0xff, 1.0f);
 
-	//setup framebuffer, renderbuffer and texture
+	//setup framebuffer, renderbuffer and texture for bloom
 	glGenFramebuffers(1, &_framebufferId); //generate framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, _framebufferId);
 
@@ -92,6 +92,26 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 		);
 	}
 
+	//depth buffer and texture
+	glGenFramebuffers(1, &_depthbufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER, _depthbufferId);
+
+	glGenTextures(1, &_depthTexId);
+	glBindTexture(GL_TEXTURE_2D, _depthTexId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, windowWidth, windowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depthTexId, 0);
+	glDrawBuffer(GL_NONE); //use it here or later when rendering?
+	glReadBuffer(GL_NONE);
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "Depthbuffer initialized" << std::endl;
+	}
+
 	//unbind
 	glBindTexture(GL_TEXTURE_2D, 0); //unbind texture
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
@@ -126,10 +146,14 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 
 Renderer::~Renderer()
 {
+	//cleanup
 	delete _screenQuad;
 	glDeleteFramebuffers(1, &_framebufferId);
 	glDeleteFramebuffers(2, _pingpongFBO);
 	glDeleteRenderbuffers(1, &_renderbufferId);
+
+	delete _blurShader;
+	delete _screenShader;
 }
 
 void Renderer::setClearColor(GLbyte pR, GLbyte pG, GLbyte pB) {
@@ -176,7 +200,10 @@ void Renderer::renderChildren(World* pWorld, GameObject* pGameObject, AbstractMa
 }
 
 void Renderer::render(World* pWorld, Mesh* pMesh, AbstractMaterial* pMaterial, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
-	if (pMesh != nullptr && pMaterial != nullptr) pMaterial->render(pWorld, pMesh, pModelMatrix, pViewMatrix, pProjectionMatrix);
+	if(pMesh != nullptr && pMaterial != nullptr) {
+		if(_depthOnly) pMaterial->renderDepth(pWorld, pMesh);
+		else pMaterial->render(pWorld, pMesh, pModelMatrix, pViewMatrix, pProjectionMatrix);
+	}
 }
 
 void Renderer::renderMeshDebugInfo(Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
@@ -188,6 +215,8 @@ void Renderer::useFramebuffer() {
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
+
+	_depthOnly = false;
 }
 
 void Renderer::unbindFramebuffer() {
@@ -198,7 +227,6 @@ void Renderer::unbindFramebuffer() {
 
 void Renderer::drawFramebuffer() {
 	//draws the scene to the screen (with post processing)
-
 	glDisable(GL_DEPTH_TEST);
 
 	//render to framebuffers and blur
@@ -227,6 +255,12 @@ void Renderer::drawFramebuffer() {
 
 	//render to screen
 	_screenShader->use(); //bloom
+
+	/**
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _depthbufferId); //screen texture
+	glUniform1i(_uScreenTextureHDR, 0);
+	/**/
 
 	//pass in uniforms to the shader
 	glActiveTexture(GL_TEXTURE0);
@@ -297,4 +331,18 @@ void Renderer::setScreenSizes(int windowSizeX, int windowSizeY) {
 	glBindTexture(GL_TEXTURE_2D, 0); //unbind texture
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0); //unbind renderbuffer
+}
+
+void Renderer::useDepthbuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, _depthbufferId);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClearDepthf(1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	_depthOnly = true;
+}
+
+void Renderer::unbindDepthbuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

@@ -11,6 +11,7 @@
 #include "mge/config.hpp"
 
 ShaderProgram* TextureMaterial::_shader = NULL;
+ShaderProgram* TextureMaterial::_depthShader = NULL;
 
 GLint TextureMaterial::_uMVPMatrix = 0;
 GLint TextureMaterial::_uDiffuseTexture = 0;
@@ -22,9 +23,9 @@ GLint TextureMaterial::_aUV = 0;
 TextureMaterial::TextureMaterial(Texture * pDiffuseTexture):_diffuseTexture(pDiffuseTexture) {
     _lazyInitializeShader();
 
-	_ambientColor = glm::vec3(0, 0, 0); 
-	_specularColor = glm::vec3(1, 1, 1);
-	_shininess = 16.0f;
+	_ambientColor = glm::vec3(1, 1, 1); 
+	_specularColor = glm::vec3(0.5, 0.5, 0.5);
+	_shininess = 2.0f;
 }
 
 TextureMaterial::~TextureMaterial() {}
@@ -44,6 +45,13 @@ void TextureMaterial::_lazyInitializeShader() {
         _aNormal = _shader->getAttribLocation("normal");
         _aUV =     _shader->getAttribLocation("uv");
     }
+
+	if(!_depthShader) {
+		_depthShader = new ShaderProgram();
+		_depthShader->addShader(GL_VERTEX_SHADER, config::MGE_SHADER_PATH + "depthshader.vs");
+		_depthShader->addShader(GL_FRAGMENT_SHADER, config::MGE_SHADER_PATH + "depthshader.fs");
+		_depthShader->finalize();
+	}
 }
 
 void TextureMaterial::setDiffuseTexture (Texture* pDiffuseTexture) {
@@ -105,4 +113,24 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
 
     //now inform mesh of where to stream its data
     pMesh->streamToOpenGL(_aVertex, _aNormal, _aUV);
+}
+
+void TextureMaterial::renderDepth(World * pWorld, Mesh * pMesh) {
+	if(pWorld->getLightCount() == 0) return;
+
+	_depthShader->use();
+
+	Light* currentLight = pWorld->getLightAt(0); //hardcoded first light
+
+	glm::vec3 lightPos = currentLight->getLocalPosition();
+
+	glm::mat4 projectionMat = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+	glm::mat4 viewMat = glm::lookAt(lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 modelMat = glm::mat4(1.0);
+
+	glUniformMatrix4fv(_depthShader->getUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMat));
+	glUniformMatrix4fv(_depthShader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMat));
+	glUniformMatrix4fv(_depthShader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+
+	pMesh->streamToOpenGL(_depthShader->getAttribLocation("vertex"), -1, -1);
 }

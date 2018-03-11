@@ -372,5 +372,11 @@
     <None Include="..\assets\mge\shaders\blurshader.vs">
       <Filter>Assets\mge\shaders</Filter>
     </None>
+    <None Include="..\assets\mge\shaders\depthshader.fs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
+    <None Include="..\assets\mge\shaders\depthshader.vs">
+      <Filter>Assets\mge\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

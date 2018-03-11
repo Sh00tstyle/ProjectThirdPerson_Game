@@ -81,12 +81,13 @@ public:
 	void renderMeshDebugInfo(Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix);
 
 	void useFramebuffer();
-
 	void unbindFramebuffer();
-
 	void drawFramebuffer();
 
 	void setScreenSizes(int windowSizeX, int windowSizeY);
+
+	void useDepthbuffer();
+	void unbindDepthbuffer();
 
 protected:
 
@@ -106,19 +107,25 @@ protected:
 	void renderChildren(World* pWorld, GameObject* pGameObject, AbstractMaterial* pMaterial, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, bool pRecursive);
 
 private:
+	bool _depthOnly;
 
-	//setting up da framebuffer and the texture it should draw into
+	//framebuffers and renderbuffers
 	GLuint _framebufferId;
+	GLuint _depthbufferId;
+	GLuint _pingpongFBO[2];
 	GLuint _renderbufferId;
+
+	//textures
 	GLuint _mainbufferId;
 	GLuint _glowbufferId;
-
-	GLuint _pingpongFBO[2];
+	GLuint _depthTexId;
 	GLuint _pingpongBuffers[2];
 
+	//screen shaders
 	ShaderProgram* _blurShader;
 	ShaderProgram* _screenShader;
 
+	//attributes and uniforms
 	GLint _aVertexBlur;
 	GLint _aUVBlur;
 	GLint _uScreenTextureBlur;

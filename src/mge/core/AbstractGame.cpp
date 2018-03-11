@@ -107,14 +107,23 @@ void AbstractGame::run()
                 _update(timePerFrame.asSeconds());
 		    }
 
+			/**
+			//render the shadowmap to the buffer
+			_renderer->useDepthbuffer();
+			_renderScene(); 
+			_renderer->unbindDepthbuffer();
+			/**/
+
+			//render the scene as normal to the buffer
 			_renderer->useFramebuffer();
-
-            _renderScene(); //render scene
-
+            _renderScene();
 			_renderer->unbindFramebuffer();
-			_renderer->drawFramebuffer();
 
-			_renderUi(); //render ui directly to the screen
+			//draw scene image on a screen space quad
+			_renderer->drawFramebuffer(); 
+
+			//render ui directly to the screen
+			_renderUi();
 
             _window->display();
 

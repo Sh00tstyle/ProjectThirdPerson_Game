@@ -79,7 +79,7 @@ float getSpotEffect(Light light, vec3 lightVector) {
 
 vec3 getAmbientTerm(Light light) {
 	//ambient
-	return ambientColor * light.ambientContribution * texture(diffuseTexture, texCoord).rbg;
+	return ambientColor * light.ambientContribution * texture(diffuseTexture, texCoord).rgb;
 }
 
 vec3 getDiffuseTerm(Light light, vec3 lightVector, float attenuation, float spotEffect) {
@@ -87,14 +87,14 @@ vec3 getDiffuseTerm(Light light, vec3 lightVector, float attenuation, float spot
 	float diffuseIntensity = max (0, dot(normalize(-lightVector), normalize (worldNormal)));
 	diffuseIntensity = diffuseIntensity / attenuation * spotEffect; //applying attenuation and spot effect
 	
-	return diffuseIntensity * light.lightColor * texture(diffuseTexture, texCoord).rbg;
+	return diffuseIntensity * light.lightColor * texture(diffuseTexture, texCoord).rgb;
 }
 
 vec3 getSpecularTerm(Light light, vec3 lightVector, float attenuation, float spotEffect) {
 	//specular
 	vec3 reflectedLight = reflect(lightVector, worldNormal); //reflected light ray in the normal (R)
 	vec3 eyeVector = eyePosition - worldVertex; //vector from the vertex to the camera/eye position (V)
-	float specularIntensity = max (0, dot(normalize(reflectedLight), normalize(eyeVector))); //max(0, R dot V)
+	float specularIntensity = clamp (dot(normalize(eyeVector), normalize(reflectedLight)), 0, 1);
 	specularIntensity = pow (specularIntensity, shininess); //applying shininess
 	specularIntensity = specularIntensity / attenuation * spotEffect; //applying attenuation and spot effect
 
@@ -130,6 +130,7 @@ void main( void ) {
 	if(texture(diffuseTexture, texCoord).a < alphaCutoff) discard;
 	FragColor = vec4(resultColor, 1.0f);
 
+	//filter HDR bright spots (change to 1.0, when using engine lights)
     float brightness = dot(resultColor, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 0.5f) {
         BrightColor = vec4(resultColor, 1.0f);

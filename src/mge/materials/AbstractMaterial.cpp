@@ -10,3 +10,8 @@ AbstractMaterial::~AbstractMaterial()
     //dtor
 }
 
+void AbstractMaterial::renderDepth(World * pWorld, Mesh * pMesh) {
+	//dont do anything
+	return;
+}
+

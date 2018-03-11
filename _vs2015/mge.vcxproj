@@ -264,6 +264,8 @@
     <None Include="..\assets\mge\shaders\blurshader.vs" />
     <None Include="..\assets\mge\shaders\color.fs" />
     <None Include="..\assets\mge\shaders\color.vs" />
+    <None Include="..\assets\mge\shaders\depthshader.fs" />
+    <None Include="..\assets\mge\shaders\depthshader.vs" />
     <None Include="..\assets\mge\shaders\lit.fs" />
     <None Include="..\assets\mge\shaders\lit.vs" />
     <None Include="..\assets\mge\shaders\screenshader.fs" />

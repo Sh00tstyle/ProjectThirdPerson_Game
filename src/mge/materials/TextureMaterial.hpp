@@ -18,12 +18,14 @@ class TextureMaterial : public AbstractMaterial
         virtual ~TextureMaterial ();
 
         virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) override;
+		virtual void renderDepth(World* pWorld, Mesh* pMesh) override;
 
         void setDiffuseTexture (Texture* pDiffuseTexture);
 
     protected:
     private:
         static ShaderProgram* _shader;
+		static ShaderProgram* _depthShader;
         static void _lazyInitializeShader();
 
         //in this example we cache all identifiers for uniforms & attributes
