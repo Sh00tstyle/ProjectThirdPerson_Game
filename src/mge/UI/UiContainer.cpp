@@ -57,14 +57,14 @@ void UiContainer::SelectMenu(std::string target) {
 	InputManager::SetGameInput(false);
 	InputManager::SetMenuInput(true);
 
-	if(target == "HUD") {
+	if(target == "HUD" || target == "HUD_HINT") {
 		//disable menu input and enable game input
 		InputManager::SetGameInput(true);
 		InputManager::SetMenuInput(false);
 
 		AudioContainer::StopSound("MAIN_BGM");
 		AudioContainer::PlaySound("BGM_LEVEL");
-	} else if (target == "MAIN") {
+	} else if(target == "MAIN") {
 		AudioContainer::StopSound("BGM_LEVEL");
 		AudioContainer::PlaySound("MAIN_BGM");
 	} else if(target == "PAUSE") {
@@ -233,7 +233,7 @@ void UiContainer::_drawAll() {
 	if(_activeMenu == nullptr) return;
 
 	if(_activeMenu->GetBackgroundSprite().getTexture() != nullptr) _window->draw(_activeMenu->GetBackgroundSprite()); //draw the background first
-	
+
 	//draw all images 
 	for(int i = 0; i < _activeMenu->GetImgCount(); i++) {
 		_window->draw(_activeMenu->GetImgAt(i));
@@ -254,7 +254,7 @@ void UiContainer::_initMenus() {
 	lua_State* state = luaL_newstate();
 	luaL_openlibs(state); // get all libs in state (math, os, io)
 
-	//register functions as global lua functions
+						  //register functions as global lua functions
 	lua_register(state, "CreateMenu", _createMenu);
 	lua_register(state, "CreateFont", _createFont);
 	lua_register(state, "SetBackground", _setBackground);
@@ -265,7 +265,7 @@ void UiContainer::_initMenus() {
 	std::string filename = config::MGE_LUA_PATH + "ui.lua";
 	luaL_dofile(state, filename.c_str()); //execute lua file
 
-	//calling Menu.init() in lua
+										  //calling Menu.init() in lua
 	lua_getglobal(state, "Menu"); // Menu table on stack
 	if(lua_istable(state, -1)) {
 		lua_getfield(state, -1, "init"); //Menu.init on stack
@@ -291,6 +291,10 @@ void UiContainer::onNotify(sf::Event pEvent) {
 			SelectMenu("PAUSE");
 		} else if(_activeMenu->GetMenuName() == "PAUSE") {
 			SelectMenu("HUD");
-		}	
+		}
+	} else if(pEvent.key.code == sf::Keyboard::H) {
+		if(_activeMenu->GetMenuName() == "HUD_HINT") {
+			SelectMenu("HUD");
+		}
 	}
 }

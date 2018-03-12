@@ -7,7 +7,7 @@ function Menu.init()
   --Font filepath: assets/mge/fonts
   
   --creating a new menu (menu name/key, image amount, button amount, text amount, horizontal navigation)
-  --special keys: MAIN, PAUSE, HUD, LOADING, LEVEL 1, LEVEL 2, etc.
+  --special keys: MAIN, PAUSE, HUD, HUD_HINT, LOADING, LEVEL 1, LEVEL 2, etc.
   CreateMenu("MAIN", 0, 3, 2, false) --key for the main menu
   CreateMenu("Options", 0, 0, 0, false)
   CreateMenu("PAUSE", 0, 1, 0, true) --key for the Pause menu, also has horizantal navigation

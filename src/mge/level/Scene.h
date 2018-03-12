@@ -55,9 +55,8 @@ class Scene {
 		std::vector<std::string> _playfieldData;
 		std::vector<std::string> _unmodifedPlayfieldData; //backup to reset the level later
 
-		//hint playfields (vector of vectors)
+		//hint properties
 		std::vector<std::vector<std::string>> _hintData;
-
 		int _triesPerHint;
 
 		//scene objetcs
