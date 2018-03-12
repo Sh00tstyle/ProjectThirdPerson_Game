@@ -9,7 +9,7 @@ Events = {
   {"SELECT_LEVEL", 1, 1, 1, false},
   {"OPEN_PAUSE", 1, 1, 1, false},
   {"OPEN_RESOLUTION", 1, 1, 1, false},
-  {"BUTTON_HOVER", 0.9, 1.1, 8, false},
+  {"BUTTON_HOVER", 0.8, 0.85, 12, false},
   {"CHANGE_COLOR", 1, 1, 12, false},
 
   -- Player
