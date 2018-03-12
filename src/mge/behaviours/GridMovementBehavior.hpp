@@ -38,12 +38,14 @@ class GridMovementBehavior : public AbstractBehaviour, public SystemEventListene
 		Direction _dir; 
 
 		void Move(sf::Keyboard::Key pKey); 
-		bool CheckWalkable(Direction pDir);
 		bool CheckWalkableTile(int pCol, int pRow);
-		void SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed);
+		void SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed, float pTime);
+		glm::vec3 LerpMove(glm::vec3 pStart, glm::vec3 pEnd, float pPercent);
 		
 		glm::vec3 _currentTile;
 		glm::vec3 _targetTile; 
+		float _startTime; 
+		float _speed;
 
 };
 

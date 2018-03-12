@@ -12,6 +12,7 @@ class ActivatableTile :public SpecialTile
 	public:
 		ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID, Scene* pScene);
 		~ActivatableTile();
+
 		bool CheckPositionOnGrid(int pCol, int pRow);
 
 		void Activate();
@@ -25,6 +26,8 @@ class ActivatableTile :public SpecialTile
 		int GetIndex();
 
 	private:
+		void LerpMove(glm::vec3 currentPos, glm::vec3 targetPos, float steps); 
+
 		Scene * _scene;
 
 		std::string _color;
@@ -34,6 +37,7 @@ class ActivatableTile :public SpecialTile
 		int _col; 
 		int _row; 
 		bool _active;
+		bool _moving; 
 };
 
 #endif

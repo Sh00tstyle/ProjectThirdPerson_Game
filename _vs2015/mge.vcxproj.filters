@@ -187,6 +187,12 @@
     <ClInclude Include="..\src\mge\audio\AudioSource.h">
       <Filter>MGE Source files\mge\audio</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\behaviours\TileBehaviour.hpp">
+      <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\util\Calculate.hpp">
+      <Filter>MGE Source files\mge\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -320,6 +326,12 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\audio\AudioSource.cpp">
       <Filter>MGE Source files\mge\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\behaviours\TileBehaviour.cpp">
+      <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\util\Calculate.cpp">
+      <Filter>MGE Source files\mge\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -158,7 +158,7 @@ std::string Scene::GetPlayfieldValue(int colIndex, int rowIndex) {
 
 glm::vec3 Scene::GetTileWorldPos(int colIndex, int rowIndex, float pTileSize)
 {
-	return glm::vec3(-(colIndex - _levelWidth/2.0f) * pTileSize,0, (rowIndex - _levelWidth / 2.0f) * pTileSize);
+	return glm::vec3(-(colIndex - _levelWidth/2.0f) * pTileSize + 1,0, (rowIndex - _levelHeight / 2.0f) * pTileSize -1);
 }
 
 void Scene::SetPlayfieldColor(int vectorIndex, std::string value) {

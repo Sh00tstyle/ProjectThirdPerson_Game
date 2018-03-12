@@ -176,6 +176,7 @@
     <ClInclude Include="..\src\mge\behaviours\LightControlBehaviour.hpp" />
     <ClInclude Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.h" />
     <ClInclude Include="..\src\mge\behaviours\RotatingBehaviour.hpp" />
+    <ClInclude Include="..\src\mge\behaviours\TileBehaviour.hpp" />
     <ClInclude Include="..\src\mge\config.hpp" />
     <ClInclude Include="..\src\mge\core\AbstractGame.hpp" />
     <ClInclude Include="..\src\mge\core\Camera.hpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\src\mge\tileProp.hpp" />
     <ClInclude Include="..\src\mge\UI\Menu.h" />
     <ClInclude Include="..\src\mge\UI\UiContainer.h" />
+    <ClInclude Include="..\src\mge\util\Calculate.hpp" />
     <ClInclude Include="..\src\mge\util\DebugHud.hpp" />
     <ClInclude Include="..\src\mge\util\tinyxml2.h" />
     <ClInclude Include="..\src\ShaderUtil.h" />
@@ -224,6 +226,7 @@
     <ClCompile Include="..\src\mge\behaviours\LightControlBehaviour.cpp" />
     <ClCompile Include="..\src\mge\behaviours\PlayfieldFocusBehaviour.cpp" />
     <ClCompile Include="..\src\mge\behaviours\RotatingBehaviour.cpp" />
+    <ClCompile Include="..\src\mge\behaviours\TileBehaviour.cpp" />
     <ClCompile Include="..\src\mge\core\AbstractGame.cpp" />
     <ClCompile Include="..\src\mge\core\Camera.cpp" />
     <ClCompile Include="..\src\mge\core\GameObject.cpp" />
@@ -255,6 +258,7 @@
     <ClCompile Include="..\src\mge\player\Pawn.cpp" />
     <ClCompile Include="..\src\mge\UI\Menu.cpp" />
     <ClCompile Include="..\src\mge\UI\UiContainer.cpp" />
+    <ClCompile Include="..\src\mge\util\Calculate.cpp" />
     <ClCompile Include="..\src\mge\util\DebugHud.cpp" />
     <ClCompile Include="..\src\mge\util\tinyxml2.cpp" />
     <ClCompile Include="..\src\ShaderUtil.cpp" />

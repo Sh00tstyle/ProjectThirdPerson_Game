@@ -3,6 +3,8 @@
 #include "mge\managers\ModelManager.h"
 #include "mge\tileProp.hpp"
 #include "mge/audio/AudioContainer.h"
+#include "mge/behaviours/TileBehaviour.hpp"
+
 
 ActivatableTile::ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int pID, Scene* pScene): SpecialTile(pColPos, pRowPos, pVectorPos), _id(pID), _scene(pScene), _active(false) {
 	_col = pColPos; 
@@ -12,6 +14,8 @@ ActivatableTile::ActivatableTile(int pColPos, int pRowPos, int pVectorPos, int p
 ActivatableTile::~ActivatableTile() {
 
 }
+
+
 
 bool ActivatableTile::CheckPositionOnGrid(int pCol, int pRow)
 {
@@ -25,12 +29,18 @@ void ActivatableTile::Activate() {
 	if(_active) return;
 	
 	_active = true;
+	_moving = true; 
 
 	GameObject* tile = _scene->GetTileObject(_col, _row);
+	tile->setBehaviour(new TileBehaviour(tile->getWorldPosition()+ glm::vec3(0, 0.5f, 0)));
 
 	if(tile == nullptr) return;
 
-	/**
+	/*
+	glm::vec3 activePos = glm::vec3(0, 0.5f, 0); 
+	glm::vec3 delta = tile->getLocalPosition - activePos;
+	glm::vec3 moveSteps = delta / 10;
+
 	if(_color == tileProp::RedTile) {
 		tile->setMaterial(ModelManager::GetRedActivatableTileActiveMat(_index));
 	} else if(_color == tileProp::BlueTile) {
@@ -39,8 +49,9 @@ void ActivatableTile::Activate() {
 	/**/
 
 	if(tile->getLocalPosition().y == -0.5f) {
-		tile->translate(glm::vec3(0, 0.5f, 0));
+		//tile->translate(glm::vec3(0, 0.5f, 0));
 		AudioContainer::PlaySound("TILE_MOVE");
+		_scene->SetPlayfieldColor(_col,_row,tileProp::Uncolored); 
 	}
 }
 
@@ -76,4 +87,20 @@ void ActivatableTile::SetIndex(int index) {
 
 int ActivatableTile::GetIndex() {
 	return _index;
+}
+
+void ActivatableTile::LerpMove(glm::vec3 currentPos, glm::vec3 targetPos, float steps)
+{
+	glm::vec3 delta = currentPos - targetPos;
+	glm::vec3 moveSteps = delta / steps;
+	GameObject* tile = _scene->GetTileObject(_col, _row);
+
+	if (currentPos.y < targetPos.y)
+	{
+		tile->setLocalPosition(tile->getWorldPosition() + moveSteps); 
+	}
+	else
+	{
+		_moving = false;
+	}
 }

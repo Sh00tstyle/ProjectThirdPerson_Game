@@ -10,14 +10,13 @@
 #include "mge/managers/InputManager.h"
 #include "mge/audio/AudioContainer.h"
 #include "mge/UI/UiContainer.h"
-
+#include "mge/util/Calculate.hpp"
 
 GridMovementBehavior::GridMovementBehavior(float pMoveAmout, bool pActive, int pCol, int pRow, Scene& pScene)
 	: AbstractBehaviour(), _moveAmount(pMoveAmout), _active(pActive), _onCol(pCol), _onRow(pRow) ,_scene(pScene)
 {
 	SystemEventDispatcher::AddListener(this,"MovementListener"); 
-	
-
+	_startTime = clock() / 100.0f;
 }
 
 GridMovementBehavior::~GridMovementBehavior()
@@ -25,12 +24,28 @@ GridMovementBehavior::~GridMovementBehavior()
 	SystemEventDispatcher::RemoveListener("MovementListener");
 }
 
-
 void GridMovementBehavior::update(float pStep)
 {
-	
+	//std::cout << "The current world possition " << _owner->getWorldPosition() << std::endl; 
 	if (_moving) {
-		SmoothMove(_currentTile, _targetTile, 8); 
+
+		 _speed = ((clock() / 100.0f) - _startTime) * pStep * 8.0f;
+		
+		std::cout << "speed " << _speed << std::endl; 
+
+		if (_speed > 1) {
+			_currentTile = _owner->getWorldPosition(); 
+			_startTime = clock() / 100.0f;
+			_speed = 0; 
+			_moving = false; 
+		}
+
+		if (_speed < 0)
+		{
+			_startTime = clock() / 100.0f;
+			_speed = 1; 
+		}
+		_owner->setLocalPosition(Calculate::Lerp(_currentTile, _targetTile, _speed)); 
 	}
 	//if certain key is pressed move in a direction 
 }
@@ -38,24 +53,22 @@ void GridMovementBehavior::update(float pStep)
 
 void GridMovementBehavior::onNotify(sf::Event pEvent)
 {
-	if(!_moving)
-	Move(pEvent.key.code);
+	if(!_moving) {
+		Move(pEvent.key.code);
+	}
 }
 
 void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 {
 	if(!InputManager::GetGameInput()) return;
 
-	_currentTile = _owner->getWorldPosition();
+	_currentTile = _owner->getWorldPosition(); 
 	/*
 	 tileLeft = _scene.GetPlayfieldValue(_onCol + 1, _onRow);
 	 tileRight = _scene.GetPlayfieldValue(_onCol - 1, _onRow);
 	 tileUp = _scene.GetPlayfieldValue(_onCol, _onRow - 1);
 	 tileDown = _scene.GetPlayfieldValue(_onCol, _onRow + 1);
 	*/
-
-	if (!_moving)
-		_targetTile = _owner->getWorldPosition(); 
 
 	if (pKey == sf::Keyboard::W)
 	{
@@ -64,8 +77,13 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
 			targetTrans = glm::rotate(targetTrans, glm::radians(0.0f), glm::vec3(0, 1, 0));
 			_owner->setTransform(targetTrans);
+			//std::cout << "Target Tile from scene " << _scene.GetTileWorldPos(_onCol, _onRow - 1, _moveAmount) << std::endl;
+			_targetTile = _currentTile - glm::vec3(0,0,_moveAmount);
+
+			//_targetTile.z -= _moveAmount;
+			_startTime = clock() / 100.0f;
+			_speed = 0; 
 			_onRow--;
-			_targetTile.z = _currentTile.z - _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");
@@ -82,7 +100,11 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 			targetTrans = glm::rotate(targetTrans, glm::radians(90.0f), glm::vec3(0, 1, 0));
 			_owner->setTransform(targetTrans);
 			_onCol++;
-			_targetTile.x = _currentTile.x - _moveAmount;
+			_targetTile = _currentTile;
+
+			_speed = 0;
+			_startTime = clock() / 100.0f;
+			_targetTile.x -=  _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");
@@ -97,9 +119,14 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 			glm::mat4 targetTrans;
 			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
 			targetTrans = glm::rotate(targetTrans, glm::radians(180.0f), glm::vec3(0, 1, 0));
-			_owner->setTransform(targetTrans);
 			_onRow++;
-			_targetTile.z = _currentTile.z + _moveAmount;
+			_owner->setTransform(targetTrans);
+			_targetTile = _currentTile;
+
+			_speed = 0;
+			_startTime = clock() / 100.0f;
+
+			_targetTile.z +=   _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");
@@ -116,7 +143,13 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 			targetTrans = glm::rotate(targetTrans, glm::radians(270.0f), glm::vec3(0, 1, 0));
 			_owner->setTransform(targetTrans);
 			_onCol--;
-			_targetTile.x = _currentTile.x + _moveAmount;
+			_targetTile = _currentTile;
+
+
+			_speed = 0;
+			_startTime = clock() / 100.0f;
+
+			_targetTile.x +=  _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");
@@ -126,144 +159,6 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 		
 		
 	}
-}
-
-bool GridMovementBehavior::CheckWalkable(Direction pDir)
-{
-	return true; 
-	//read in the levelData and check if the desired position to the 
-	//value on the grid and return if that is walkable or not
-
-	/*
-		0 = None
-		1 = Uncolored
-		2 = Pawn Spawn Pos + uncolored tile
-		3 = Red Tile
-		4 = Blue Tile
-		5 = Destination
-		6 = PressurePlate
-		7 = ActivatableTile
-		8 = RedColorSwitch (the one that changes the color for the pawn)
-		9 = BlueColorSwitch
-
-	
-	
-
-	if (pDir == Right)
-	{
-		if (CheckWalkableTile(tileRight, _onCol - 1, _onRow))
-		{
-			_onCol--; 
-			return true; 
-		}
-		else
-		{
-			return false; 
-		}
-		/*
-		if (_onCol > 0) {
-			std::string desiredPosOnGrid = _scene.GetPlayfieldValue(_onCol - 1, _onRow);
-			std::cout << desiredPosOnGrid << "Row" << _onRow;
-			if (desiredPosOnGrid == "1")
-			{
-				_onCol--;
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		
-	}
-
-	if (pDir == Left)
-	{
-		if (CheckWalkableTile(tileLeft, _onCol + 1, _onRow))
-		{
-			_onCol++;
-			return true; 
-		}
-		else
-		{
-			return false;
-		}
-		
-		if (_onCol < _scene.GetLevelWidth() - 1) {
-			std::string desiredPosOnGrid = _scene.GetPlayfieldValue(_onCol + 1, _onRow);
-			std::cout << desiredPosOnGrid << " Row" << _onRow;
-			if (desiredPosOnGrid == "1")
-			{
-				_onCol++;
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		
-	}
-
-	if (pDir == Up)
-	{
-		if (CheckWalkableTile(tileUp, _onCol, _onRow - 1))
-		{
-			_onRow--; 
-			return true; 
-		}
-		else
-		{
-			return false;
-		}
-		
-		if (_onRow > 0) {
-
-			std::string desiredPosOnGrid = _scene.GetPlayfieldValue(_onCol, _onRow - 1);
-			std::cout << desiredPosOnGrid << " Row " << _onRow;
-			if (desiredPosOnGrid == "1")
-			{
-				_onRow--;
-				return true;
-			}
-			if (desiredPosOnGrid == "7")
-			{
-				_onRow++;
-			}
-			else {
-				return false;
-			}
-		}
-		
-	}
-
-	if (pDir == Down)
-	{
-		if (CheckWalkableTile(tileRight, _onCol, _onRow + 1))
-		{
-			_onRow++;
-			return true; 
-		}
-		else
-		{
-			return false;
-		}
-		
-		if (_onRow < _scene.GetLevelWidth() - 1) {
-			std::string desiredPosOnGrid = _scene.GetPlayfieldValue(_onCol, _onRow + 1);
-			std::cout << desiredPosOnGrid << "Row " << _onRow;
-			if (desiredPosOnGrid == "1")
-			{
-				_onRow++;
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		
-	}
-
-	return false; 
-	*/
 }
 
 bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
@@ -317,6 +212,7 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	{
 		_activatableTile = _scene.GetActivatableTile(pCol, pRow);
 		if (_activatableTile->IsActive()) {
+
 			_scene.SetPlayfieldColor(pCol, pRow, _scene.GetPawnColor()); 
 			return true;
 		}
@@ -333,44 +229,35 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 		{
 			AudioContainer::PlaySound("END_LEVEL");
 			UiContainer::SelectMenu("LEVEL " + std::to_string(SceneManager::GetLevelNumber()));
-			//SceneManager::LoadNextScene();
 
 			return true;
 		}
 	}
 
-	/*
-	if (pTile == tileProp::RedColorSwitch && _pawnColor == tileProp::BlueColorSwitch)
-	{
-		_scene.SetPawnColor(pTile);
-		return true;
-	}
-	else if (pTile == tileProp::RedColorSwitch && _pawnColor != tileProp::BlueColorSwitch) {
-		return true; 
-	}
-	if (pCol < 0 || pCol > _scene.GetLevelWidth() - 1 || pRow < 0 || pRow > _scene.GetLevelHeight() - 1)
-	{
-		return false; 
-	}
-	*/
-	//if (pTile == tileProp::Destination)
+	
 	return false;
 }
 
-void GridMovementBehavior::SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed)
+void GridMovementBehavior::SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed, float pTime)
 {
 	glm::vec3 delta = pEndTile - pStartTile; 
 	glm::vec3 moveSteps = delta / pSpeed; 
 
+
+
 	if (_owner->getWorldPosition() != pEndTile)
 	{
-		//_owner->translate(moveSteps); 
-		_owner->setLocalPosition(_owner->getWorldPosition() + moveSteps);
+		//_owner->setLocalPosition(_owner->getWorldPosition() + moveSteps );
 	}
 	else
 	{
 		_moving = false; 
 	}
+}
+
+glm::vec3 GridMovementBehavior::LerpMove(glm::vec3 pStart, glm::vec3 pEnd, float pPercent)
+{
+	return glm::vec3(pStart + pPercent * (pEnd - pStart));
 }
 
 
