@@ -40,7 +40,7 @@ class AbstractGame
         //initialize a scene root to which we can attach/add objects
         virtual void _initializeWorld();
 
-		virtual void _drawLoadingScreen() = 0;
+		virtual void _initializeMenu();
 
         //initialize the actual scene, HAS to be done by a subclass
         virtual void _initializeScene() = 0;

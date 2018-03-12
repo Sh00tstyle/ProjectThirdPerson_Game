@@ -28,11 +28,13 @@ class MGEDemo: public AbstractGame
         //override initialize so we can add a DebugHud
         virtual void initialize();
 
+		static void UpdateLoadingScreen(int percentage);
+
 	protected:
 	    //override so we can construct the actual scene
         virtual void _initializeScene();
 
-		virtual void _drawLoadingScreen();
+		virtual void _initializeMenu();
 
 	    //override render to render the hud as well.
 		virtual void _renderUi();
@@ -48,8 +50,9 @@ class MGEDemo: public AbstractGame
 
 		ModelManager* _modelManager;
 		SceneManager* _sceneManager;
-		UiContainer* _uiContainer;
 		AudioContainer* _audioContainer;
+
+		static UiContainer* _uiContainer;
 
         void _updateHud();
 

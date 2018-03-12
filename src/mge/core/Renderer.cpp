@@ -6,6 +6,7 @@
 #include "mge/materials/AbstractMaterial.hpp"
 #include "mge/core/ShaderProgram.hpp"
 #include "mge/config.hpp"
+#include"mge/MGEDemo.hpp"
 #include <iostream>
 
 Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
@@ -72,6 +73,7 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "Framebuffer initialized" << std::endl;
+		MGEDemo::UpdateLoadingScreen(2);
 	}
 
 	//blur fbo and textures
@@ -98,18 +100,18 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 
 	glGenTextures(1, &_depthTexId);
 	glBindTexture(GL_TEXTURE_2D, _depthTexId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, windowWidth, windowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, windowWidth, windowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depthTexId, 0);
-	glDrawBuffer(GL_NONE); //use it here or later when rendering?
-	glReadBuffer(GL_NONE);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depthTexId, 0);
+	glDrawBuffer(GL_NONE);
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "Depthbuffer initialized" << std::endl;
+		MGEDemo::UpdateLoadingScreen(5);
 	}
 
 	//unbind
@@ -120,7 +122,9 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 	//blur shader
 	_blurShader = new ShaderProgram();
 	_blurShader->addShader(GL_VERTEX_SHADER, config::MGE_SHADER_PATH + "blurshader.vs");
+	MGEDemo::UpdateLoadingScreen(7);
 	_blurShader->addShader(GL_FRAGMENT_SHADER, config::MGE_SHADER_PATH + "blurshader.fs");
+	MGEDemo::UpdateLoadingScreen(10);
 	_blurShader->finalize();
 
 	_aVertexBlur = _blurShader->getAttribLocation("vertex");
@@ -131,7 +135,9 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 	//screen shader
 	_screenShader = new ShaderProgram();
 	_screenShader->addShader(GL_VERTEX_SHADER, config::MGE_SHADER_PATH + "screenshader.vs");
+	MGEDemo::UpdateLoadingScreen(12);
 	_screenShader->addShader(GL_FRAGMENT_SHADER, config::MGE_SHADER_PATH + "screenshader.fs");
+	MGEDemo::UpdateLoadingScreen(14);
 	_screenShader->finalize();
 
 	_aVertexScreen = _screenShader->getAttribLocation("vertex");
@@ -142,6 +148,7 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 
 	//screen space quad
 	_screenQuad = Mesh::load(config::MGE_MODEL_PATH + "screen_plane.obj");
+	MGEDemo::UpdateLoadingScreen(17);
 }
 
 Renderer::~Renderer()
@@ -150,7 +157,7 @@ Renderer::~Renderer()
 	delete _screenQuad;
 	glDeleteFramebuffers(1, &_framebufferId);
 	glDeleteFramebuffers(2, _pingpongFBO);
-	glDeleteRenderbuffers(1, &_renderbufferId);
+	//glDeleteRenderbuffers(1, &_renderbufferId);
 
 	delete _blurShader;
 	delete _screenShader;
@@ -201,7 +208,7 @@ void Renderer::renderChildren(World* pWorld, GameObject* pGameObject, AbstractMa
 
 void Renderer::render(World* pWorld, Mesh* pMesh, AbstractMaterial* pMaterial, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
 	if(pMesh != nullptr && pMaterial != nullptr) {
-		if(_depthOnly) pMaterial->renderDepth(pWorld, pMesh);
+		if(_depthOnly) pMaterial->renderDepth(pWorld, pMesh, pModelMatrix, pViewMatrix, pProjectionMatrix);
 		else pMaterial->render(pWorld, pMesh, pModelMatrix, pViewMatrix, pProjectionMatrix);
 	}
 }
@@ -221,60 +228,85 @@ void Renderer::useFramebuffer() {
 
 void Renderer::unbindFramebuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Renderer::drawFramebuffer() {
+void Renderer::drawFramebuffer(bool usePP) {
 	//draws the scene to the screen (with post processing)
 	glDisable(GL_DEPTH_TEST);
 
-	//render to framebuffers and blur
-	bool horizontal = true, first_iteration = true;
-	int amount = 10;
+	if(usePP) {
+		//render to framebuffers and blur
+		bool horizontal = true, first_iteration = true;
+		int amount = 10;
 
-	_blurShader->use(); //blur
-	for(unsigned int i = 0; i < amount; i++) {
-		glBindFramebuffer(GL_FRAMEBUFFER, _pingpongFBO[horizontal]);
+		_blurShader->use(); //blur
+		for(unsigned int i = 0; i < amount; i++) {
+			glBindFramebuffer(GL_FRAMEBUFFER, _pingpongFBO[horizontal]);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, first_iteration ? _glowbufferId : _pingpongBuffers[!horizontal]);
+			//pass in texture and horizontal uniforms to the shader
+			glUniform1i(_uScreenTextureBlur, 0);
+			glUniform1i(_uHorizontalBlur, horizontal);
+
+			//render quad to framebuffer
+			_screenQuad->streamToOpenGL(_aVertexBlur, -1, _aUVBlur);
+
+			horizontal = !horizontal;
+			if(first_iteration)
+				first_iteration = false;
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		//render to screen
+		_screenShader->use(); //bloom
+
+		//tell the shader that we are using pp
+		glUniform1i(_screenShader->getUniformLocation("usePP"), true);
+
+		//pass in uniforms to the shader
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, _mainbufferId); //screen texture
+		glUniform1i(_uScreenTextureHDR, 0);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, _pingpongBuffers[0]); //blurred texture
+		glUniform1i(_uScreenTextureBloom, 1);
+
+		glUniform1f(_uExposureScreen, 1.0f);
+
+		//render quad to screen
+		_screenQuad->streamToOpenGL(_aVertexScreen, -1, _aUVScreen);
+	} else {
+		//just render the scene to the quad
+		_screenShader->use();
+
+		//tell the shader that we are not using pp
+		glUniform1i(_screenShader->getUniformLocation("usePP"), false);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, first_iteration ? _glowbufferId : _pingpongBuffers[!horizontal]);
-		//pass in texture and horizontal uniforms to the shader
-		glUniform1i(_uScreenTextureBlur, 0);
-		glUniform1i(_uHorizontalBlur, horizontal);
+		glBindTexture(GL_TEXTURE_2D, _depthTexId); //screen texture
+		glUniform1i(_uScreenTextureHDR, 0);
 
-		//render quad to framebuffer
-		_screenQuad->streamToOpenGL(_aVertexBlur, -1, _aUVBlur);
-
-		horizontal = !horizontal;
-		if(first_iteration)
-			first_iteration = false;
+		//render quad to screen
+		_screenQuad->streamToOpenGL(_aVertexScreen, -1, _aUVScreen);
 	}
+}
 
+void Renderer::useDepthbuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, _depthbufferId);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	_depthOnly = true;
+}
+
+void Renderer::unbindDepthbuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	//render to screen
-	_screenShader->use(); //bloom
-
-	/**
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _depthbufferId); //screen texture
-	glUniform1i(_uScreenTextureHDR, 0);
-	/**/
-
-	//pass in uniforms to the shader
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _mainbufferId); //screen texture
-	glUniform1i(_uScreenTextureHDR, 0);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _pingpongBuffers[0]); //blurred texture
-	glUniform1i(_uScreenTextureBloom, 1);
-
-	glUniform1f(_uExposureScreen, 1.0f);
-	
-	//render quad to screen
-	_screenQuad->streamToOpenGL(_aVertexScreen, -1, _aUVScreen);
+	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::setScreenSizes(int windowSizeX, int windowSizeY) {
@@ -331,18 +363,4 @@ void Renderer::setScreenSizes(int windowSizeX, int windowSizeY) {
 	glBindTexture(GL_TEXTURE_2D, 0); //unbind texture
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0); //unbind renderbuffer
-}
-
-void Renderer::useDepthbuffer() {
-	glBindFramebuffer(GL_FRAMEBUFFER, _depthbufferId);
-	glClearColor(0.f, 0.f, 0.f, 1.f);
-	glClearDepthf(1.f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-
-	_depthOnly = true;
-}
-
-void Renderer::unbindDepthbuffer() {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

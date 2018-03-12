@@ -115,22 +115,32 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
     pMesh->streamToOpenGL(_aVertex, _aNormal, _aUV);
 }
 
-void TextureMaterial::renderDepth(World * pWorld, Mesh * pMesh) {
-	if(pWorld->getLightCount() == 0) return;
+void TextureMaterial::renderDepth(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pPerspectiveMatrix) {
+	//render(pWorld, pMesh, pModelMatrix, pViewMatrix, pPerspectiveMatrix); //literally do the exact same as above
+	//return;
+
+	//if(pWorld->getLightCount() == 0) return;
 
 	_depthShader->use();
 
+	/**
 	Light* currentLight = pWorld->getLightAt(0); //hardcoded first light
 
 	glm::vec3 lightPos = currentLight->getLocalPosition();
+	glm::vec3 lightDirection = currentLight->getTransform()[2];
 
 	glm::mat4 projectionMat = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-	glm::mat4 viewMat = glm::lookAt(lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 viewMat = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 modelMat = glm::mat4(1.0);
+	/**/
 
-	glUniformMatrix4fv(_depthShader->getUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMat));
-	glUniformMatrix4fv(_depthShader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMat));
-	glUniformMatrix4fv(_depthShader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMat));
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _diffuseTexture->getId());
+	glUniform1i(_depthShader->getUniformLocation("diffuseTexture"), 0);
 
-	pMesh->streamToOpenGL(_depthShader->getAttribLocation("vertex"), -1, -1);
+	glUniformMatrix4fv(_depthShader->getUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(pModelMatrix));
+	glUniformMatrix4fv(_depthShader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(pViewMatrix));
+	glUniformMatrix4fv(_depthShader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(pPerspectiveMatrix));
+
+	pMesh->streamToOpenGL(_depthShader->getAttribLocation("vertex"), _depthShader->getAttribLocation("normal"), _depthShader->getAttribLocation("uv"));
 }

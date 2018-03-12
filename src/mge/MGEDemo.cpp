@@ -32,6 +32,8 @@
 
 #include <lua.h>
 
+UiContainer* MGEDemo::_uiContainer;
+
 //construct the game class into _window, _renderer and hud (other parts are initialized by build)
 MGEDemo::MGEDemo() :AbstractGame(), _hud(0) {
 }
@@ -40,28 +42,32 @@ void MGEDemo::initialize() {
 	//setup the core part
 	AbstractGame::initialize();
 
+	UpdateLoadingScreen(19);
+
 	//load audio
 	std::cout << "Initializing Audio" << std::endl;
 	_audioContainer = new AudioContainer();
 	std::cout << "Audio initialized" << std::endl << std::endl;
 
-	//draws the hud and ui
-	std::cout << "Initializing MENU/UI" << std::endl;
-	_uiContainer = new UiContainer(_window);
-	std::cout << "MENU/UI initialized" << std::endl << std::endl;
+	UpdateLoadingScreen(21);
 
 	//setup the custom part so we can display some text
 	std::cout << "Initializing HUD" << std::endl;
 	_hud = new DebugHud(_window);
 	std::cout << "HUD initialized." << std::endl << std::endl;
 
-	//loading screen
-	_drawLoadingScreen();
+	UpdateLoadingScreen(24);
 
 	//setup the scene
 	_initializeScene();
 
+	std::cout << "END LOADING HERE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
+
 	UiContainer::SelectMenu("MAIN");
+}
+
+void MGEDemo::UpdateLoadingScreen(int percentage) {
+	_uiContainer->drawLoading(percentage);
 }
 
 //build the game _world
@@ -78,7 +84,9 @@ void MGEDemo::_initializeScene() {
 
 	//background "skybox" plane
 	Mesh* planeMesh = Mesh::load(config::MGE_MODEL_PATH + "plane.obj");
+	UpdateLoadingScreen(26);
 	AbstractMaterial* planeMat = new ScrollingMaterial(Texture::load(config::MGE_TEXTURE_PATH + "skybox.png")); //replace this with another material and texture for a scrolling shader
+	UpdateLoadingScreen(31);
 	GameObject* backgroundPlane = new GameObject("bgPlane", glm::vec3(0, -10, 0));
 	backgroundPlane->scale(glm::vec3(100, 1, 100)); //scale to screensize
 	backgroundPlane->rotate(glm::radians(-30.0f), glm::vec3(0, 1, 0)); //face the camera on the y axis
@@ -91,8 +99,8 @@ void MGEDemo::_initializeScene() {
 	//directional light
 	Mesh* cubeMeshF = Mesh::load(config::MGE_MODEL_PATH + "cube_flat.obj");
 	Light* mainLight = new Light(LightType::DIRECTIONAL, //light type
-								 glm::vec3(1.0f, 244.0f/255.0f, 214.0f/255.0f), //light color (yellow)
-								 0.8f, //intensity = 1
+								 glm::vec3(240.0f/255.0f, 240.0f/255.0f, 188.0f/255.0f), //light color (yellow)
+								 0.1f, //intensity = 1
 								 0.1f, //ambientContribution = 0.5
 								 1.0f, //constantAttenutation = 1
 								 0.3f, //linearAttenuation
@@ -124,15 +132,15 @@ void MGEDemo::_initializeScene() {
 	_renderer->setClearColor(119, 129, 136, 1); //grey background
 }
 
-void MGEDemo::_drawLoadingScreen() {
-	if(_window->isOpen()) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void MGEDemo::_initializeMenu() {
+	//draws the hud and ui
+	std::cout << "Initializing MENU/UI" << std::endl;
+	_uiContainer = new UiContainer(_window);
+	std::cout << "MENU/UI initialized" << std::endl << std::endl;
 
-		_updateHud();
-		_uiContainer->draw();
-
-		_window->display();
-	}
+	std::cout << "UPDATE LOADING HERE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
+	//loading screen
+	UpdateLoadingScreen(0);
 }
 
 void MGEDemo::_renderUi() {
@@ -186,14 +194,8 @@ void MGEDemo::_processEvents() {
 			case sf::Event::KeyPressed:
 				SystemEventDispatcher::SendKeyEvent(event);
 
-				//reset current level
-				if(event.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
-					SceneManager::ReloadScene();
-					AudioContainer::PlaySound("RESET_LEVEL");
-				}
-
 				//DEBUG
-
+				/**/
 				//load next level
 				if(event.key.code == sf::Keyboard::F && InputManager::GetGameInput()) {
 					SceneManager::LoadNextScene();
@@ -203,6 +205,7 @@ void MGEDemo::_processEvents() {
 				if (event.key.code == sf::Keyboard::L && InputManager::GetGameInput()) {
 					SceneManager::LoadFirstScene();
 				}
+				/**/
 				break;
 
 			case sf::Event::Resized:

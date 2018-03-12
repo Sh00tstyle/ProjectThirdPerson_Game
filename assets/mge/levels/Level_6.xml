@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Playfield Height="10" Width="8" Content="0 0 0 5 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 1 0 0 0 0 1 1 1 1 1 1 7 6 1 8 1 6 1 0 0 0 1 1 1 1 1 0 0 0 2 0 0 0 0 0 0 0" />
+  <HintPlayfields>
+    <HintPlayfield Height="0" Width="0" Content="0 0 0 5 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 1 0 0 0 0 4 4 4 1 1 1 7 6 4 8 1 6 1 0 0 0 1 1 1 1 1 0 0 0 2 0 0 0 0 0 0 0" />
+    <HintPlayfield Height="0" Width="0" Content="0 0 0 5 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 1 0 0 0 0 4 4 4 1 1 1 7 6 4 8 1 6 4 0 0 0 1 1 1 4 4 0 0 0 2 0 0 0 0 0 0 0" />
+    <HintPlayfield Height="0" Width="0" Content="0 0 0 5 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 3 0 0 0 0 4 4 4 3 1 1 7 6 4 8 3 6 4 0 0 0 1 1 1 4 4 0 0 0 2 0 0 0 0 0 0 0" />
+  </HintPlayfields>
+  <HintProps TriesPerHint="3" />
   <SceneObjects />
   <PressurePlates>
     <PressurePlate ColPos="2" RowPos="5" ID="0" NeededColor="4" />

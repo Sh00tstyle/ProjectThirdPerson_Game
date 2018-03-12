@@ -14,6 +14,9 @@
 //static variables
 sf::RenderWindow* UiContainer::_window;
 Menu* UiContainer::_activeMenu;
+bool UiContainer::_hintActive;
+int UiContainer::_hintIgnoCount;
+int UiContainer::_hintsTaken;
 std::vector<Menu*> UiContainer::_menus = std::vector<Menu*>();
 std::map<std::string, sf::Font*> UiContainer::_fonts = std::map<std::string, sf::Font*>();
 
@@ -22,6 +25,7 @@ UiContainer::UiContainer(sf::RenderWindow* pWindow) {
 
 	//init static variables
 	_menus.clear();
+	ResetHints();
 
 	//create all menus
 	_initMenus();
@@ -58,19 +62,26 @@ void UiContainer::SelectMenu(std::string target) {
 	InputManager::SetMenuInput(true);
 
 	if(target == "HUD") {
+		if(_hintActive) {
+			target = "HUD_HINT";
+			std::cout << "HINT HUD" << std::endl;
+		} else {
+			std::cout << "NORMAL HUD" << std::endl;
+		}
+
 		//disable menu input and enable game input
 		InputManager::SetGameInput(true);
 		InputManager::SetMenuInput(false);
 
 		AudioContainer::StopSound("MAIN_BGM");
 		AudioContainer::PlaySound("BGM_LEVEL");
-	} else if (target == "MAIN") {
+	} else if(target == "MAIN") {
 		AudioContainer::StopSound("BGM_LEVEL");
 		AudioContainer::PlaySound("MAIN_BGM");
 	} else if(target == "PAUSE") {
-		AudioContainer::PlaySound("OPEN_PAUSE"); //no bgm
+		AudioContainer::PlaySound("OPEN_PAUSE"); //level bgm
 	} else if(target.substr(0, 5) == "LEVEL") {
-		AudioContainer::PlaySound("OPEN_RESOLUTION");
+		AudioContainer::PlaySound("OPEN_RESOLUTION"); //level bgm
 	}
 
 	for(unsigned i = 0; i < _menus.size(); i++) {
@@ -90,6 +101,52 @@ sf::Font* UiContainer::GetFontByName(std::string fontname) {
 	return _fonts[fontname];
 }
 
+int UiContainer::GetIgnoCount() {
+	return _hintIgnoCount;
+}
+
+bool UiContainer::GetHintActive() {
+	return _hintActive;
+}
+
+void UiContainer::SetHintActive(bool value) {
+	_hintActive = value;
+
+	SelectMenu("HUD");
+}
+
+int UiContainer::GetHintsTaken() {
+	return _hintsTaken;
+}
+
+void UiContainer::ResetHints() {
+	_hintActive = false;
+	_hintIgnoCount = 0;
+	_hintsTaken = 0;
+}
+
+void UiContainer::drawLoading(int percentage) {
+	if(_window->isOpen()) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glActiveTexture(GL_TEXTURE0);
+
+		_window->pushGLStates();
+
+		//modify our percentage text in the loading screen
+		for(int i = 0; i < _menus.size(); i++) {
+			if(_menus[i]->GetMenuName() == "LOADING") {
+				_menus[i]->SetTextAt(0, std::to_string(percentage) + "%"); //hardcoded for at least one text in the loading menu
+
+				break; //no need to loop further since we found our object
+			}
+		}
+
+		draw();
+
+		_window->display();
+	}
+}
+
 int UiContainer::_createMenu(lua_State * state) {
 	std::string menuName = lua_tostring(state, 1);
 	int imageCount = (int)lua_tointeger(state, 2); //1 images = 1 texture
@@ -98,6 +155,10 @@ int UiContainer::_createMenu(lua_State * state) {
 	bool horizontalNav = lua_toboolean(state, 5);
 
 	lua_settop(state, 0); //clear the stack
+
+	if(menuName == "LOADING") {
+		textCount = 1;
+	}
 
 	Menu* newMenu = new Menu(menuName);
 	newMenu->InitMenu(imageCount, buttonCount, textCount, horizontalNav);
@@ -207,7 +268,7 @@ void UiContainer::_drawAll() {
 	if(_activeMenu == nullptr) return;
 
 	if(_activeMenu->GetBackgroundSprite().getTexture() != nullptr) _window->draw(_activeMenu->GetBackgroundSprite()); //draw the background first
-	
+
 	//draw all images 
 	for(int i = 0; i < _activeMenu->GetImgCount(); i++) {
 		_window->draw(_activeMenu->GetImgAt(i));
@@ -239,7 +300,7 @@ void UiContainer::_initMenus() {
 	std::string filename = config::MGE_LUA_PATH + "ui.lua";
 	luaL_dofile(state, filename.c_str()); //execute lua file
 
-	//calling Menu.init() in lua
+										  //calling Menu.init() in lua
 	lua_getglobal(state, "Menu"); // Menu table on stack
 	if(lua_istable(state, -1)) {
 		lua_getfield(state, -1, "init"); //Menu.init on stack
@@ -265,6 +326,32 @@ void UiContainer::onNotify(sf::Event pEvent) {
 			SelectMenu("PAUSE");
 		} else if(_activeMenu->GetMenuName() == "PAUSE") {
 			SelectMenu("HUD");
-		}	
+		}
+	} else if(pEvent.key.code == sf::Keyboard::H && InputManager::GetGameInput()) {
+		if(_activeMenu->GetMenuName() == "HUD_HINT") {
+			//hint used
+			_hintsTaken++;
+
+			//reset current level
+			SceneManager::SetLevelTries(SceneManager::GetLevelTries() - 1); //revert the +1 in tries
+			SceneManager::ReloadScene(true);
+
+			SetHintActive(false);
+
+			std::cout << "Use Hint" << std::endl;
+		}
+
+		std::cout << "Pressed H" << std::endl;
+	} else if(pEvent.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
+		//hint ignored
+		if(_activeMenu->GetMenuName() == "HUD_HINT") {
+			_hintIgnoCount++;
+		}
+
+		std::cout << "Reload level" << std::endl;
+
+		//reset current level
+		SceneManager::ReloadScene(false);
+		AudioContainer::PlaySound("RESET_LEVEL");
 	}
 }

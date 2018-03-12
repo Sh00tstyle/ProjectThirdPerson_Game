@@ -237,7 +237,7 @@ void Menu::_useButton(int index) {
 		UiContainer::SelectMenu("HUD");
 	} else if(relevantString == "RESET") {
 		//reset the scene and then go to the HUD menu
-		SceneManager::ReloadScene();
+		SceneManager::ReloadScene(false);
 		AudioContainer::PlaySound("BUTTON_CLICK");
 		UiContainer::SelectMenu("HUD");
 	} else if(relevantString == "LEVEL") {

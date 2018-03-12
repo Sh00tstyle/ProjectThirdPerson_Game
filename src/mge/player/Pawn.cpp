@@ -1,5 +1,8 @@
 #include "mge/player/Pawn.hpp"
 #include "mge/behaviours/GridMovementBehavior.hpp"
+#include "mge/tileProp.hpp"
+#include "mge/managers/ModelManager.h"
+#include "mge/audio/AudioContainer.h"
 
 Pawn::Pawn(std::string pName, glm::vec3 pPosition): GameObject(pName, pPosition)
 {
@@ -11,9 +14,18 @@ Pawn::~Pawn()
 {
 }
 
-void Pawn::ChangeState(AbstractMaterial * material)
+void Pawn::ChangeState(std::string value)
 {
-	setMaterial(material);
+	if(value == _pawnColor) return; //we are already in the color
+
+	if(value == tileProp::RedColorSwitch) {
+		setMaterial(ModelManager::GetRedPlayerMat());
+	} else if(value == tileProp::BlueColorSwitch) {
+		setMaterial(ModelManager::GetBluePlayerMat());
+	}
+
+	_pawnColor = value;
+	AudioContainer::PlaySound("CHANGE_COLOR");
 }
 
 bool Pawn::CheckWalkableColor(AbstractMaterial * pMaterial)
@@ -24,6 +36,14 @@ bool Pawn::CheckWalkableColor(AbstractMaterial * pMaterial)
 		return true; 
 	else
 	return false;
+}
+
+std::string Pawn::getPawnColor() {
+	return _pawnColor;
+}
+
+void Pawn::setPawnColor(std::string color) {
+	_pawnColor = color;
 }
 
 /*
