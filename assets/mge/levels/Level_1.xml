@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Playfield Height="4" Width="4" Content="5 1 1 9 0 0 0 1 0 0 0 1 0 0 0 2" />
+  <HintPlayfields>
+    <HintPlayfield Height="0" Width="0" Content="5 1 1 9 0 0 0 1 0 0 0 3 0 0 0 2" />
+    <HintPlayfield Height="0" Width="0" Content="5 1 1 9 0 0 0 4 0 0 0 3 0 0 0 2" />
+  </HintPlayfields>
+  <HintProps TriesPerHint="1" />
   <SceneObjects>
     <SceneObject Name="Scenery" xPos="-0.36" yPos="-0.06" zPos="-1.22" xRot="0" yRot="-0.393861681" zRot="0" wRot="0.9191697" xScale="1" yScale="1" zScale="1" Model="Level1.obj" Texture="Level1.png" />
   </SceneObjects>

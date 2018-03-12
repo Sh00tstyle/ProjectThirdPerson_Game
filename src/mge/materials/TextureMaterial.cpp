@@ -116,6 +116,9 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
 }
 
 void TextureMaterial::renderDepth(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pPerspectiveMatrix) {
+	//render(pWorld, pMesh, pModelMatrix, pViewMatrix, pPerspectiveMatrix); //literally do the exact same as above
+	//return;
+
 	//if(pWorld->getLightCount() == 0) return;
 
 	_depthShader->use();
@@ -131,9 +134,13 @@ void TextureMaterial::renderDepth(World* pWorld, Mesh* pMesh, const glm::mat4& p
 	glm::mat4 modelMat = glm::mat4(1.0);
 	/**/
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _diffuseTexture->getId());
+	glUniform1i(_depthShader->getUniformLocation("diffuseTexture"), 0);
+
 	glUniformMatrix4fv(_depthShader->getUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(pModelMatrix));
 	glUniformMatrix4fv(_depthShader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(pViewMatrix));
 	glUniformMatrix4fv(_depthShader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(pPerspectiveMatrix));
 
-	pMesh->streamToOpenGL(_depthShader->getAttribLocation("vertex"), -1, -1);
+	pMesh->streamToOpenGL(_depthShader->getAttribLocation("vertex"), _depthShader->getAttribLocation("normal"), _depthShader->getAttribLocation("uv"));
 }

@@ -38,10 +38,7 @@ void AudioSource::AddSound(std::string filename) {
 void AudioSource::Play() {
 	if(_sounds.size() == 0) return;
 
-	sf::Sound* mySound;
-	
-	if(_sounds.size() == 1)  mySound = _sounds[0];
-	else mySound = _sounds[rand() % _sounds.size()];
+	sf::Sound* mySound = _sounds[rand() % _sounds.size()];
 
 	//dont play if its playing
 	if(mySound->getStatus() == sf::SoundSource::Status::Playing && _isLooping) return;

@@ -77,10 +77,10 @@ void SceneManager::LoadSceneAtIndex(int index) {
 
 void SceneManager::ReloadScene() {
 	if(_currentScene != nullptr) {
+		_levelTries++;
+
 		_currentScene->RemoveScene();
 		_currentScene->ConstructScene();
-
-		_levelTries++;
 	}
 }
 
@@ -107,7 +107,7 @@ void SceneManager::_loadAllScenes() {
 
 	int percentageCount = 0;
 
-	while(_fileExists(filepath)/* && levelIndex == 1*/) { //only load one level for now
+	while(_fileExists(filepath) && levelIndex == 1) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
 		MGEDemo::UpdateLoadingScreen(64 + percentageCount);
 		_allScenes.push_back(newScene);

@@ -24,9 +24,9 @@ void main()
         result = pow(result, vec3(1.0 / gamma));
         FragColor = vec4(result, 1.0);
     } else {
-        //FragColor = texture(screenTexture, TexCoords);
+        FragColor = texture(screenTexture, TexCoords);
 
-        /**/
+        /**
         //drawing depth map
         float depthValue = texture(screenTexture, TexCoords).r;
         FragColor = vec4(vec3(depthValue), 1.0f);

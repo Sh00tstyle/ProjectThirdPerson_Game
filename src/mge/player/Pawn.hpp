@@ -6,6 +6,7 @@
 #include "mge/materials/AbstractMaterial.hpp"
 #include <SFML/Window/Event.hpp>
 #include <vector>
+#include <string>
 #include "glm.hpp"
 
 #pragma once
@@ -18,11 +19,16 @@ class Pawn :
 		Pawn(std::string pName, glm::vec3 pPosition);
 		~Pawn();
 		
-		void ChangeState(AbstractMaterial* pMaterial); 
+		void ChangeState(std::string value); 
 		bool CheckWalkableColor(AbstractMaterial* pMaterial);
 		//virtual void onNotify(sf::Event pEvent); 
 
+		std::string getPawnColor();
+		void setPawnColor(std::string color);
+
 	private:
+
+		std::string _pawnColor;
 
 		//GridMovementBehavior* _movement; 
 		std::vector<std::string> _levelData; 

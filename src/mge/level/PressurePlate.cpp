@@ -35,6 +35,8 @@ bool PressurePlate::CheckPositionOnGrid(int pCol, int pRow)
 }
 
 void PressurePlate::Activate() {
+	if(!_targetTile->IsActive()) return;
+
 	AudioContainer::PlaySound("ACTIVATE_PLATE");
 
 	_targetTile->Activate();

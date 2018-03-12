@@ -30,6 +30,7 @@
 #include "mge/config.hpp"
 
 #include "mge/managers/ModelManager.h"
+#include "mge/managers/SceneManager.h";
 
 Scene::Scene(std::string pFilepath, World* pWorld) {
 	_world = pWorld;
@@ -44,6 +45,16 @@ Scene::~Scene() {
 }
 
 void Scene::ConstructScene() {
+	int fieldIndex = (SceneManager::GetLevelTries() - 1) / _triesPerHint; //int division, so no need to floor down
+
+	//restore old playfield data in case we reload the scene
+	if(fieldIndex == 0) {
+		_playfieldData = _unmodifedPlayfieldData;
+	} else {
+		if(fieldIndex > _hintData.size()) fieldIndex = _hintData.size();
+		_playfieldData = _hintData[fieldIndex - 1];
+	}
+
 	//Make the scene from there
 	for(unsigned i = 0; i < _playfieldData.size(); i++) {
 		std::string tileProperty = _playfieldData[i];
@@ -69,9 +80,9 @@ void Scene::ConstructScene() {
 
 			//coloring tile and player
 			if(_spawnTile->GetStartingColor() == tileProp::RedTile) {
-				_pawn->setMaterial(ModelManager::GetRedPlayerMat());
+				_pawn->ChangeState(tileProp::RedColorSwitch);
 			} else {
-				_pawn->setMaterial(ModelManager::GetBluePlayerMat());
+				_pawn->ChangeState(tileProp::BlueColorSwitch);
 			}
 
 			_pawn->setBehaviour(new GridMovementBehavior(tileSize, true,col, row,  *this));
@@ -106,8 +117,6 @@ void Scene::ConstructScene() {
 }
 
 void Scene::RemoveScene() {
-	//restore old playfield data in case we reload the scene
-	_playfieldData = _unmodifedPlayfieldData;
 	SystemEventDispatcher::RemoveListener("MovementListener");
 
 	//reset all activatable tiles
@@ -183,12 +192,7 @@ void Scene::SetPlayfieldColor(int colIndex, int rowIndex, std::string value) {
 
 void Scene::SetPawnColor(std::string value)
 {
-	if (value == tileProp::RedColorSwitch) {
-		_pawn->ChangeState(ModelManager::GetRedPlayerMat()); 
-	}
-	else if (value == tileProp::BlueColorSwitch) {
-		_pawn->ChangeState(ModelManager::GetBluePlayerMat());
-	}
+	_pawn->ChangeState(value);
 }
 
 std::string Scene::GetPawnColor()
@@ -260,11 +264,37 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 	_playfieldData = results;
 	_unmodifedPlayfieldData = results;
 
+	//hint playfields
+	element = root->FirstChildElement("HintPlayfields");
+	if(element == nullptr) std::cout << "Null in HintPlayfields" << std::endl;
+
+	tinyxml2::XMLElement* listElement = element->FirstChildElement("HintPlayfield");
+
+	while(listElement != nullptr) {
+		readChar = listElement->Attribute("Content"); //read list in the element of "HintPlayfield" as char
+		std::string hintString(readChar); //converting char into a string
+		std::istringstream iss(hintString);
+
+		//vector of chars that represent tile values, split arrayString by " "
+		std::vector<std::string> resultVector((std::istream_iterator<std::string>(iss)), std::istream_iterator<std::string>());
+
+		//store it (yes, the whole vector gets stored in a vector)
+		_hintData.push_back(resultVector);
+
+		listElement = listElement->NextSiblingElement("HintPlayfield");
+	}
+
+	//hint props
+	element = root->FirstChildElement("HintProps");
+	if(element == nullptr) std::cout << "Null in HintProps" << std::endl;
+
+	element->QueryIntAttribute("TriesPerHint", &_triesPerHint);
+
 	//scene objects
 	element = root->FirstChildElement("SceneObjects"); //gp to the next element
 	if(element == nullptr) std::cout << "Null in Scene Objects" << std::endl;
 
-	tinyxml2::XMLElement* listElement = element->FirstChildElement("SceneObject");
+	listElement = element->FirstChildElement("SceneObject");
 	
 	while(listElement != nullptr) {
 		//name

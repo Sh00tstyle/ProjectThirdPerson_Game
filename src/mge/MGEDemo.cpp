@@ -99,8 +99,8 @@ void MGEDemo::_initializeScene() {
 	//directional light
 	Mesh* cubeMeshF = Mesh::load(config::MGE_MODEL_PATH + "cube_flat.obj");
 	Light* mainLight = new Light(LightType::DIRECTIONAL, //light type
-								 glm::vec3(1.0f, 244.0f/255.0f, 214.0f/255.0f), //light color (yellow)
-								 0.8f, //intensity = 1
+								 glm::vec3(240.0f/255.0f, 240.0f/255.0f, 188.0f/255.0f), //light color (yellow)
+								 0.1f, //intensity = 1
 								 0.1f, //ambientContribution = 0.5
 								 1.0f, //constantAttenutation = 1
 								 0.3f, //linearAttenuation

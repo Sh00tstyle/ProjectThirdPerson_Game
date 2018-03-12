@@ -11,7 +11,6 @@
 #include "mge/audio/AudioContainer.h"
 #include "mge/UI/UiContainer.h"
 
-
 GridMovementBehavior::GridMovementBehavior(float pMoveAmout, bool pActive, int pCol, int pRow, Scene& pScene)
 	: AbstractBehaviour(), _moveAmount(pMoveAmout), _active(pActive), _onCol(pCol), _onRow(pRow) ,_scene(pScene)
 {
@@ -294,13 +293,11 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueTile && _scene.GetPawnColor() == tileProp::BlueTile)
 		return true;
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::RedColorSwitch) {
-		AudioContainer::PlaySound("CHANGE_COLOR");
-		 _scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
+		 _scene.SetPawnColor(tileProp::RedColorSwitch);
 		return true; 
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueColorSwitch) {
-		AudioContainer::PlaySound("START_LEVEL");
-		_scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
+		_scene.SetPawnColor(tileProp::BlueColorSwitch);
 		return true;
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::PressurePlate)
