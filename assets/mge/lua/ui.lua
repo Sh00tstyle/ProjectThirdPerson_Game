@@ -12,6 +12,7 @@ Menus = {
   {"Controls",               "background.png", false}, 
   {"PAUSE",                  "",            true},
   {"HUD",                    "",            false},
+  {"HUD_HINT",               "",            false},
   {"LOADING",                "loading.png", false},
   {"LevelSelect 0",          "background.png", true},
   {"LevelSelect 1",          "background.png", true},

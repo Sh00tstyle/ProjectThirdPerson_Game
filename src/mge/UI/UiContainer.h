@@ -22,11 +22,22 @@ class UiContainer : public SystemEventListener {
 
 		static sf::Font* GetFontByName(std::string fontname);
 
+		static int GetIgnoCount();
+		static bool GetHintActive();
+		static void SetHintActive(bool value);
+		static int GetHintsTaken();
+
+		static void ResetHints();
+
 		void drawLoading(int percentage);
 
 	private:
 		static sf::RenderWindow* _window;
 		static Menu* _activeMenu;
+
+		static bool _hintActive;
+		static int _hintIgnoCount;
+		static int _hintsTaken;
 
 		static std::vector<Menu*> _menus;
 		static std::map<std::string, sf::Font*> _fonts;

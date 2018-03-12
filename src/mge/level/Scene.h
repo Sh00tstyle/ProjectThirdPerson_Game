@@ -19,7 +19,7 @@ class Scene {
 		Scene(std::string filepath, World* pWorld);
 		~Scene();
 		
-		void ConstructScene();
+		void ConstructScene(bool hints);
 		void RemoveScene();
 
 		int GetLevelWidth();

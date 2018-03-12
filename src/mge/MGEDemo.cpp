@@ -194,14 +194,8 @@ void MGEDemo::_processEvents() {
 			case sf::Event::KeyPressed:
 				SystemEventDispatcher::SendKeyEvent(event);
 
-				//reset current level
-				if(event.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
-					SceneManager::ReloadScene();
-					AudioContainer::PlaySound("RESET_LEVEL");
-				}
-
 				//DEBUG
-
+				/**/
 				//load next level
 				if(event.key.code == sf::Keyboard::F && InputManager::GetGameInput()) {
 					SceneManager::LoadNextScene();
@@ -211,6 +205,7 @@ void MGEDemo::_processEvents() {
 				if (event.key.code == sf::Keyboard::L && InputManager::GetGameInput()) {
 					SceneManager::LoadFirstScene();
 				}
+				/**/
 				break;
 
 			case sf::Event::Resized:

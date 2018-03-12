@@ -14,6 +14,9 @@
 //static variables
 sf::RenderWindow* UiContainer::_window;
 Menu* UiContainer::_activeMenu;
+bool UiContainer::_hintActive;
+int UiContainer::_hintIgnoCount;
+int UiContainer::_hintsTaken;
 std::vector<Menu*> UiContainer::_menus = std::vector<Menu*>();
 std::map<std::string, sf::Font*> UiContainer::_fonts = std::map<std::string, sf::Font*>();
 
@@ -22,6 +25,7 @@ UiContainer::UiContainer(sf::RenderWindow* pWindow) {
 
 	//init static variables
 	_menus.clear();
+	ResetHints();
 
 	//create all menus
 	_initMenus();
@@ -57,7 +61,14 @@ void UiContainer::SelectMenu(std::string target) {
 	InputManager::SetGameInput(false);
 	InputManager::SetMenuInput(true);
 
-	if(target == "HUD" || target == "HUD_HINT") {
+	if(target == "HUD") {
+		if(_hintActive) {
+			target = "HUD_HINT";
+			std::cout << "HINT HUD" << std::endl;
+		} else {
+			std::cout << "NORMAL HUD" << std::endl;
+		}
+
 		//disable menu input and enable game input
 		InputManager::SetGameInput(true);
 		InputManager::SetMenuInput(false);
@@ -68,9 +79,9 @@ void UiContainer::SelectMenu(std::string target) {
 		AudioContainer::StopSound("BGM_LEVEL");
 		AudioContainer::PlaySound("MAIN_BGM");
 	} else if(target == "PAUSE") {
-		AudioContainer::PlaySound("OPEN_PAUSE"); //no bgm
+		AudioContainer::PlaySound("OPEN_PAUSE"); //level bgm
 	} else if(target.substr(0, 5) == "LEVEL") {
-		AudioContainer::PlaySound("OPEN_RESOLUTION");
+		AudioContainer::PlaySound("OPEN_RESOLUTION"); //level bgm
 	}
 
 	for(unsigned i = 0; i < _menus.size(); i++) {
@@ -88,6 +99,30 @@ void UiContainer::SelectMenu(std::string target) {
 
 sf::Font* UiContainer::GetFontByName(std::string fontname) {
 	return _fonts[fontname];
+}
+
+int UiContainer::GetIgnoCount() {
+	return _hintIgnoCount;
+}
+
+bool UiContainer::GetHintActive() {
+	return _hintActive;
+}
+
+void UiContainer::SetHintActive(bool value) {
+	_hintActive = value;
+
+	SelectMenu("HUD");
+}
+
+int UiContainer::GetHintsTaken() {
+	return _hintsTaken;
+}
+
+void UiContainer::ResetHints() {
+	_hintActive = false;
+	_hintIgnoCount = 0;
+	_hintsTaken = 0;
 }
 
 void UiContainer::drawLoading(int percentage) {
@@ -254,7 +289,7 @@ void UiContainer::_initMenus() {
 	lua_State* state = luaL_newstate();
 	luaL_openlibs(state); // get all libs in state (math, os, io)
 
-						  //register functions as global lua functions
+	//register functions as global lua functions
 	lua_register(state, "CreateMenu", _createMenu);
 	lua_register(state, "CreateFont", _createFont);
 	lua_register(state, "SetBackground", _setBackground);
@@ -292,9 +327,31 @@ void UiContainer::onNotify(sf::Event pEvent) {
 		} else if(_activeMenu->GetMenuName() == "PAUSE") {
 			SelectMenu("HUD");
 		}
-	} else if(pEvent.key.code == sf::Keyboard::H) {
+	} else if(pEvent.key.code == sf::Keyboard::H && InputManager::GetGameInput()) {
 		if(_activeMenu->GetMenuName() == "HUD_HINT") {
-			SelectMenu("HUD");
+			//hint used
+			_hintsTaken++;
+
+			//reset current level
+			SceneManager::SetLevelTries(SceneManager::GetLevelTries() - 1); //revert the +1 in tries
+			SceneManager::ReloadScene(true);
+
+			SetHintActive(false);
+
+			std::cout << "Use Hint" << std::endl;
 		}
+
+		std::cout << "Pressed H" << std::endl;
+	} else if(pEvent.key.code == sf::Keyboard::R && InputManager::GetGameInput()) {
+		//hint ignored
+		if(_activeMenu->GetMenuName() == "HUD_HINT") {
+			_hintIgnoCount++;
+		}
+
+		std::cout << "Reload level" << std::endl;
+
+		//reset current level
+		SceneManager::ReloadScene(false);
+		AudioContainer::PlaySound("RESET_LEVEL");
 	}
 }

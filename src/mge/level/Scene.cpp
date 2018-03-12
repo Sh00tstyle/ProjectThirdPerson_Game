@@ -31,6 +31,7 @@
 
 #include "mge/managers/ModelManager.h"
 #include "mge/managers/SceneManager.h";
+#include "mge/UI/UiContainer.h"
 
 Scene::Scene(std::string pFilepath, World* pWorld) {
 	_world = pWorld;
@@ -44,18 +45,38 @@ Scene::~Scene() {
 	std::cout << "Destruct Scene" << std::endl;
 }
 
-void Scene::ConstructScene() {
-
-	int fieldIndex = 0;
-	if (_triesPerHint != 0 && _hintData.size() != 0) fieldIndex = (SceneManager::GetLevelTries() - 1) / _triesPerHint; //int division, so no need to floor down3
-
+void Scene::ConstructScene(bool showHint) {
 	//restore old playfield data in case we reload the scene
-	if(fieldIndex == 0) {
-		_playfieldData = _unmodifedPlayfieldData;
+	int fieldIndex = 0;
+	if (_triesPerHint != 0 && _hintData.size() != 0) fieldIndex = (SceneManager::GetLevelTries() - 1 - UiContainer::GetIgnoCount()) / _triesPerHint; //int division, so no need to floor down
+
+	//activate the hud menu
+	if(UiContainer::GetHintsTaken() == 0) {
+		//until the first hint
+		if(fieldIndex == 0) {
+			_playfieldData = _unmodifedPlayfieldData;
+		} else if(UiContainer::GetHintActive() && showHint) {
+			if(fieldIndex > _hintData.size()) fieldIndex = _hintData.size();
+			_playfieldData = _hintData[fieldIndex - 1];
+		} else {
+			_playfieldData = _unmodifedPlayfieldData;
+
+			UiContainer::SetHintActive(true);
+		}
 	} else {
-		if(fieldIndex > _hintData.size()) fieldIndex = _hintData.size();
-		_playfieldData = _hintData[fieldIndex - 1];
+		//after the first hint
+		if(UiContainer::GetHintActive() && showHint) {
+			if(fieldIndex > _hintData.size()) fieldIndex = _hintData.size();
+			_playfieldData = _hintData[fieldIndex - 1];
+		} else {
+			if(UiContainer::GetHintsTaken() < fieldIndex && UiContainer::GetHintsTaken() < _hintData.size()) UiContainer::SetHintActive(true);
+
+			if(UiContainer::GetHintsTaken() > _hintData.size()) fieldIndex = _hintData.size();
+			else fieldIndex = UiContainer::GetHintsTaken();
+			_playfieldData = _hintData[fieldIndex - 1];
+		}
 	}
+	
 
 	//Make the scene from there
 	for(unsigned i = 0; i < _playfieldData.size(); i++) {

@@ -16,13 +16,14 @@ class SceneManager
 		static void LoadFirstScene();
 		static void LoadNextScene();
 		static void LoadSceneAtIndex(int index);
-		static void ReloadScene();
+		static void ReloadScene(bool hint);
 
 		static Scene* GetCurrentScene();
 		static int GetSceneCount();
 		static int GetLevelNumber();
 
 		static int GetLevelTries();
+		static void SetLevelTries(int tries);
 
 	private:
 

@@ -31,6 +31,8 @@ void SceneManager::LoadFirstScene() {
 	_levelCount = 0;
 	_levelTries = 1;
 
+	UiContainer::ResetHints();
+
 	//no first level (empty array)
 	if((int)_allScenes.size() == 0) {
 		std::cout << "Failed to load first scene, no scenes found" << std::endl;
@@ -38,12 +40,14 @@ void SceneManager::LoadFirstScene() {
 	}
 
 	_currentScene = _allScenes[0];
-	if(_currentScene != nullptr) _currentScene->ConstructScene();
+	if(_currentScene != nullptr) _currentScene->ConstructScene(false);
 }
 
 void SceneManager::LoadNextScene() {
 	_levelCount++;
 	_levelTries = 1;
+
+	UiContainer::ResetHints();
 
 	//no more levels to load
 	if(_levelCount >= (int)_allScenes.size()) {
@@ -54,7 +58,7 @@ void SceneManager::LoadNextScene() {
 	if(_currentScene != nullptr) _currentScene->RemoveScene();
 
 	_currentScene = _allScenes[_levelCount];
-	if(_currentScene != nullptr) _currentScene->ConstructScene();
+	if(_currentScene != nullptr) _currentScene->ConstructScene(false);
 }
 
 void SceneManager::LoadSceneAtIndex(int index) {
@@ -62,6 +66,8 @@ void SceneManager::LoadSceneAtIndex(int index) {
 
 	_levelCount = index;
 	_levelTries = 1;
+
+	UiContainer::ResetHints();
 
 	//out of array range
 	if(_levelCount >= (int)_allScenes.size()) {
@@ -72,15 +78,15 @@ void SceneManager::LoadSceneAtIndex(int index) {
 	if(_currentScene != nullptr) _currentScene->RemoveScene();
 
 	_currentScene = _allScenes[_levelCount];
-	if(_currentScene != nullptr) _currentScene->ConstructScene();
+	if(_currentScene != nullptr) _currentScene->ConstructScene(false);
 }
 
-void SceneManager::ReloadScene() {
+void SceneManager::ReloadScene(bool hint) {
 	if(_currentScene != nullptr) {
 		_levelTries++;
 
 		_currentScene->RemoveScene();
-		_currentScene->ConstructScene();
+		_currentScene->ConstructScene(hint);
 	}
 }
 
@@ -100,6 +106,10 @@ int SceneManager::GetLevelTries() {
 	return _levelTries;
 }
 
+void SceneManager::SetLevelTries(int tries) {
+	_levelTries = tries;
+}
+
 //blocking call right now, maybe spawn a thread for loading a mesh in order to accelerate loading (probably not needed)
 void SceneManager::_loadAllScenes() {
 	int levelIndex = 1;
@@ -107,7 +117,7 @@ void SceneManager::_loadAllScenes() {
 
 	int percentageCount = 0;
 
-	while(_fileExists(filepath) && levelIndex == 1) { //only load one level for now
+	while(_fileExists(filepath)) { //only load one level for now
 		Scene* newScene = new Scene(filepath, _world);
 		MGEDemo::UpdateLoadingScreen(64 + percentageCount);
 		_allScenes.push_back(newScene);
