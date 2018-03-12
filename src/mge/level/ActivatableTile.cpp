@@ -25,7 +25,7 @@ void ActivatableTile::Activate() {
 	if(_active) return;
 	
 	_active = true;
-
+	AudioContainer::PlaySound("ACTIVATE_PLATE");
 	GameObject* tile = _scene->GetTileObject(_col, _row);
 
 	if(tile == nullptr) return;

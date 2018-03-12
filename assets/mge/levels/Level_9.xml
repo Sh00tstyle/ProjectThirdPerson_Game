@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Playfield Height="7" Width="8" Content="0 1 6 1 1 0 0 0 0 1 6 0 1 0 0 0 0 1 1 7 1 1 1 1 0 1 9 0 0 1 0 7 0 1 1 1 1 8 0 5 0 1 1 1 1 1 2 0 0 0 0 0 0 0 0 0" />
+  <HintPlayfields />
+  <HintProps TriesPerHint="0" />
   <SceneObjects />
   <PressurePlates>
     <PressurePlate ColPos="2" RowPos="0" ID="2" NeededColor="4" />

@@ -45,7 +45,9 @@ Scene::~Scene() {
 }
 
 void Scene::ConstructScene() {
-	int fieldIndex = (SceneManager::GetLevelTries() - 1) / _triesPerHint; //int division, so no need to floor down
+
+	int fieldIndex = 0;
+	if (_triesPerHint != 0 && _hintData.size() != 0) fieldIndex = (SceneManager::GetLevelTries() - 1) / _triesPerHint; //int division, so no need to floor down3
 
 	//restore old playfield data in case we reload the scene
 	if(fieldIndex == 0) {

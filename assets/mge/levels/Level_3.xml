@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Playfield Height="8" Width="7" Content="6 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 8 1 7 6 0 0 0 1 0 0 1 0 0 0 1 1 1 9 7 1 5 0 0 0 1 0 0 0 0 0 0 2 0 0 0" />
+  <HintPlayfields>
+    <HintPlayfield Height="0" Width="0" Content="6 0 0 0 0 0 0 3 0 0 0 0 0 0 3 0 0 0 0 0 0 8 1 7 6 0 0 0 1 0 0 1 0 0 0 1 1 1 9 7 1 5 0 0 0 1 0 0 0 0 0 0 2 0 0 0" />
+    <HintPlayfield Height="0" Width="0" Content="6 0 0 0 0 0 0 3 0 0 0 0 0 0 3 0 0 0 0 0 0 8 1 7 6 0 0 0 3 0 0 1 0 0 0 3 3 1 9 7 1 5 0 0 0 1 0 0 0 0 0 0 2 0 0 0" />
+  </HintPlayfields>
+  <HintProps TriesPerHint="3" />
   <SceneObjects>
-    <SceneObject Name="Scenery" xPos="0.21" yPos="0" zPos="0" xRot="0" yRot="0.211495683" zRot="0" wRot="-0.977378964" xScale="1" yScale="1" zScale="1" Model="Level3.obj" Texture="Level3.png" />
+    <SceneObject Name="Scenery" xPos="0.21" yPos="0" zPos="0" xRot="0" yRot="0.211495683" zRot="0" wRot="-0.977378964" xScale="1" yScale="1" zScale="1" Model="Level3.obj" Texture="Level4.png" />
   </SceneObjects>
   <PressurePlates>
     <PressurePlate ColPos="0" RowPos="0" ID="1" NeededColor="3" />

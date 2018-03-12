@@ -20,7 +20,7 @@ Menus = {
 
 -- Name = 1, Path == 2
 Fonts = {
-  {"Arial", "arial.ttf"},
+  {"Arial", "arial.ttf"}, 
   {"Shark", "sharkformalfunnyness.ttf"},
 }
 
@@ -64,8 +64,8 @@ Text = {
   {"Credits", "Shark", "Alex Lysenko", 75, 10, 10 , 10, true, 230, 720},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 320},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 400},
-  {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 480},
-  {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 560},
+  {"Credits", "Shark", "SPECIAL ROLE", 75, 10, 10 , 10, true, 1050, 480},
+  {"Credits", "Shark", "SPECIMEN", 75, 10, 10 , 10, true, 1050, 560},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 640},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 720},
   { "LEVEL 10", "Shark", "You completed Level 10 in TRIES tries", 50, 0, 0, 0, true, 660, 540},
