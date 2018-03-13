@@ -29,7 +29,7 @@ void GridMovementBehavior::update(float pStep)
 	//std::cout << "The current world possition " << _owner->getWorldPosition() << std::endl; 
 	if (_moving) {
 
-		 _speed = ((clock() / 100.0f) - _startTime) * pStep * 8.3f;
+		 _speed = ((clock() / 100.0f) - _startTime) * 20.0f * pStep;
 		
 		std::cout << "speed " << _speed << std::endl; 
 
@@ -73,7 +73,7 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 	{
 		if(CheckWalkableTile(_onCol, _onRow - 1)) {
 			glm::mat4 targetTrans;
-			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			//targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
 			targetTrans = glm::rotate(targetTrans, glm::radians(0.0f), glm::vec3(0, 1, 0));
 			_owner->setTransform(targetTrans);
 			//std::cout << "Target Tile from scene " << _scene.GetTileWorldPos(_onCol, _onRow - 1, _moveAmount) << std::endl;
@@ -95,15 +95,14 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 	{
 		if(CheckWalkableTile(_onCol + 1, _onRow)) {
 			glm::mat4 targetTrans;
-			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			//stargetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
 			targetTrans = glm::rotate(targetTrans, glm::radians(90.0f), glm::vec3(0, 1, 0));
 			_owner->setTransform(targetTrans);
 			_onCol++;
-			_targetTile = _currentTile;
+			_targetTile = _currentTile - glm::vec3(_moveAmount, 0, 0 );
 
 			_speed = 0;
 			_startTime = clock() / 100.0f;
-			_targetTile.x -=  _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");
@@ -116,16 +115,15 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 	{
 		if(CheckWalkableTile(_onCol, _onRow + 1)) {
 			glm::mat4 targetTrans;
-			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			//targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
 			targetTrans = glm::rotate(targetTrans, glm::radians(180.0f), glm::vec3(0, 1, 0));
 			_onRow++;
 			_owner->setTransform(targetTrans);
-			_targetTile = _currentTile;
+			_targetTile = _currentTile + glm::vec3(0, 0, _moveAmount);
 
 			_speed = 0;
 			_startTime = clock() / 100.0f;
 
-			_targetTile.z +=   _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");
@@ -138,17 +136,14 @@ void GridMovementBehavior::Move(sf::Keyboard::Key pKey)
 	{
 		if(CheckWalkableTile(_onCol - 1, _onRow)) {
 			glm::mat4 targetTrans;
-			targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
+			//targetTrans = glm::translate(targetTrans, _owner->getWorldPosition());
 			targetTrans = glm::rotate(targetTrans, glm::radians(270.0f), glm::vec3(0, 1, 0));
 			_owner->setTransform(targetTrans);
 			_onCol--;
-			_targetTile = _currentTile;
-
+			_targetTile = _currentTile + glm::vec3(_moveAmount, 0, 0);
 
 			_speed = 0;
 			_startTime = clock() / 100.0f;
-
-			_targetTile.x +=  _moveAmount;
 			_moving = true;
 
 			AudioContainer::PlaySound("MOVE_SNAIL");

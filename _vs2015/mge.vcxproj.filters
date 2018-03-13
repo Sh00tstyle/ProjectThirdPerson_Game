@@ -199,6 +199,9 @@
     <ClInclude Include="..\src\mge\particleSystem\ParticleBase.hpp">
       <Filter>MGE Source files\mge\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\behaviours\ParticleBehaviour.hpp">
+      <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\particleSystem\ParticleBase.cpp">
       <Filter>MGE Source files\mge\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\behaviours\ParticleBehaviour.cpp">
+      <Filter>MGE Source files\mge\behaviours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
