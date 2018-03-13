@@ -6,38 +6,38 @@ Events = {
   -- UI
   --{"MAIN_BGM", 1, 1, 5, true},
   {"BUTTON_CLICK", 1, 1, 12, false},
-  {"SELECT_LEVEL", 1, 1, 1, false},
-  {"OPEN_PAUSE", 1, 1, 1, false},
-  {"OPEN_RESOLUTION", 1, 1, 1, false},
-  {"BUTTON_HOVER", 0.8, 0.85, 12, false},
+  {"SELECT_LEVEL", 1, 1, 16, false},
+  {"OPEN_PAUSE", 1, 1, 12, false},
+  {"OPEN_RESOLUTION", 1, 1, 12, false},
+  {"BUTTON_HOVER", 0.8, 0.85, 8, false},
   {"CHANGE_COLOR", 1, 1, 12, false},
 
   -- Player
-  {"MOVE_SNAIL", 0.96, 1.06, 55, false},
-  {"BLOCK_SNAIL", 0.96, 1.06, 30, false},
+  {"MOVE_SNAIL", 0.96, 1.06, 60, false},
+  {"BLOCK_SNAIL", 0.96, 1.06, 35, false},
   
   -- Gameplay
-  {"RESET_LEVEL", 1, 1, 1, false},
-  {"HINT", 1, 1, 1, false},
-  {"TILE_MOVE", 1, 1, 8, false},
+  {"RESET_LEVEL", 1, 1, 25, false},
+  {"HINT", 1, 1, 45, false},
+  {"TILE_MOVE", 1, 1, 25, false},
   {"START_LEVEL", 1, 1, 1, false},
   {"END_LEVEL", 1, 1, 1, false},
   {"BGM_LEVEL", 1, 1, 32, true},
-  {"ACTIVATE_PLATE", 0.95, 1.05, 12, false},
+  {"ACTIVATE_PLATE", 0.95, 1.05, 42, false},
   
   
   }
 
 Audiofiles = {
   -- UI
-  {"HINT",              "ui/button_click.wav"},
+  {"HINT",              "ui/hint.wav"},
   {"BUTTON_HOVER",      "ui/button_click.wav"},
   {"CHANGE_COLOR",      "gameplay/color_switch.wav"}, 
   {"SELECT_LEVEL",      "ui/select_level.wav"},
   {"BUTTON_CLICK",      "ui/button_click.wav"},
-  {"SELECT_LEVEL",      "gameplay/pressureplate_2.ogg"},
-  {"OPEN_PAUSE",        "gameplay/pressureplate_2.ogg"},
-  {"OPEN_RESOLUTION",   "gameplay/pressureplate_2.ogg"},
+  {"SELECT_LEVEL",      "ui/select_level.wav"},
+  {"OPEN_PAUSE",        "ui/select_level.wav"},
+  {"OPEN_RESOLUTION",   "ui/select_level.wav"},
   --{"MAIN_BGM",        "Gwe_Gwe_Gwe.wav"},
   
   -- Player
@@ -46,14 +46,10 @@ Audiofiles = {
   
   -- Gameplay
   {"BGM_LEVEL",         "gameplay/bgm_level.wav"},
-  {"END_LEVEL",         "gameplay/pressureplate_1.ogg"},
-  {"RESET_LEVEL",       "gameplay/pressureplate_2.ogg"},
-  {"START_LEVEL",       "gameplay/pressureplate_1.ogg"},
+  {"END_LEVEL",         "gameplay/level_end.wav"},
+  {"RESET_LEVEL",       "gameplay/reset.wav"},
+  {"START_LEVEL",       "gameplay/level_end.wav"},
   {"TILE_MOVE",         "gameplay/pressureplate_move.ogg"},
-  
-  {"ACTIVATE_PLATE",    "gameplay/pressureplate_open.wav"},
-  {"ACTIVATE_PLATE",    "gameplay/pressureplate_open.wav"},
-  {"ACTIVATE_PLATE",    "gameplay/pressureplate_open.wav"},
   {"ACTIVATE_PLATE",    "gameplay/pressureplate_open.wav"},
 }
   

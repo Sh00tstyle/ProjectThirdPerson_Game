@@ -7,15 +7,15 @@ levelcount = 10
 
 -- MenuName = 1, Menu background = 2, 3 = Horizontal movement (true/false)
 Menus = { 
-  {"MAIN",                   "background.png",                  false}, 
-  {"Credits",                "background.png",                  false}, 
-  {"Controls",               "background.png",                  false}, 
+  {"MAIN",                   "mainmenu/background.png",                  false}, 
+  {"Credits",                "mainmenu/background.png",                  false}, 
+  {"Controls",               "mainmenu/background.png",                  false}, 
   {"PAUSE",                  "",                                true},
   {"HUD",                    "",                                false},
   {"HUD_HINT",               "",                                false},
   {"LOADING",                "loading.png",                     false},
-  {"LevelSelect 0",          "background.png",                  true},
-  {"LevelSelect 1",          "background.png",                  true},
+  {"LevelSelect 0",          "mainmenu/background.png",                  true},
+  {"LevelSelect 1",          "mainmenu/background.png",              true},
   {"LEVEL 10",               "resolutionscreen/background.png", true},
 }
 
@@ -30,10 +30,10 @@ Fonts = {
 -- Target Levels should be LEVEL 1, LEVEL 2, etc.
 -- MenuParent = 1, target = 2, activatedSprite = 3,  deactivatedSprite = 4,  positionX = 5,  postionY = 6
 Buttons = {
-  { "MAIN",             "LevelSelect 0",    "mainmenu/play.png",          "mainmenu/play_deactivated.png",              145,    375 },
-  { "MAIN",             "Controls",         "mainmenu/controls.png",      "mainmenu/controls_deactivated.png",          145,    475 },
-  { "MAIN",             "Credits",          "mainmenu/credits.png",       "mainmenu/credits_deactivated.png",           145,    575 },
-  { "MAIN",             "EXIT",             "mainmenu/quit.png",          "mainmenu/quit_deactivated.png",              145,    675 },  
+  { "MAIN",             "LevelSelect 0",    "mainmenu/play.png",          "mainmenu/play_deactivated.png",              835,    460 },
+  { "MAIN",             "Controls",         "mainmenu/controls.png",      "mainmenu/controls_deactivated.png",          800,    602 },
+  { "MAIN",             "Credits",          "mainmenu/credits.png",       "mainmenu/credits_deactivated.png",           843,    772 },
+  { "MAIN",             "EXIT",             "mainmenu/quit.png",          "mainmenu/quit_deactivated.png",              890,    910 },  
   { "Controls",         "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 },
   { "Credits",          "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 },
   { "LevelSelect 1",    "LevelSelect 0",    "previousbutton.png",         "previousbutton_deactivated.png",                 82,    490 },
@@ -68,10 +68,10 @@ LevelRating = { 0, 1, 2, 1, 2, 1, 1, 1, 0, 0 }
 
 -- Target Menu = 1 Font Name used = 2, Drawn Text = 4, text size = 5, textcolor r = 6, textcolor g = 7, textcolor b = 8, boldness = 9, posX = 10, posY = 11
 Text = {
-  { "HUD", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
-  { "HUD_HINT", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
-  { "PAUSE", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
-  { "LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900},
+  {"HUD", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
+  {"HUD_HINT", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
+  {"PAUSE", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
+  {"LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900},
   {"Credits", "Shark", "Daan Kemps", 75, 10, 10 , 10, true, 230, 320},
   {"Credits", "Shark", "Felix de Natris", 75, 10, 10 , 10, true, 230, 400},
   {"Credits", "Shark", "Lucia Dzediti", 75, 10, 10 , 10, true, 230, 480},
@@ -117,7 +117,6 @@ for i=1, levelcount  do
     for a=1, 3 do
         newStar =  {"LEVEL " .. i,  "resolutionscreen/stars_" .. a ..".png",   800, 525 }, 
         table.insert(Images, newStar)
-        print("resolutionscreen/stars_" .. a ..".png")
       end
     end
 end
