@@ -24,6 +24,7 @@ Fonts = {
   {"Arial", "arial.ttf"}, 
   {"Shark", "sharkformalfunnyness.ttf"},
   {"Burbin", "burbin.ttf"},
+  {"Myriad", "MYRIADPRO-BOLD.OTF"},
 }
 
 -- Target Levels should be LEVEL 1, LEVEL 2, etc.
@@ -33,8 +34,8 @@ Buttons = {
   { "MAIN",             "Controls",         "mainmenu/controls.png",      "mainmenu/controls_deactivated.png",          145,    475 },
   { "MAIN",             "Credits",          "mainmenu/credits.png",       "mainmenu/credits_deactivated.png",           145,    575 },
   { "MAIN",             "EXIT",             "mainmenu/quit.png",          "mainmenu/quit_deactivated.png",              145,    675 },  
-  { "Controls",         "MAIN",             "backbutton.png",             "backbutton_deactivated.png",                  885,   900 },  
-  { "Credits",          "MAIN",             "backbutton.png",             "backbutton_deactivated.png",                 1700,   830 },
+  { "Controls",         "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",                  885,   830 },  
+  { "Credits",          "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",                885,   830 },
   { "LevelSelect 1",    "LevelSelect 0",    "previousbutton.png",         "previousbutton_deactivated.png",                 82,    490 },
   { "PAUSE",            "RESUME",           "pausemenu/no.png",     "pausemenu/no_deactivated.png",                 675,    545 },
   { "PAUSE",            "MAIN",             "pausemenu/yes.png",         "pausemenu/yes_deactivated.png",             1110,    545 },
@@ -43,23 +44,33 @@ Buttons = {
 
 -- Parent = 1, Image = 2 PositionX = 3, PositionY = 4
 Images = { 
-  {"LevelSelect 0", "panel.png", 65, 200},
-  {"LevelSelect 0", "levelselection/levels.png", 150, 235},
-  {"LevelSelect 1", "panel.png",65, 200},
-  {"LevelSelect 1", "levelselection/levels.png", 150, 235},
-  {"HUD",             "hud/tries_panel.png",                     40,       980 }, 
-  {"Controls",        "panel.png",            65, 200},
- 
-  {"Credits",         "panel.png",            65, 200},
-  {"Controls",         "controls/controls.png",            100, 205},
-  {"PAUSE",           "pausemenu/background.png",             555,      210 }, 
+  {"LevelSelect 0", "panel.png",                    65,     200},
+  {"LevelSelect 0", "levelselection/levels.png",    150,    235},
+  {"LevelSelect 1", "panel.png",                    65,     200},
+  {"LevelSelect 1", "levelselection/levels.png",    150,    235},
+  {"HUD",           "hud/hint_deactivated.png",     70,    945}, 
+  {"HUD",           "hud/reset.png",                1725,   945}, 
+  {"HUD",           "hud/tries.png",                800,    945}, 
+  {"HUD_HINT",      "hud/hint.png",                 70,    945}, 
+  {"HUD_HINT",      "hud/reset.png",                1725,   945}, 
+  {"HUD_HINT",      "hud/tries.png",                800,    945}, 
+  {"HUD_HINT",      "hud/hint_popup.png",           140,    815}, 
+  {"PAUSE",         "hud/hint_deactivated.png",     70,    945}, 
+  {"PAUSE",         "hud/reset.png",                1725,   945}, 
+  {"PAUSE",         "hud/tries.png",                800,    945}, 
+  {"Controls",      "panel.png",                    65,     200},
+  {"Credits",       "panel.png",                    65,     200},
+  {"Controls",      "controls/controls.png",        100,    205},
+  {"PAUSE",         "pausemenu/background.png",     555,    210}, 
 }
 LevelRating = { 0, 1, 2, 1, 2, 1, 1, 1, 0, 0 }
 
 
 -- Target Menu = 1 Font Name used = 2, Drawn Text = 4, text size = 5, textcolor r = 6, textcolor g = 7, textcolor b = 8, boldness = 9, posX = 10, posY = 11
 Text = {
-  { "HUD", "Arial", "Tries: TRIES", 25, 0, 0, 0, true, 80, 1000},
+  { "HUD", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
+  { "HUD_HINT", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
+  { "PAUSE", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
   { "LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900},
   {"Credits", "Shark", "Daan Kemps", 75, 10, 10 , 10, true, 230, 320},
   {"Credits", "Shark", "Felix de Natris", 75, 10, 10 , 10, true, 230, 400},
@@ -74,51 +85,39 @@ Text = {
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 640},
   {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 720},
   { "LEVEL 10", "Shark", "You completed Level 10 in TRIES tries", 50, 0, 0, 0, true, 660, 540},
+  
 }
 
 
 -- Insert all resolution screens
 function addLevelResolutionScreens()
-  starX = 780
-  starY = 400
-  offset = 180
-  for i=1, levelcount  do 
+starX = 780
+starY = 400
+offset = 180
+for i=1, levelcount  do 
     -- Levels menu
-    newMenu = {"LEVEL " .. i, "", true}
-    table.insert(Menus, newMenu)
+  newMenu = {"LEVEL " .. i, "", true}
+  table.insert(Menus, newMenu)
     
+  -- Insert Next button
+  newNextButton = {"LEVEL " .. i, "LEVEL " .. i + 1, "resolutionscreen/nextlevel.png", "resolutionscreen/nextlevel_deactivated.png", 725,  870 },
+  table.insert(Buttons, newNextButton)
     
-    
-    -- Insert Next button
-    newNextButton = {"LEVEL " .. i, "LEVEL " .. i + 1, "resolutionscreen/nextlevel.png", "resolutionscreen/nextlevel_deactivated.png", 725,  870 },
-    table.insert(Buttons, newNextButton)
-    
-    -- Insert Back to menu button
-    newBackButton = {"LEVEL " .. i, "MAIN", "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png", 1145,  870},
-    table.insert(Buttons, newBackButton)
-    
-    newText =  { "LEVEL " .. i, "Burbin", "You completed Level " .. i .. " in " .. "TRIES" .. " tries", 38, 0, 0, 0, true, 730, 540},
-    table.insert(Text, newText)
-    
-
-    
-        -- Levels panel
-    newPanel =  {"LEVEL " .. i,  "resolutionscreen/background.png",   610, 230 }, 
-    table.insert(Images, newPanel)
-    
-    -- Insert star rating
-    for a=0, 2 do
-     if(a <= LevelRating[i]) then
-        activatedStar = { "LEVEL " .. i,   "resolutionscreen/star.png", starX + offset * a, starY }
-        table.insert(Images, activatedStar)
-      elseif (a > LevelRating[i]) then
-        deactivatedStar = { "LEVEL " .. i,   "resolutionscreen/star_deactivated.png", starX + offset * a, starY }
-        table.insert(Images, deactivatedStar)
-      end
+  -- Insert Back to menu button
+  newBackButton = {"LEVEL " .. i, "MAIN", "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png", 1145,  870},
+  table.insert(Buttons, newBackButton)
+      
+  -- Levels panel
+  newPanel =  {"LEVEL " .. i,  "resolutionscreen/background.png",   610, 230 }, 
+  table.insert(Images, newPanel)
+   
+   -- Stars
+    for i=1, 3 do
+      newStar =  {"LEVEL " .. i,  "resolutionscreen/stars_" .. i ..".png",   800, 525 }, 
+      table.insert(Images, newStar)
     end
-    
   end
- end
+end
 
 function addLevelSelection()
 LevelSelect = 0

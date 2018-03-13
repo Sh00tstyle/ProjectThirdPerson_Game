@@ -18,6 +18,7 @@ Events = {
   
   -- Gameplay
   {"RESET_LEVEL", 1, 1, 1, false},
+  {"HINT", 1, 1, 1, false},
   {"TILE_MOVE", 1, 1, 8, false},
   {"START_LEVEL", 1, 1, 1, false},
   {"END_LEVEL", 1, 1, 1, false},
@@ -29,6 +30,7 @@ Events = {
 
 Audiofiles = {
   -- UI
+  {"HINT",              "ui/button_click.wav"},
   {"BUTTON_HOVER",      "ui/button_click.wav"},
   {"CHANGE_COLOR",      "gameplay/color_switch.wav"}, 
   {"SELECT_LEVEL",      "ui/select_level.wav"},
