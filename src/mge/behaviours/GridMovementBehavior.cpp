@@ -29,7 +29,7 @@ void GridMovementBehavior::update(float pStep)
 	//std::cout << "The current world possition " << _owner->getWorldPosition() << std::endl; 
 	if (_moving) {
 
-		 _speed = ((clock() / 100.0f) - _startTime) * pStep * 8.0f;
+		 _speed = ((clock() / 100.0f) - _startTime) * pStep * 8.3f;
 		
 		std::cout << "speed " << _speed << std::endl; 
 
@@ -49,7 +49,6 @@ void GridMovementBehavior::update(float pStep)
 	}
 	//if certain key is pressed move in a direction 
 }
-
 
 void GridMovementBehavior::onNotify(sf::Event pEvent)
 {
@@ -190,12 +189,12 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 		return true;
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::RedColorSwitch) {
 		AudioContainer::PlaySound("CHANGE_COLOR");
-		 _scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
+		 _scene.SetPawnColor(tileProp::RedTile);
 		return true; 
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueColorSwitch) {
 		AudioContainer::PlaySound("START_LEVEL");
-		_scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
+		_scene.SetPawnColor(tileProp::BlueTile);
 		return true;
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::PressurePlate)
