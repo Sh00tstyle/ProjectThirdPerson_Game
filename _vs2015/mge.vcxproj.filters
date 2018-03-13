@@ -47,6 +47,9 @@
     <Filter Include="MGE Source files\mge\audio">
       <UniqueIdentifier>{c89d11f5-552d-48ab-bf82-638f1567b4a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MGE Source files\mge\ParticleSystem">
+      <UniqueIdentifier>{87f845c6-211b-4889-86ac-0901b463c0bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\glm.hpp">
@@ -193,6 +196,9 @@
     <ClInclude Include="..\src\mge\util\Calculate.hpp">
       <Filter>MGE Source files\mge\util</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\particleSystem\ParticleBase.hpp">
+      <Filter>MGE Source files\mge\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -332,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\util\Calculate.cpp">
       <Filter>MGE Source files\mge\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\particleSystem\ParticleBase.cpp">
+      <Filter>MGE Source files\mge\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

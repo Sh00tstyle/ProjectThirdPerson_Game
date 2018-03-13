@@ -189,12 +189,12 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 		return true;
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::RedColorSwitch) {
 		AudioContainer::PlaySound("CHANGE_COLOR");
-		 _scene.SetPawnColor(tileProp::RedTile);
+		 _scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
 		return true; 
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueColorSwitch) {
 		AudioContainer::PlaySound("START_LEVEL");
-		_scene.SetPawnColor(tileProp::BlueTile);
+		_scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
 		return true;
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::PressurePlate)
@@ -236,27 +236,4 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	
 	return false;
 }
-
-void GridMovementBehavior::SmoothMove(glm::vec3 pStartTile, glm::vec3 pEndTile, float pSpeed, float pTime)
-{
-	glm::vec3 delta = pEndTile - pStartTile; 
-	glm::vec3 moveSteps = delta / pSpeed; 
-
-
-
-	if (_owner->getWorldPosition() != pEndTile)
-	{
-		//_owner->setLocalPosition(_owner->getWorldPosition() + moveSteps );
-	}
-	else
-	{
-		_moving = false; 
-	}
-}
-
-glm::vec3 GridMovementBehavior::LerpMove(glm::vec3 pStart, glm::vec3 pEnd, float pPercent)
-{
-	return glm::vec3(pStart + pPercent * (pEnd - pStart));
-}
-
 
