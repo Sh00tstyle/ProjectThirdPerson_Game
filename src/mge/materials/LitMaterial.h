@@ -9,7 +9,7 @@ class LitMaterial : public AbstractMaterial
 	    LitMaterial(glm::vec3 pAmbientColor, glm::vec3 pDiffuseColor, glm::vec3 pSpecularColor, float pShininess);
         virtual ~LitMaterial();
 
-        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) override;
+        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) override;
 
         //in rgb values
 		void setAmbientColor(glm::vec3 pAmbientColor);

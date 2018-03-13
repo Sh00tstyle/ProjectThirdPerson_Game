@@ -15,7 +15,7 @@ class TerrainMaterial : public AbstractMaterial
 						Texture* pHeightMapTexture, Texture* pSplatMapTexture);
         virtual ~TerrainMaterial();
 
-        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) override;
+        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) override;
 
 		void setAmbientColor(glm::vec3 color);
 		void setSpecularColor(glm::vec3 color);

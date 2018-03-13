@@ -11,7 +11,6 @@
 #include "mge/config.hpp"
 
 ShaderProgram* TextureMaterial::_shader = NULL;
-ShaderProgram* TextureMaterial::_depthShader = NULL;
 
 GLint TextureMaterial::_uMVPMatrix = 0;
 GLint TextureMaterial::_uDiffuseTexture = 0;
@@ -25,6 +24,7 @@ TextureMaterial::TextureMaterial(Texture * pDiffuseTexture):_diffuseTexture(pDif
 
 	_ambientColor = glm::vec3(1, 1, 1); 
 	_specularColor = glm::vec3(0.5, 0.5, 0.5);
+	_lightPos = glm::vec3(2.0f, 4.0f, 1.0f);
 	_shininess = 2.0f;
 }
 
@@ -45,22 +45,13 @@ void TextureMaterial::_lazyInitializeShader() {
         _aNormal = _shader->getAttribLocation("normal");
         _aUV =     _shader->getAttribLocation("uv");
     }
-
-	/**
-	if(!_depthShader) {
-		_depthShader = new ShaderProgram();
-		_depthShader->addShader(GL_VERTEX_SHADER, config::MGE_SHADER_PATH + "depthshader.vs");
-		_depthShader->addShader(GL_FRAGMENT_SHADER, config::MGE_SHADER_PATH + "depthshader.fs");
-		_depthShader->finalize();
-	}
-	/**/
 }
 
 void TextureMaterial::setDiffuseTexture (Texture* pDiffuseTexture) {
     _diffuseTexture = pDiffuseTexture;
 }
 
-void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
+void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) {
     if (!_diffuseTexture) return;
 
     _shader->use();
@@ -80,7 +71,8 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
 
 		glUniform1f(_shader->getUniformLocation(lightString + "ambientContribution"), std::cos(currentLight->getInnerConeAngle()));
 
-		glUniform3fv(_shader->getUniformLocation(lightString + "lightForward"), 1, glm::value_ptr(currentLight->getTransform()[2])); //third row of the lights transform, represents local forward vector
+		glm::vec3 lightDirection = glm::vec3(_lightPos.x * -1.0f, _lightPos.y * -1.0f, _lightPos.z * -1.0f);
+		glUniform3fv(_shader->getUniformLocation(lightString + "lightForward"), 1, glm::value_ptr(lightDirection));
 		glUniform3fv(_shader->getUniformLocation(lightString + "lightPosition"), 1, glm::value_ptr(currentLight->getLocalPosition())); //might need to be changed to world pos
 
 		glUniform1f(_shader->getUniformLocation(lightString + "constantAttenuation"), currentLight->getConstantAttenuation());
@@ -98,39 +90,60 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
 	glUniform3fv(_shader->getUniformLocation("specularColor"), 1, glm::value_ptr(_specularColor));
 	glUniform1f(_shader->getUniformLocation("shininess"), _shininess);
 
+	//telling the shader that we are not using the depth only
+	glUniform1i(_shader->getUniformLocation("depthRender"), false);
+
 	//passing in camera position
 	glUniform3fv(_shader->getUniformLocation("eyePosition"), 1, glm::value_ptr(mainCam->getWorldPosition())); //might need to be changed to world pos
+
+	//creating light matrices
+	glm::mat4 lightView = glm::lookAt(_lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); //not sure if correct view matrix for our directional light
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -5.0f, 7.5f);
+
+	//pass in light matrices
+	glUniformMatrix4fv(_shader->getUniformLocation("lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+	glUniformMatrix4fv(_shader->getUniformLocation("lightView"), 1, GL_FALSE, glm::value_ptr(lightView));
 
 	//pass in all MVP matrices separately
 	glUniformMatrix4fv(_shader->getUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(pProjectionMatrix));
 	glUniformMatrix4fv(_shader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(pViewMatrix));
 	glUniformMatrix4fv(_shader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(pModelMatrix));
 
-    //setup texture slot 0
+    //pass in diffuse texture
     glActiveTexture(GL_TEXTURE0);
-    //bind the texture to the current active slot
     glBindTexture(GL_TEXTURE_2D, _diffuseTexture->getId());
-    //tell the shader the texture slot for the diffuse texture is slot 0
     glUniform1i (_uDiffuseTexture, 0);
+
+	//pass in shadow map
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, pShadowMapId); 
+	glUniform1i(_shader->getUniformLocation("shadowMap"), 1);
 
     //now inform mesh of where to stream its data
     pMesh->streamToOpenGL(_aVertex, _aNormal, _aUV);
 }
 
 void TextureMaterial::renderDepth(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pPerspectiveMatrix) {
-	/**/
-	if(pWorld->getLightCount() == 0) return;
+	if(!_diffuseTexture) return;
 
-	Light* currentLight = pWorld->getLightAt(0); //hardcoded first light
+	_shader->use();
 
-	glm::vec3 lightPos = currentLight->getLocalPosition();
-	glm::vec3 lightDirection = currentLight->getTransform()[2];
-	/**/
+	glm::mat4 lightView = glm::lookAt(_lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); //not sure if correct view matrix for our directional light
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -5.0f, 7.5f);
 
-	glm::mat4 projectionMat = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -5.0f, 7.5f);
-	glm::mat4 viewMat = glm::lookAt(glm::vec3(2.0f, 4.0f, 1.0f), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	//glm::mat4 viewMat = glm::lookAt(lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	//glm::mat4 viewMat = glm::inverse(currentLight->getTransform()); //inverse of the light transform?
+	//telling the shader that we are not using the depth only
+	glUniform1i(_shader->getUniformLocation("depthRender"), true);
 
-	render(pWorld, pMesh, pModelMatrix, viewMat, projectionMat); //literally do the exact same as above
+    //pass in all MVP matrices separately
+	glUniformMatrix4fv(_shader->getUniformLocation("lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+	glUniformMatrix4fv(_shader->getUniformLocation("lightView"), 1, GL_FALSE, glm::value_ptr(lightView));
+	glUniformMatrix4fv(_shader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(pModelMatrix));
+
+	//upload texture to the shader for cutout (important to not render planes on the shadowmap)
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _diffuseTexture->getId());
+	glUniform1i(_uDiffuseTexture, 0);
+
+	//rendering
+	pMesh->streamToOpenGL(_aVertex, _aNormal, _aUV);
 }

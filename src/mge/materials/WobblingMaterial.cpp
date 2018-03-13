@@ -29,7 +29,7 @@ void WobblingMaterial::_lazyInitializeShader() {
 	}
 }
 
-void WobblingMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
+void WobblingMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) {
 	_shader->use();
 
 	//passing in the time to the vertex shader so that we can animate stuff

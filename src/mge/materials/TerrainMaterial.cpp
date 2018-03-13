@@ -75,7 +75,7 @@ void TerrainMaterial::setSplatMapTexture(Texture* pSplatMapTexture) {
 	_splatMapTexture = pSplatMapTexture;
 }
 
-void TerrainMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
+void TerrainMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) {
     if (!_diffuseTexture1 || !_diffuseTexture2 || !_diffuseTexture3 || !_diffuseTexture4 || !_heightMapTexture || !_splatMapTexture) return;
 
     _shader->use();

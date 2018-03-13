@@ -9,17 +9,36 @@ uniform	mat4 projectionMatrix;
 uniform	mat4 viewMatrix;
 uniform	mat4 modelMatrix;
 
+uniform mat4 lightProjection;
+uniform mat4 lightView;
+
+uniform bool depthRender;
+
+//light calculation
 out vec3 worldNormal;
 out vec3 worldVertex;
+
+//shadow calculation
+out vec4 fragPosLightSpace;
 
 out vec2 texCoord; //make sure the texture coord is interpolated
 
 void main( void ){
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1.f);
+	if(!depthRender) {
+		//normal MVP for real model
+		gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1.0f);
 
-	//0 for direction, 1 for position
-	worldNormal = vec3 (modelMatrix * vec4 (normal, 0)); 
-	worldVertex = vec3 (modelMatrix * vec4(vertex, 1)); //getting vertex position in world space
+		worldVertex = vec3 (modelMatrix * vec4(vertex, 1.0f)); 
+		worldNormal = transpose(inverse(mat3(modelMatrix))) * normal;
 
-	texCoord = uv;
+		//stuff for shadow calculation
+		fragPosLightSpace = lightProjection * lightView * modelMatrix * vec4(vertex, 1.0f);
+
+		texCoord = uv;
+	} else {
+		//rendering depth
+		gl_Position = lightProjection * lightView * modelMatrix * vec4(vertex, 1.0f);
+		
+		texCoord = uv;
+	}
 }

@@ -18,13 +18,21 @@ struct Light {
 	vec3 lightColor;
 };
 
+//light
 in vec2 texCoord;
 in vec3 worldNormal;
 in vec3 worldVertex;
 
+//shadow calculation
+in vec4 fragPosLightSpace;
+
 //lights
 uniform int lightAmount;
 uniform Light lights[32]; //array of max. 32 lights
+
+//shadowmap properties
+uniform sampler2D shadowMap;
+uniform bool depthRender;
 
 //material properties
 uniform sampler2D diffuseTexture;
@@ -101,40 +109,75 @@ vec3 getSpecularTerm(Light light, vec3 lightVector, float attenuation, float spo
 	return specularIntensity * light.lightColor * specularColor;
 }
 
+float ShadowCalculation(vec4 fragPosLightSpace) {
+	//do shadow stuff
+	// perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+	float bias = 0.005;
+	//if(lightAmount > 0) bias = max(0.05 * (1.0 - dot(worldNormal, lights[0].lightForward)), 0.005);
+
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+	for(int x = -2; x <= 2; ++x)
+	{
+		for(int y = -2; y <= 2; ++y)
+		{
+			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+			shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+		}    
+	}
+	shadow /= 25.0;
+
+	if(projCoords.z > 1.0) shadow = 0.0;
+
+    return shadow;
+}
+
 void main( void ) {
-    vec3 resultColor = vec3(0, 0, 0); //empty, black
+	if(!depthRender) {
+		//rendering as normal with the depth map
+		vec3 resultColor = texture(diffuseTexture, texCoord).rgb;
 
-	//iterating through the given amount of lights, not the whole array since it might contain unused lights
-	for(int i = 0; i < lightAmount; i++) {
-		Light currentLight = lights[i];
+		//iterating through the given amount of lights, not the whole array since it might contain unused lights
+		if(lightAmount > 0) {
+			Light currentLight = lights[0]; //just use our first directional light
 
-		//will change depending on the light type
-		vec3 lightVector = getLightVector(currentLight);
-		float attenuation = getAttenuation(currentLight, lightVector);
-		float spotEffect = getSpotEffect(currentLight, lightVector);
+			vec3 lightVector = getLightVector(currentLight);
+			float attenuation = getAttenuation(currentLight, lightVector);
+			float spotEffect = getSpotEffect(currentLight, lightVector);
 
-		vec3 ambientTerm = getAmbientTerm(currentLight);
-		vec3 diffuseTerm = getDiffuseTerm(currentLight, lightVector, attenuation, spotEffect);
-		vec3 specularTerm = getSpecularTerm(currentLight, lightVector, attenuation, spotEffect);
+			vec3 ambientTerm = getAmbientTerm(currentLight);
+			vec3 diffuseTerm = getDiffuseTerm(currentLight, lightVector, attenuation, spotEffect);
+			vec3 specularTerm = getSpecularTerm(currentLight, lightVector, attenuation, spotEffect);
+			
+			float shadow = ShadowCalculation(fragPosLightSpace);
+			resultColor = (ambientTerm + diffuseTerm/* + specularTerm*/); //adding new values to the old stored ones
+			resultColor = resultColor * (1.0f - shadow * 0.5f);
+		}
 
-		resultColor = resultColor + (ambientTerm + diffuseTerm + specularTerm); //adding new values to the old stored ones
+		//cutout
+		float alphaCutoff = 0.1f;
+
+		if(texture(diffuseTexture, texCoord).a < alphaCutoff) discard;
+		FragColor = vec4(resultColor, 1.0f);
+
+		//filter HDR bright spots (change to 1.0, when using engine lights)
+		float brightness = dot(resultColor, vec3(0.2126, 0.7152, 0.0722));
+		if(brightness > 1.0f) {
+			BrightColor = vec4(resultColor, 1.0f);
+		} else {
+			BrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+		}
+	} else {
+		//else render depth to shadowmap
+		float alphaCutoff = 0.1f;
+		if(texture(diffuseTexture, texCoord).a < alphaCutoff) discard;
 	}
-
-	if(lightAmount == 0) {
-		resultColor = texture(diffuseTexture, texCoord).rgb;
-	}
-
-    //cutout
-	float alphaCutoff = 0.1f;
-
-	if(texture(diffuseTexture, texCoord).a < alphaCutoff) discard;
-	FragColor = vec4(resultColor, 1.0f);
-
-	//filter HDR bright spots (change to 1.0, when using engine lights)
-    float brightness = dot(resultColor, vec3(0.2126, 0.7152, 0.0722));
-    if(brightness > 0.5f) {
-        BrightColor = vec4(resultColor, 1.0f);
-    } else {
-        BrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    }
 }

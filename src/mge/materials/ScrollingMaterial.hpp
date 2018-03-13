@@ -17,7 +17,7 @@ class ScrollingMaterial : public AbstractMaterial
 		ScrollingMaterial(Texture* pDiffuseTexture);
         virtual ~ScrollingMaterial();
 
-        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) override;
+        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) override;
 
         void setDiffuseTexture (Texture* pDiffuseTexture);
 

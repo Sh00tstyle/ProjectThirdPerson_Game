@@ -7,7 +7,7 @@ class WobblingMaterial : public AbstractMaterial {
 	WobblingMaterial();
 	virtual ~WobblingMaterial();
 
-	virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) override;
+	virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) override;
 
 	private:
 	//shared between every single instance of the wobbling material

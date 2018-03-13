@@ -117,7 +117,7 @@ void SceneManager::_loadAllScenes() {
 
 	int percentageCount = 0;
 
-	while(_fileExists(filepath)) { //only load one level for now
+	while(_fileExists(filepath)) {
 		Scene* newScene = new Scene(filepath, _world);
 		MGEDemo::UpdateLoadingScreen(64 + percentageCount);
 		_allScenes.push_back(newScene);

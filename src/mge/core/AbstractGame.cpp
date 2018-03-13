@@ -114,12 +114,10 @@ void AbstractGame::run()
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			/**
 			//render the shadowmap to the buffer
 			_renderer->useDepthbuffer();
 			_renderScene(); 
 			_renderer->unbindDepthbuffer();
-			/**/
 
 			//render the scene as normal to the buffer
 			_renderer->useFramebuffer();
@@ -127,7 +125,7 @@ void AbstractGame::run()
 			_renderer->unbindFramebuffer();
 
 			//draw scene image on a screen space quad
-			_renderer->drawFramebuffer(true); //false = no bloom, true = bloom
+			_renderer->drawFramebuffer(true); //false = no bloom (render shadowmap on screen), true = bloom
 
 			//render ui directly to the screen
 			_renderUi();

@@ -47,7 +47,7 @@ void LitMaterial::setShininess(float pShininess) {
 	_shininess = pShininess;
 }
 
-void LitMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) {
+void LitMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) {
 	_shader->use();
 
 	Camera* mainCam = pWorld->getMainCamera(); //needed for specular eye position

@@ -26,7 +26,7 @@ DebugHud::~DebugHud()
 void DebugHud::_createDebugHud() {
     _debugText.setString("");
     _debugText.setFont(_font);
-	_debugText.setCharacterSize(16);
+	_debugText.setCharacterSize(10);
 	_debugText.setFillColor(sf::Color::White);
 }
 

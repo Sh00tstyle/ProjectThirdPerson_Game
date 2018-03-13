@@ -97,32 +97,21 @@ void MGEDemo::_initializeScene() {
 	_world->add(backgroundPlane);
 	/**/
 
-	/**
+	/**/
 	//directional light
-	Mesh* cubeMeshF = Mesh::load(config::MGE_MODEL_PATH + "cube_flat.obj");
 	Light* mainLight = new Light(LightType::DIRECTIONAL, //light type
 								 glm::vec3(240.0f/255.0f, 240.0f/255.0f, 188.0f/255.0f), //light color (yellow)
-								 0.1f, //intensity = 1
-								 0.1f, //ambientContribution = 0.5
+								 1.0f, //intensity = 1
+								 0.3f, //ambientContribution = 0.5
 								 1.0f, //constantAttenutation = 1
 								 0.3f, //linearAttenuation
 								 0.0f, //quadraticAttenuation
 								 45.0f, //outerConeAngle
 								 25.0f, //innerConeAngle
 								 "mainLight", //name
-								 glm::vec3(0, 6, 0) //position
+								 glm::vec3(0, 0, 0) //position
 	);
-	mainLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
-	mainLight->setMesh(cubeMeshF);
-	mainLight->setBehaviour(new LightControlBehaviour(mainLight, 25));
 	_world->add(mainLight); //light gets automatically registered in the world
-
-	GameObject* indicator = new GameObject("indicator", glm::vec3(0, 0, 1.0f));
-	AbstractMaterial* whiteColorMat = new ColorMaterial(glm::vec3(1, 1, 1));
-	indicator->scale(glm::vec3(0.5f, 0.5f, 0.5f));
-	indicator->setMesh(cubeMeshF);
-	indicator->setMaterial(whiteColorMat);
-	mainLight->add(indicator); //adding as a child of light
 	/**/
 
 	//create an instace of model manager to load the items (before creating the SceneManager
@@ -155,6 +144,7 @@ void MGEDemo::_updateHud() {
 	std::string debugInfo = "";
 	debugInfo += std::string("FPS:") + std::to_string((int)_fps) + "\n";
 
+	/**
 	//Adding the hierarchy and the parent of everything (the world)
 	debugInfo += "\n\n" + std::string("Hierarchy:") + "\n" + _world->getName();
 
@@ -169,6 +159,7 @@ void MGEDemo::_updateHud() {
 			//solution for more and easier iteration would be recursion
 		}
 	}
+	/**/
 
 	_hud->setDebugInfo(debugInfo);
 

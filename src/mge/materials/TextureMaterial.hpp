@@ -17,7 +17,7 @@ class TextureMaterial : public AbstractMaterial
         TextureMaterial (Texture* pDiffuseTexture);
         virtual ~TextureMaterial ();
 
-        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix) override;
+        virtual void render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) override;
 		virtual void renderDepth(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pPerspectiveMatrix) override;
 
         void setDiffuseTexture (Texture* pDiffuseTexture);
@@ -25,7 +25,6 @@ class TextureMaterial : public AbstractMaterial
     protected:
     private:
         static ShaderProgram* _shader;
-		static ShaderProgram* _depthShader;
         static void _lazyInitializeShader();
 
         //in this example we cache all identifiers for uniforms & attributes
@@ -40,6 +39,7 @@ class TextureMaterial : public AbstractMaterial
 
 		glm::vec3 _ambientColor;
 		glm::vec3 _specularColor;
+		glm::vec3 _lightPos;
 		float _shininess;
 
         TextureMaterial(const TextureMaterial&);
