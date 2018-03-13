@@ -29,9 +29,9 @@ void GridMovementBehavior::update(float pStep)
 	//std::cout << "The current world possition " << _owner->getWorldPosition() << std::endl; 
 	if (_moving) {
 
-		 _speed = ((clock() / 100.0f) - _startTime) * pStep * 8.3f;
+		 _speed = ((clock() / 100.0f) - _startTime) * pStep * 25.0f;
 		
-		std::cout << "speed " << _speed << std::endl; 
+		//std::cout << "speed " << _speed << std::endl; 
 
 		if (_speed > 1) {
 			_currentTile = _owner->getWorldPosition(); 
@@ -188,13 +188,11 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueTile && _scene.GetPawnColor() == tileProp::BlueTile)
 		return true;
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::RedColorSwitch) {
-		AudioContainer::PlaySound("CHANGE_COLOR");
-		 _scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
+		_scene.SetPawnColor(tileProp::RedColorSwitch);
 		return true; 
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::BlueColorSwitch) {
-		AudioContainer::PlaySound("START_LEVEL");
-		_scene.SetPawnColor(_scene.GetPlayfieldValue(pCol, pRow));
+		_scene.SetPawnColor(tileProp::BlueColorSwitch);
 		return true;
 	}
 	else if (_scene.GetPlayfieldValue(pCol, pRow) == tileProp::PressurePlate)
@@ -228,11 +226,11 @@ bool GridMovementBehavior::CheckWalkableTile(int pCol, int pRow)
 		{
 			AudioContainer::PlaySound("END_LEVEL");
 			UiContainer::SelectMenu("LEVEL " + std::to_string(SceneManager::GetLevelNumber()));
+			UiContainer::DisplayStars(SceneManager::GetLevelNumber());
 
 			return true;
 		}
 	}
-
 	
 	return false;
 }

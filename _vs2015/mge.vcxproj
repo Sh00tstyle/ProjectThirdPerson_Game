@@ -206,7 +206,6 @@
     <ClInclude Include="..\src\mge\materials\TextureMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\WobblingMaterial.h" />
     <ClInclude Include="..\src\mge\MGEDemo.hpp" />
-    <ClInclude Include="..\src\mge\particleSystem\ParticleBase.hpp" />
     <ClInclude Include="..\src\mge\player\Pawn.hpp" />
     <ClInclude Include="..\src\mge\tileProp.hpp" />
     <ClInclude Include="..\src\mge\UI\Menu.h" />
@@ -256,7 +255,6 @@
     <ClCompile Include="..\src\mge\materials\TextureMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\WobblingMaterial.cpp" />
     <ClCompile Include="..\src\mge\MGEDemo.cpp" />
-    <ClCompile Include="..\src\mge\particleSystem\ParticleBase.cpp" />
     <ClCompile Include="..\src\mge\player\Pawn.cpp" />
     <ClCompile Include="..\src\mge\UI\Menu.cpp" />
     <ClCompile Include="..\src\mge\UI\UiContainer.cpp" />
@@ -270,8 +268,6 @@
     <None Include="..\assets\mge\shaders\blurshader.vs" />
     <None Include="..\assets\mge\shaders\color.fs" />
     <None Include="..\assets\mge\shaders\color.vs" />
-    <None Include="..\assets\mge\shaders\depthshader.fs" />
-    <None Include="..\assets\mge\shaders\depthshader.vs" />
     <None Include="..\assets\mge\shaders\lit.fs" />
     <None Include="..\assets\mge\shaders\lit.vs" />
     <None Include="..\assets\mge\shaders\screenshader.fs" />

@@ -33,7 +33,7 @@ void AbstractGame::initialize() {
 
 void AbstractGame::_initializeWindow() {
 	std::cout << "Initializing window..." << std::endl;
-	_window = new sf::RenderWindow( sf::VideoMode(1920,1080), "Snail Trail", sf::Style::Default, sf::ContextSettings(24,8,4,3,3)); //4 in context settings is 4x MSAA
+	_window = new sf::RenderWindow( sf::VideoMode(1920,1080), "Snail Trail", sf::Style::Default, sf::ContextSettings(24,8,8,3,3)); //8 in context settings is 8x MSAA
 	//_window->setVerticalSyncEnabled(true); //enable when using fullscreen
 	//_window->setMouseCursorVisible(false);
 	//_window->setMouseCursorGrabbed(true);
@@ -111,6 +111,8 @@ void AbstractGame::run()
                 timeSinceLastUpdate -= timePerFrame;
                 _update(timePerFrame.asSeconds());
 		    }
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			/**
 			//render the shadowmap to the buffer

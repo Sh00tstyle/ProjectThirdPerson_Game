@@ -108,6 +108,7 @@ Renderer::Renderer(int windowWidth, int windowHeight):debug(false)
 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depthTexId, 0);
 	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "Depthbuffer initialized" << std::endl;

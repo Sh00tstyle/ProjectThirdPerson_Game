@@ -82,6 +82,7 @@ void MGEDemo::_initializeScene() {
 	_world->add(camera);
 	_world->setMainCamera(camera);
 
+	/**/
 	//background "skybox" plane
 	Mesh* planeMesh = Mesh::load(config::MGE_MODEL_PATH + "plane.obj");
 	UpdateLoadingScreen(26);
@@ -94,6 +95,7 @@ void MGEDemo::_initializeScene() {
 	backgroundPlane->setMesh(planeMesh);
 	backgroundPlane->setMaterial(planeMat);
 	_world->add(backgroundPlane);
+	/**/
 
 	/**
 	//directional light

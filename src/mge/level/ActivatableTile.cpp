@@ -29,7 +29,6 @@ void ActivatableTile::Activate() {
 	if(_active) return;
 	
 	_active = true;
-	_moving = true; 
 
 	GameObject* tile = _scene->GetTileObject(_col, _row);
 	tile->setBehaviour(new TileBehaviour(tile->getWorldPosition()+ glm::vec3(0, 0.5f, 0)));

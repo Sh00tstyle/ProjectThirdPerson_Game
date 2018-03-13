@@ -35,6 +35,9 @@ class Menu : public SystemEventListener {
 		int GetActiveButton();
 		void SetActiveButton(int index);
 
+		void SetImageActive(int index);
+		int GetImageActive();
+
 		std::string GetMenuName();
 
 		bool IsActive();
@@ -46,6 +49,8 @@ class Menu : public SystemEventListener {
 
 		int _activeButton;
 		int _buttonCount;
+
+		int _imageActive;
 
 		std::string _menuName;
 

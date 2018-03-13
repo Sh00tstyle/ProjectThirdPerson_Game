@@ -195,8 +195,17 @@ int Menu::GetActiveButton() {
 
 void Menu::SetActiveButton(int index) {
 	_activeButton = index;
+	_imageActive = 0;
 
 	_updateButtons();
+}
+
+void Menu::SetImageActive(int index) {
+	_imageActive = index;
+}
+
+int Menu::GetImageActive() {
+	return _imageActive;
 }
 
 std::string Menu::GetMenuName() {

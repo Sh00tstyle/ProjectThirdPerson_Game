@@ -29,6 +29,8 @@ class UiContainer : public SystemEventListener {
 
 		static void ResetHints();
 
+		static void DisplayStars(int levelIndex);
+
 		void drawLoading(int percentage);
 
 	private:

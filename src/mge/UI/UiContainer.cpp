@@ -110,6 +110,11 @@ bool UiContainer::GetHintActive() {
 }
 
 void UiContainer::SetHintActive(bool value) {
+	if(!_hintActive && value) {
+		//if we activate the hint
+		AudioContainer::PlaySound("HINT");
+	}
+
 	_hintActive = value;
 
 	SelectMenu("HUD");
@@ -123,6 +128,20 @@ void UiContainer::ResetHints() {
 	_hintActive = false;
 	_hintIgnoCount = 0;
 	_hintsTaken = 0;
+}
+
+void UiContainer::DisplayStars(int levelIndex) {
+	if(_activeMenu->GetMenuName() != "LEVEL " + std::to_string(levelIndex)) return;
+
+	//hardcoded level treshholds
+	int threshholds[] = {1, 1, 2, 2, 3, 3, 4, 1, 3, 1};
+
+	int starIndex = 3 - _hintsTaken;
+	starIndex = starIndex - ((SceneManager::GetLevelTries() - 1) / threshholds[levelIndex - 1]); //int division, so no need to floor down
+	if(starIndex < 1) starIndex = 1;
+
+	//hardcoded for the resolution screen
+	_activeMenu->SetImageActive(starIndex);
 }
 
 void UiContainer::drawLoading(int percentage) {
@@ -271,7 +290,21 @@ void UiContainer::_drawAll() {
 
 	//draw all images 
 	for(int i = 0; i < _activeMenu->GetImgCount(); i++) {
-		_window->draw(_activeMenu->GetImgAt(i));
+		if(_activeMenu->GetImageActive() == 0) {
+			//used for all normal menus
+			_window->draw(_activeMenu->GetImgAt(i));
+		} else {
+			//used to render the resolution screen
+			if(i == 0) {
+				_window->draw(_activeMenu->GetImgAt(0));
+				continue;
+			}
+
+			if(i == _activeMenu->GetImageActive()) {
+				_window->draw(_activeMenu->GetImgAt(_activeMenu->GetImageActive()));
+				continue;
+			}
+		}
 	}
 
 	//draw all buttons 
@@ -322,7 +355,7 @@ void UiContainer::onNotify(sf::Event pEvent) {
 	//if we pressed esc and we are in the level (for now no hud active), we enter the pause menu
 	if(pEvent.key.code == sf::Keyboard::Escape) {
 		//Pause or resume the game
-		if(_activeMenu->GetMenuName() == "HUD") {
+		if(_activeMenu->GetMenuName() == "HUD" || _activeMenu->GetMenuName() == "HUD_HINT") {
 			SelectMenu("PAUSE");
 		} else if(_activeMenu->GetMenuName() == "PAUSE") {
 			SelectMenu("HUD");

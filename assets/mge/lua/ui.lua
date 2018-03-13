@@ -7,16 +7,16 @@ levelcount = 10
 
 -- MenuName = 1, Menu background = 2, 3 = Horizontal movement (true/false)
 Menus = { 
-  {"MAIN",                   "background.png", false}, 
-  {"Credits",                "background.png", false}, 
-  {"Controls",               "background.png", false}, 
-  {"PAUSE",                  "",            true},
-  {"HUD",                    "",            false},
-  {"HUD_HINT",               "",            false},
-  {"LOADING",                "loading.png", false},
-  {"LevelSelect 0",          "background.png", true},
-  {"LevelSelect 1",          "background.png", true},
-  {"LEVEL 10",          "resolutionscreen/background.png", true}
+  {"MAIN",                   "background.png",                  false}, 
+  {"Credits",                "background.png",                  false}, 
+  {"Controls",               "background.png",                  false}, 
+  {"PAUSE",                  "",                                true},
+  {"HUD",                    "",                                false},
+  {"HUD_HINT",               "",                                false},
+  {"LOADING",                "loading.png",                     false},
+  {"LevelSelect 0",          "background.png",                  true},
+  {"LevelSelect 1",          "background.png",                  true},
+  {"LEVEL 10",               "resolutionscreen/background.png", true},
 }
 
 -- Name = 1, Path == 2
@@ -34,8 +34,8 @@ Buttons = {
   { "MAIN",             "Controls",         "mainmenu/controls.png",      "mainmenu/controls_deactivated.png",          145,    475 },
   { "MAIN",             "Credits",          "mainmenu/credits.png",       "mainmenu/credits_deactivated.png",           145,    575 },
   { "MAIN",             "EXIT",             "mainmenu/quit.png",          "mainmenu/quit_deactivated.png",              145,    675 },  
-  { "Controls",         "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",                  885,   830 },  
-  { "Credits",          "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",                885,   830 },
+  { "Controls",         "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 },
+  { "Credits",          "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 },
   { "LevelSelect 1",    "LevelSelect 0",    "previousbutton.png",         "previousbutton_deactivated.png",                 82,    490 },
   { "PAUSE",            "RESUME",           "pausemenu/no.png",     "pausemenu/no_deactivated.png",                 675,    545 },
   { "PAUSE",            "MAIN",             "pausemenu/yes.png",         "pausemenu/yes_deactivated.png",             1110,    545 },
@@ -95,9 +95,14 @@ starX = 780
 starY = 400
 offset = 180
 for i=1, levelcount  do 
+
     -- Levels menu
   newMenu = {"LEVEL " .. i, "", true}
   table.insert(Menus, newMenu)
+  
+  -- Levels panel
+  newPanel =  {"LEVEL " .. i,  "resolutionscreen/background.png",   610, 230 }, 
+  table.insert(Images, newPanel)
     
   -- Insert Next button
   newNextButton = {"LEVEL " .. i, "LEVEL " .. i + 1, "resolutionscreen/nextlevel.png", "resolutionscreen/nextlevel_deactivated.png", 725,  870 },
@@ -106,17 +111,15 @@ for i=1, levelcount  do
   -- Insert Back to menu button
   newBackButton = {"LEVEL " .. i, "MAIN", "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png", 1145,  870},
   table.insert(Buttons, newBackButton)
-      
-  -- Levels panel
-  newPanel =  {"LEVEL " .. i,  "resolutionscreen/background.png",   610, 230 }, 
-  table.insert(Images, newPanel)
-   
-   -- Stars
-    for i=1, 3 do
-      newStar =  {"LEVEL " .. i,  "resolutionscreen/stars_" .. i ..".png",   800, 525 }, 
-      table.insert(Images, newStar)
-    end
   end
+  -- Stars
+  for i=1, levelcount  do 
+    for a=1, 3 do
+        newStar =  {"LEVEL " .. i,  "resolutionscreen/stars_" .. a ..".png",   800, 525 }, 
+        table.insert(Images, newStar)
+        print("resolutionscreen/stars_" .. a ..".png")
+      end
+    end
 end
 
 function addLevelSelection()
@@ -184,7 +187,6 @@ local count = 0;
   end
   return count;
 end
-
 
 function Menu.init()
 -- Add all thumbnails, images and buttons for the levelselection screens to the array
