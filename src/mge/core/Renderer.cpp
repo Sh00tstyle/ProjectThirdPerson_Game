@@ -222,7 +222,7 @@ void Renderer::renderMeshDebugInfo(Mesh* pMesh, const glm::mat4& pModelMatrix, c
 
 void Renderer::useFramebuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, _framebufferId);
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(119.0f / 255.0f, 129.0f / 255.0f, 136.0f / 255.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
@@ -231,7 +231,7 @@ void Renderer::useFramebuffer() {
 
 void Renderer::unbindFramebuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::drawFramebuffer(bool usePP) {
@@ -300,8 +300,8 @@ void Renderer::drawFramebuffer(bool usePP) {
 
 void Renderer::useDepthbuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, _depthbufferId);
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	glClearColor(119.0f / 255.0f, 129.0f / 255.0f, 136.0f/255.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
 	_depthOnly = true;

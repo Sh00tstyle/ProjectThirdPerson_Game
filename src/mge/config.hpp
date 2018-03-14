@@ -8,4 +8,5 @@ namespace config {
 	const std::string MGE_LUA_PATH ("mge/lua/");
 	const std::string MGE_UI_PATH ("mge/ui/");
 	const std::string MGE_AUDIO_PATH ("mge/audio/");
+	const std::string MGE_PARTICLE_PATH("mge/particles/");
 }

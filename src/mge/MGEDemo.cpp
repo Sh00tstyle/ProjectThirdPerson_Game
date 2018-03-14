@@ -75,10 +75,11 @@ void MGEDemo::_initializeScene() {
 	//orthographic camera settings
 	_orthoSize = 10.0f;
 	_screenRatio = 16.0f / 9.0f; //default 1920x 1080
+	TextureMaterial::SetScreenRatio(_screenRatio);
 
 	//setting up main camera here, since it should always be the same and does not have to be changed
 	Camera* camera = new Camera("camera", glm::vec3(0, 0, 0), glm::ortho(-_orthoSize * _screenRatio, _orthoSize * _screenRatio, -_orthoSize, _orthoSize, 0.1f, 1000.0f)); //orthographic camera
-	camera->setBehaviour(new PlayfieldFocusBehaviour(-45.0f, -30.0f, 12.0f, 12.0f, camera)); //focus world origin
+	camera->setBehaviour(new PlayfieldFocusBehaviour(-42.5f, -30.0f, 12.0f, 12.0f, camera)); //focus world origin
 	_world->add(camera);
 	_world->setMainCamera(camera);
 
@@ -89,9 +90,9 @@ void MGEDemo::_initializeScene() {
 	AbstractMaterial* planeMat = new ScrollingMaterial(Texture::load(config::MGE_TEXTURE_PATH + "skybox.png")); //replace this with another material and texture for a scrolling shader
 	UpdateLoadingScreen(31);
 	GameObject* backgroundPlane = new GameObject("bgPlane", glm::vec3(0, -10, 0));
-	backgroundPlane->scale(glm::vec3(100, 1, 100)); //scale to screensize
-	backgroundPlane->rotate(glm::radians(-30.0f), glm::vec3(0, 1, 0)); //face the camera on the y axis
-	backgroundPlane->rotate(glm::radians(45.0f), glm::vec3(1, 0, 0)); //face the camera on the x axis
+	backgroundPlane->scale(glm::vec3(50, 1, 50)); //scale to screensize
+	backgroundPlane->rotate(glm::radians(-40.0f), glm::vec3(0, 1, 0)); //face the camera on the y axis
+	backgroundPlane->rotate(glm::radians(42.5f), glm::vec3(1, 0, 0)); //face the camera on the x axis
 	backgroundPlane->setMesh(planeMesh);
 	backgroundPlane->setMaterial(planeMat);
 	_world->add(backgroundPlane);
@@ -109,8 +110,10 @@ void MGEDemo::_initializeScene() {
 								 45.0f, //outerConeAngle
 								 25.0f, //innerConeAngle
 								 "mainLight", //name
-								 glm::vec3(0, 0, 0) //position
+								 glm::vec3(2.0f, 4.0f, 1.0f) //position
 	);
+	//mainLight->setBehaviour(new LightControlBehaviour(mainLight)); //debug only, to move and see the light
+	TextureMaterial::SetLightPos(mainLight->getLocalPosition()); //initialize starting position
 	_world->add(mainLight); //light gets automatically registered in the world
 	/**/
 
@@ -209,6 +212,7 @@ void MGEDemo::_processEvents() {
 
 				//readjust the projection matrix when resizing the screen
 				_screenRatio = (float)event.size.width / (float)event.size.height;
+				TextureMaterial::SetScreenRatio(_screenRatio);
 				_world->getMainCamera()->setProjection(glm::ortho(-_orthoSize * _screenRatio, _orthoSize * _screenRatio, -_orthoSize, _orthoSize, 0.1f, 1000.0f));
 
 				_renderer->setScreenSizes(event.size.width, event.size.height);

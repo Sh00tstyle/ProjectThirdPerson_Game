@@ -12,6 +12,7 @@ class PressurePlate;
 class ActivatableTile;
 class SpawnTile;
 class DestinationTile;
+class Particle;
 
 class Scene {
 
@@ -63,6 +64,10 @@ class Scene {
 		std::vector<GameObject*> _sceneObjects;
 		std::vector<AbstractMaterial*> _sceneObjectMats;
 		std::vector<Mesh*> _sceneObjectMeshes;
+
+		//particles
+		std::vector<Particle*> _particles;
+		std::vector<GameObject*> _particleObjects;
 
 		//pressure plates
 		std::vector<PressurePlate*> _pressurePlates;

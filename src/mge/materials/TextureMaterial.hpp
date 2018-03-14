@@ -22,6 +22,9 @@ class TextureMaterial : public AbstractMaterial
 
         void setDiffuseTexture (Texture* pDiffuseTexture);
 
+		static void SetLightPos(glm::vec3 newPos);
+		static void SetScreenRatio(float ratio);
+
     protected:
     private:
         static ShaderProgram* _shader;
@@ -35,11 +38,13 @@ class TextureMaterial : public AbstractMaterial
         static GLint _aNormal;
         static GLint _aUV ;
 
+		static glm::vec3 _lightPos;
+		static float _screenRatio;
+
         Texture* _diffuseTexture;
 
 		glm::vec3 _ambientColor;
 		glm::vec3 _specularColor;
-		glm::vec3 _lightPos;
 		float _shininess;
 
         TextureMaterial(const TextureMaterial&);

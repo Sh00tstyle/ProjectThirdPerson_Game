@@ -11,6 +11,7 @@
 #include "mge/materials/AbstractMaterial.hpp"
 #include "mge/materials/ColorMaterial.hpp"
 #include "mge/materials/TextureMaterial.hpp"
+#include "mge/materials/ParticleMaterial.hpp"
 
 #include "mge/behaviours/GridMovementBehavior.hpp"
 
@@ -31,6 +32,7 @@
 
 #include "mge/managers/ModelManager.h"
 #include "mge/managers/SceneManager.h";
+#include "mge/level/Particle.h"
 #include "mge/UI/UiContainer.h"
 
 Scene::Scene(std::string pFilepath, World* pWorld) {
@@ -134,6 +136,21 @@ void Scene::ConstructScene(bool showHint) {
 		_activatableTiles[i]->Reset();
 	}
 
+	//create particles
+	for(unsigned i = 0; i < _particles.size(); i++) {
+		Particle* myParticle = _particles[i];
+		GameObject* newParticle = new GameObject("", myParticle->GetParticlePos());
+
+		newParticle->rotate(glm::radians(-40.0f), glm::vec3(0, 1, 0)); //face the camera on the y axis
+		newParticle->rotate(glm::radians(42.5f), glm::vec3(1, 0, 0)); //face the camera on the x axis
+		newParticle->setMesh(ModelManager::GetPlane());
+		newParticle->setMaterial(myParticle->GetParticleMat());
+
+		_world->add(newParticle);
+
+		_particleObjects.push_back(newParticle);
+	}
+
 	AudioContainer::PlaySound("START_LEVEL");
 
 	std::cout << "Constructed Scene" << std::endl;
@@ -155,6 +172,12 @@ void Scene::RemoveScene() {
 	}
 
 	_tileObjects.clear();
+
+	//remove particles from scene
+	for(unsigned i = 0; i < _particleObjects.size(); i++) {
+		GameObject* myParticle = _particleObjects[i];
+		if(myParticle != nullptr) _world->remove(myParticle);
+	}
 
 	//remove the player from the scene
 	if(_pawn != nullptr) _world->remove(_pawn);
@@ -312,6 +335,43 @@ void Scene::_loadSceneFromFile(std::string filepath) {
 	if(element == nullptr) std::cout << "Null in HintProps" << std::endl;
 
 	element->QueryIntAttribute("TriesPerHint", &_triesPerHint);
+
+	//particles
+	/**
+	element = root->FirstChildElement("Particles");
+	if(element == nullptr) std::cout << "Null in Particles" << std::endl;
+
+	listElement = element->FirstChildElement("Particle");
+
+	while(listElement != nullptr) {
+		readChar = listElement->Attribute("SpriteSheet");
+		std::string particleFile(readChar);
+
+		float xPos;
+		float yPos;
+		float zPos;
+
+		listElement->QueryFloatAttribute("xPos", &xPos);
+		listElement->QueryFloatAttribute("yPos", &yPos);
+		listElement->QueryFloatAttribute("zPos", &zPos);
+
+		int col;
+		int row;
+		float speed;
+
+		listElement->QueryIntAttribute("Cols", &col);
+		listElement->QueryIntAttribute("Rows", &row);
+		listElement->QueryFloatAttribute("Speed", &speed);
+
+		Particle* newParticle = new Particle(xPos, yPos, zPos, col, row, speed, nullptr);
+		AbstractMaterial* newParticleMat = new ParticleMaterial(Texture::load(config::MGE_PARTICLE_PATH + particleFile), newParticle);
+
+		newParticle->SetParticleMat(newParticleMat);
+		_particles.push_back(newParticle);
+
+		listElement = listElement->NextSiblingElement("Particle");
+	}
+	/**/
 
 	//scene objects
 	element = root->FirstChildElement("SceneObjects"); //gp to the next element
@@ -586,6 +646,20 @@ void Scene::_destructScene() {
 		if(_activatableTiles[i] == nullptr) continue;
 
 		delete _activatableTiles[i];
+	}
+
+	//remove all particles
+	for(unsigned i = 0; i < _particles.size(); i++) {
+		if(_particles[i] == nullptr) continue;
+
+		delete _particles[i];
+	}
+
+	//remove particles from scene
+	for(unsigned i = 0; i < _particleObjects.size(); i++) {
+		if(_particleObjects[i] == nullptr) continue;
+
+		delete _particleObjects[i];
 	}
 
 	//remove spawn and destination tile

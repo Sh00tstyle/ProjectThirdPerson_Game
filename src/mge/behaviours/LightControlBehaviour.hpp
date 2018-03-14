@@ -6,6 +6,8 @@
  * KeysBehaviour allows you to move an object using the keyboard in its own local space.
  * Left right turns, forward back moves.
  */
+class Mesh;
+
 class LightControlBehaviour : public AbstractBehaviour
 {
 	public:
@@ -17,6 +19,12 @@ class LightControlBehaviour : public AbstractBehaviour
     private:
 		Light* _light; //needed to change the light type in runtime
         float _moveSpeed;
+
+		glm::mat4 _rotaXMat;
+		glm::mat4 _rotaYMat;
+		glm::mat4 _rotaZMat;
+
+		Mesh* _debugPlane;
 
 		glm::mat4 _startTransform;
 };

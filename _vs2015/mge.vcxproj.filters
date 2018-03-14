@@ -196,6 +196,12 @@
     <ClInclude Include="..\src\mge\behaviours\ParticleBehaviour.hpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mge\materials\ParticleMaterial.hpp">
+      <Filter>MGE Source files\mge\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mge\level\Particle.h">
+      <Filter>MGE Source files\mge\level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -338,6 +344,12 @@
     </ClCompile>
     <ClCompile Include="..\src\mge\behaviours\ParticleBehaviour.cpp">
       <Filter>MGE Source files\mge\behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\materials\ParticleMaterial.cpp">
+      <Filter>MGE Source files\mge\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mge\level\Particle.cpp">
+      <Filter>MGE Source files\mge\level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

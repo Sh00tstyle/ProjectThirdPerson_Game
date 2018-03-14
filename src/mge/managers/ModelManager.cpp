@@ -15,6 +15,8 @@ Mesh* ModelManager::_pressurePlateMesh;
 Mesh* ModelManager::_activatableTileMesh;
 Mesh* ModelManager::_colorSwitchMesh;
 
+Mesh* ModelManager::_plane;
+
 AbstractMaterial* ModelManager::_redPlayerMat;
 AbstractMaterial* ModelManager::_bluePlayerMat;
 
@@ -66,6 +68,10 @@ Mesh * ModelManager::GetColorSwitchMesh() {
 
 Mesh* ModelManager::GetPlayerMesh() {
 	return _playerMesh;
+}
+
+Mesh * ModelManager::GetPlane() {
+	return _plane;
 }
 
 AbstractMaterial * ModelManager::GetRedPlayerMat() {
@@ -400,6 +406,9 @@ void ModelManager::_loadMeshesAndMats(std::string filename) {
 	std::string blueColorSwitchTex(readChar);
 
 	_blueColorSwitchMat = new TextureMaterial(Texture::load(config::MGE_TEXTURE_PATH + blueColorSwitchTex));
+
+	//load plane
+	_plane = Mesh::load(config::MGE_MODEL_PATH + "plane.obj");
 
 	MGEDemo::UpdateLoadingScreen(60);
 }

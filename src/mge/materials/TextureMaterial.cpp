@@ -19,12 +19,15 @@ GLint TextureMaterial::_aVertex = 0;
 GLint TextureMaterial::_aNormal = 0;
 GLint TextureMaterial::_aUV = 0;
 
+glm::vec3 TextureMaterial::_lightPos;
+float TextureMaterial::_screenRatio;
+
 TextureMaterial::TextureMaterial(Texture * pDiffuseTexture):_diffuseTexture(pDiffuseTexture) {
     _lazyInitializeShader();
 
 	_ambientColor = glm::vec3(1, 1, 1); 
 	_specularColor = glm::vec3(0.5, 0.5, 0.5);
-	_lightPos = glm::vec3(2.0f, 4.0f, 1.0f);
+	//_lightPos = glm::vec3(2.0f, 4.0f, 1.0f);
 	_shininess = 2.0f;
 }
 
@@ -49,6 +52,14 @@ void TextureMaterial::_lazyInitializeShader() {
 
 void TextureMaterial::setDiffuseTexture (Texture* pDiffuseTexture) {
     _diffuseTexture = pDiffuseTexture;
+}
+
+void TextureMaterial::SetLightPos(glm::vec3 newPos) {
+	_lightPos = newPos;
+}
+
+void TextureMaterial::SetScreenRatio(float ratio) {
+	_screenRatio = ratio;
 }
 
 void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModelMatrix, const glm::mat4& pViewMatrix, const glm::mat4& pProjectionMatrix, const GLuint& pShadowMapId) {
@@ -98,7 +109,7 @@ void TextureMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pModel
 
 	//creating light matrices
 	glm::mat4 lightView = glm::lookAt(_lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); //not sure if correct view matrix for our directional light
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -5.0f, 7.5f);
+	glm::mat4 lightProjection = glm::ortho(-10.0f * _screenRatio, 10.0f * _screenRatio, -10.0f, 10.0f, -5.0f, 10.0f);
 
 	//pass in light matrices
 	glUniformMatrix4fv(_shader->getUniformLocation("lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
@@ -129,7 +140,7 @@ void TextureMaterial::renderDepth(World* pWorld, Mesh* pMesh, const glm::mat4& p
 	_shader->use();
 
 	glm::mat4 lightView = glm::lookAt(_lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); //not sure if correct view matrix for our directional light
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -5.0f, 7.5f);
+	glm::mat4 lightProjection = glm::ortho(-10.0f * _screenRatio, 10.0f * _screenRatio, -10.0f, 10.0f, -5.0f, 10.0f);
 
 	//telling the shader that we are not using the depth only
 	glUniform1i(_shader->getUniformLocation("depthRender"), true);

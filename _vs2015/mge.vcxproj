@@ -192,6 +192,7 @@
     <ClInclude Include="..\src\mge\eventSystem\SystemEventListener.hpp" />
     <ClInclude Include="..\src\mge\level\ActivatableTile.h" />
     <ClInclude Include="..\src\mge\level\DestinationTile.h" />
+    <ClInclude Include="..\src\mge\level\Particle.h" />
     <ClInclude Include="..\src\mge\level\PressurePlate.h" />
     <ClInclude Include="..\src\mge\level\Scene.h" />
     <ClInclude Include="..\src\mge\level\SpawnTile.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="..\src\mge\materials\AbstractMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\ColorMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\LitMaterial.h" />
+    <ClInclude Include="..\src\mge\materials\ParticleMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\ScrollingMaterial.hpp" />
     <ClInclude Include="..\src\mge\materials\TerrainMaterial.h" />
     <ClInclude Include="..\src\mge\materials\TextureMaterial.hpp" />
@@ -242,6 +244,7 @@
     <ClCompile Include="..\src\mge\eventSystem\SystemEventListener.cpp" />
     <ClCompile Include="..\src\mge\level\ActivatableTile.cpp" />
     <ClCompile Include="..\src\mge\level\DestinationTile.cpp" />
+    <ClCompile Include="..\src\mge\level\Particle.cpp" />
     <ClCompile Include="..\src\mge\level\PressurePlate.cpp" />
     <ClCompile Include="..\src\mge\level\Scene.cpp" />
     <ClCompile Include="..\src\mge\level\SpawnTile.cpp" />
@@ -252,6 +255,7 @@
     <ClCompile Include="..\src\mge\materials\AbstractMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\ColorMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\LitMaterial.cpp" />
+    <ClCompile Include="..\src\mge\materials\ParticleMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\ScrollingMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\TerrainMaterial.cpp" />
     <ClCompile Include="..\src\mge\materials\TextureMaterial.cpp" />

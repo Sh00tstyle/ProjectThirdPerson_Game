@@ -21,6 +21,8 @@ class ModelManager {
 
 		static Mesh* GetPlayerMesh();
 
+		static Mesh* GetPlane();
+
 		static AbstractMaterial* GetRedPlayerMat();
 		static AbstractMaterial* GetBluePlayerMat();
 
@@ -52,6 +54,8 @@ class ModelManager {
 		static Mesh* _colorSwitchMesh;
 
 		static Mesh* _playerMesh;
+
+		static Mesh* _plane;
 
 		//textures
 		static AbstractMaterial* _redPlayerMat;

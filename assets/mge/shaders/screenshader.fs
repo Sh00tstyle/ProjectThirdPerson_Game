@@ -25,11 +25,5 @@ void main()
         FragColor = vec4(result, 1.0);
     } else {
         FragColor = texture(screenTexture, TexCoords);
-
-        /**
-        //drawing depth map
-        float depthValue = texture(screenTexture, TexCoords).r;
-        FragColor = vec4(vec3(depthValue), 1.0f);
-        /**/
     }
 }
