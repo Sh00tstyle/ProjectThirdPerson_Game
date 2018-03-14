@@ -142,7 +142,6 @@ void AbstractGame::run()
                 timeSinceLastFPSCalculation -= 1;
                 frameCount = 0;
             }
-
 		}
 
 		//empty the event queue

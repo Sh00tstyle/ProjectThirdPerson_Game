@@ -42,7 +42,6 @@ void ParticleMaterial::render(World* pWorld, Mesh* pMesh, const glm::mat4& pMode
     glUniformMatrix4fv ( _shader->getUniformLocation("viewMatrix"),         1, GL_FALSE, glm::value_ptr(pViewMatrix));
     glUniformMatrix4fv ( _shader->getUniformLocation("modelMatrix"),        1, GL_FALSE, glm::value_ptr(pModelMatrix));
 
-
 	//pass in time to animate
 	glUniform1f(_shader->getUniformLocation("time"), glm::float1(std::clock() / 10000.f));
 
