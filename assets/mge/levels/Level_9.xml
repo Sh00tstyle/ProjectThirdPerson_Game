@@ -8,7 +8,9 @@
     <HintPlayfield Height="0" Width="0" Content="0 1 6 1 1 0 0 0 0 3 6 0 4 0 0 0 0 3 4 7 4 3 3 1 0 3 9 0 0 3 0 7 0 1 4 4 4 8 0 5 0 1 1 1 1 1 2 0 0 0 0 0 0 0 0 0" />
   </HintPlayfields>
   <HintProps TriesPerHint="3" />
-  <SceneObjects />
+  <SceneObjects>
+    <SceneObject Name="LevelModel" xPos="0.662718654" yPos="-1.29780018" zPos="-1.434461" xRot="0" yRot="0.0187460613" zRot="0" wRot="-0.9998243" xScale="1.02370822" yScale="1.02370787" zScale="1.02370834" Model="Level9.obj" Texture="Level9.png" />
+  </SceneObjects>
   <PressurePlates>
     <PressurePlate ColPos="2" RowPos="0" ID="2" NeededColor="4" />
     <PressurePlate ColPos="2" RowPos="1" ID="0" NeededColor="3" />

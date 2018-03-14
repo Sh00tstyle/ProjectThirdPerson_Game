@@ -36,7 +36,7 @@ Buttons = {
   { "MAIN",             "EXIT",             "mainmenu/quit.png",          "mainmenu/quit_deactivated.png",              890,    910 },  
   { "Controls",         "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 },
   { "Credits",          "MAIN",             "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 },
-  { "LevelSelect 1",    "LevelSelect 0",    "previousbutton.png",         "previousbutton_deactivated.png",                 82,    490 },
+  { "LevelSelect 1",    "LevelSelect 0",    "levelselection/previousbutton.png", "levelselection/previousbutton_deactivated.png",  75, 550 },
   { "PAUSE",            "RESUME",           "pausemenu/no.png",     "pausemenu/no_deactivated.png",                 675,    545 },
   { "PAUSE",            "MAIN",             "pausemenu/yes.png",         "pausemenu/yes_deactivated.png",             1110,    545 },
   {"LEVEL 10",          "MAIN",             "backbutton.png",              "backbutton_deactivated.png", 950,  830 },
@@ -60,6 +60,7 @@ Images = {
   {"PAUSE",         "hud/tries.png",                800,    945}, 
   {"Controls",      "panel.png",                    65,     200},
   {"Credits",       "panel.png",                    65,     200},
+  {"Credits",      	"credits/credits.png",        	285,    238},
   {"Controls",      "controls/controls.png",        100,    205},
   {"PAUSE",         "pausemenu/background.png",     555,    210}, 
 }
@@ -71,21 +72,7 @@ Text = {
   {"HUD", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
   {"HUD_HINT", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
   {"PAUSE", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
-  {"LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900},
-  {"Credits", "Shark", "Daan Kemps", 75, 10, 10 , 10, true, 230, 320},
-  {"Credits", "Shark", "Felix de Natris", 75, 10, 10 , 10, true, 230, 400},
-  {"Credits", "Shark", "Lucia Dzediti", 75, 10, 10 , 10, true, 230, 480},
-  {"Credits", "Shark", "Nico Mazek ", 75, 10, 10 , 10, true, 230, 560},
-  {"Credits", "Shark", "Anna Richter", 75, 10, 10 , 10, true, 230, 640},
-  {"Credits", "Shark", "Alex Lysenko", 75, 10, 10 , 10, true, 230, 720},
-  {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 320},
-  {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 400},
-  {"Credits", "Shark", "SPECIAL ROLE", 75, 10, 10 , 10, true, 1050, 480},
-  {"Credits", "Shark", "SPECIMEN", 75, 10, 10 , 10, true, 1050, 560},
-  {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 640},
-  {"Credits", "Shark", "ROLE", 75, 10, 10 , 10, true, 1050, 720},
-  { "LEVEL 10", "Shark", "You completed Level 10 in TRIES tries", 50, 0, 0, 0, true, 660, 540},
-  
+  {"LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900}, 
 }
 
 
@@ -126,7 +113,7 @@ LevelSelect = 0
 
 thumbnailX = 195
 thumbnailY = 455
-backgroundX = 195 
+backgroundX = 150 
 backgroundY = 455
 
 imageOffset = 315
@@ -134,32 +121,11 @@ offsetmodifier = 0
 staroffset = 20
 
   for i=1, levelcount do
-    -- Insert star activated and deactivated stars;
-    -- for a=0, 2 do
-    --  if(a <= LevelRating[i]) then
-    --    activatedStar = { "LevelSelect " .. LevelSelect, "levelselection/star_small.png", (thumbnailX + 10 + 80 * a) 
-    --      + imageOffset * offsetmodifier, thumbnailY + 275}
-    --    table.insert(Images, activatedStar)
-    --  elseif (a > LevelRating[i]) then
-    --    deactivatedStar = { "LevelSelect " .. LevelSelect, "levelselection/star_small_deactivated.png", (thumbnailX + 10 + 80 * a) 
-    --      + imageOffset * offsetmodifier, thumbnailY + 275}
-    --    table.insert(Images, deactivatedStar)
-    --  end
-    -- end
     
     -- Thumbnails
     thumbnail = { "LevelSelect " .. LevelSelect,"LEVEL " .. i,"levelselection/thumbnails/thumbnail_temp.png",
     "levelselection/thumbnails/thumbnail_temp_deactivated.png"  , thumbnailX + imageOffset * offsetmodifier, thumbnailY}  
     table.insert(Buttons, thumbnail)
-    
-    --Level Text
-    --levelText = {"LevelSelect " .. LevelSelect, "Burbin", "Level " .. i, 52, 118, 95, 67, true, 86 + backgroundX + imageOffset * offsetmodifier, backgroundY + 380 }
-    --table.insert(Text, levelText)
-    
-    -- Tries text
-    --levelText = {"LevelSelect " .. LevelSelect, "Arial", "TRIES", 18, 0, 0, 0, false, 20 + backgroundX + imageOffset * offsetmodifier, backgroundY + 320 }
-    --table.insert(Text, levelText)
-    
     offsetmodifier  = offsetmodifier + 1
     
     -- Reset variables once 5 levels have been displayed
@@ -170,7 +136,7 @@ staroffset = 20
   end
   
   -- Additional Buttons
-  table.insert(Buttons,{ "LevelSelect 0", "LevelSelect 1","nextbutton.png", "nextbutton_deactivated.png",  1732, 490 })
+  table.insert(Buttons,{ "LevelSelect 0", "LevelSelect 1","levelselection/nextbutton.png", "levelselection/nextbutton_deactivated.png",  1758, 550 })
   table.insert(Buttons,{ "LevelSelect 1", "MAIN", "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 }) 
   table.insert(Buttons,{ "LevelSelect 0", "MAIN", "resolutionscreen/backbutton.png", "resolutionscreen/backbutton_deactivated.png",      1620,   840 }) 
  

@@ -13,7 +13,7 @@ Events = {
   {"CHANGE_COLOR", 1, 1, 12, false},
 
   -- Player
-  {"MOVE_SNAIL", 0.96, 1.06, 60, false},
+  {"MOVE_SNAIL", 0.96, 1.04, 20, false},
   {"BLOCK_SNAIL", 0.96, 1.06, 35, false},
   
   -- Gameplay
@@ -42,7 +42,11 @@ Audiofiles = {
   
   -- Player
   {"BLOCK_SNAIL",       "player/player_block.wav"},
-  {"MOVE_SNAIL",        "player/player_move.wav"},
+{"MOVE_SNAIL", 		"player/slime/Snail_Move_Medium_SFX_01.wav"},
+{"MOVE_SNAIL", 		"player/slime/Snail_Move_Medium_SFX_02.wav"},
+{"MOVE_SNAIL", 		"player/slime/Snail_Move_Medium_SFX_03.wav"},
+{"MOVE_SNAIL", 		"player/slime/Snail_Move_Medium_SFX_04.wav"},
+
   
   -- Gameplay
   {"BGM_LEVEL",         "gameplay/bgm_level.wav"},

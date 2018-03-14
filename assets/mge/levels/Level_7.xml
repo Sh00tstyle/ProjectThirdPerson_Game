@@ -7,7 +7,9 @@
     <HintPlayfield Height="0" Width="0" Content="5 1 1 0 0 0 0 1 0 0 0 0 7 0 0 0 0 4 6 1 0 0 4 0 7 0 4 4 6 1 0 8 1 4 1 0 3 3 9 3 0 0 3 3 3 0 0 2 0 0" />
   </HintPlayfields>
   <HintProps TriesPerHint="3" />
-  <SceneObjects />
+  <SceneObjects>
+    <SceneObject Name="LevelMesh" xPos="-0.83" yPos="-2.98" zPos="-1.1" xRot="0" yRot="0.0110632628" zRot="0" wRot="-0.999938846" xScale="1.1" yScale="1.1" zScale="1.1" Model="Level7.obj" Texture="Level7.png" />
+  </SceneObjects>
   <PressurePlates>
     <PressurePlate ColPos="3" RowPos="3" ID="1" NeededColor="3" />
     <PressurePlate ColPos="3" RowPos="5" ID="0" NeededColor="4" />
