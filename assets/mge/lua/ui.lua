@@ -60,8 +60,8 @@ Images = {
   {"PAUSE",         "hud/tries.png",                800,    945}, 
   {"Controls",      "panel.png",                    65,     200},
   {"Credits",       "panel.png",                    65,     200},
-  {"Credits",      	"credits/credits.png",        	285,    238},
-  {"Controls",      "controls/controls.png",        100,    205},
+  {"Credits",      	"credits/credits.png",        	280,    238},
+  {"Controls",      "controls/controls.png",        150,    212},
   {"PAUSE",         "pausemenu/background.png",     555,    210}, 
 }
 LevelRating = { 0, 1, 2, 1, 2, 1, 1, 1, 0, 0 }
@@ -123,8 +123,8 @@ staroffset = 20
   for i=1, levelcount do
     
     -- Thumbnails
-    thumbnail = { "LevelSelect " .. LevelSelect,"LEVEL " .. i,"levelselection/thumbnails/thumbnail_temp.png",
-    "levelselection/thumbnails/thumbnail_temp_deactivated.png"  , thumbnailX + imageOffset * offsetmodifier, thumbnailY}  
+    thumbnail = { "LevelSelect " .. LevelSelect,"LEVEL " .. i,"levelselection/thumbnails/Level_" .. i .. ".png",
+    "levelselection/thumbnails/Level_" .. i .. "_deactivated.png", thumbnailX + imageOffset * offsetmodifier, thumbnailY}  
     table.insert(Buttons, thumbnail)
     offsetmodifier  = offsetmodifier + 1
     
