@@ -23,7 +23,7 @@ Events = {
   {"TILE_MOVE", 1, 1, 25, false},
   --{"START_LEVEL", 1, 1, 1, false},
   {"END_LEVEL", 1, 1, 10, false},
-  {"BGM_LEVEL", 1, 1, 32, true},
+  {"BGM_LEVEL", 1, 1, 40, true},
   {"ACTIVATE_PLATE", 0.95, 1.05, 42, false},
   
   

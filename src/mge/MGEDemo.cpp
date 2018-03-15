@@ -191,7 +191,7 @@ void MGEDemo::_processEvents() {
 				SystemEventDispatcher::SendKeyEvent(event);
 
 				//DEBUG
-				/**/
+				/**
 				//load next level
 				if(event.key.code == sf::Keyboard::F && InputManager::GetGameInput()) {
 					SceneManager::LoadNextScene();

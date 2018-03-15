@@ -125,7 +125,7 @@ int UiContainer::GetHintsTaken() {
 }
 
 void UiContainer::ResetHints() {
-	_hintActive = false;
+	SetHintActive(false);
 	_hintIgnoCount = 0;
 	_hintsTaken = 0;
 }

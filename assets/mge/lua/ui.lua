@@ -74,7 +74,7 @@ Text = {
   {"HUD", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
   {"HUD_HINT", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
   {"PAUSE", "Myriad", "TRIES: TRIES", 45, 118, 85, 48, true, 858, 980},
-  {"LOADING", "Arial", "", 60, 255, 255, 255, false, 1700, 900}, 
+  {"LOADING", "Myriad", "", 60, 255, 255, 255, false, 1700, 900}, 
 }
 
 
