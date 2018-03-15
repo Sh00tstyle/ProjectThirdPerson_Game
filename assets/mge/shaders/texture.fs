@@ -160,7 +160,7 @@ void main( void ) {
 			vec3 specularTerm = getSpecularTerm(currentLight, lightVector, attenuation, spotEffect);
 			
 			float shadow = ShadowCalculation(fragPosLightSpace);
-			resultColor = (ambientTerm + diffuseTerm/* + specularTerm*/); //adding new values to the old stored ones
+			resultColor = (ambientTerm + diffuseTerm + specularTerm); //adding new values to the old stored ones
 			resultColor = resultColor * (1.0f - shadow * 0.5f);
 		}
 

@@ -26,8 +26,7 @@ TextureMaterial::TextureMaterial(Texture * pDiffuseTexture):_diffuseTexture(pDif
     _lazyInitializeShader();
 
 	_ambientColor = glm::vec3(1, 1, 1); 
-	_specularColor = glm::vec3(0.5, 0.5, 0.5);
-	//_lightPos = glm::vec3(2.0f, 4.0f, 1.0f);
+	_specularColor = glm::vec3(0.2, 0.2, 0.2);
 	_shininess = 2.0f;
 }
 

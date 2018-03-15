@@ -3,8 +3,9 @@
   <Playfield Height="5" Width="3" Content="1 7 6 1 0 9 5 0 1 0 0 1 0 0 2" />
   <HintPlayfields />
   <HintProps TriesPerHint="0" />
+  <Particles />
   <SceneObjects>
-    <SceneObject Name="Level2" xPos="2.24855781" yPos="-2.58" zPos="0.60538435" xRot="0" yRot="0.02986814" zRot="0" wRot="0.9995539" xScale="1" yScale="1" zScale="1" Model="Level2.obj" Texture="Level2.png" />
+    <SceneObject Name="Level2" xPos="0.04" yPos="-0.51" zPos="-0.98" xRot="-0.0282681361" yRot="-0.0214030724" zRot="-0.0136199733" wRot="0.9992785" xScale="1" yScale="1" zScale="1" Model="Level2.obj" Texture="Level2.png" />
   </SceneObjects>
   <PressurePlates>
     <PressurePlate ColPos="2" RowPos="0" ID="0" NeededColor="4" />

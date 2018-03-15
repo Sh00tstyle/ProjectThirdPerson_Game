@@ -33,10 +33,10 @@ void AbstractGame::initialize() {
 
 void AbstractGame::_initializeWindow() {
 	std::cout << "Initializing window..." << std::endl;
-	_window = new sf::RenderWindow( sf::VideoMode(1920,1080), "Snail Trail", sf::Style::Default, sf::ContextSettings(24,8,8,3,3)); //4 in context settings is 4x MSAA
-	//_window->setVerticalSyncEnabled(true); //enable when using fullscreen
-	//_window->setMouseCursorVisible(false);
-	//_window->setMouseCursorGrabbed(true);
+	_window = new sf::RenderWindow( sf::VideoMode(1920,1080), "Snail Trails", sf::Style::Fullscreen, sf::ContextSettings(24,8,8,3,3)); //4 in context settings is 4x MSAA
+	_window->setVerticalSyncEnabled(true); //enable when using fullscreen
+	_window->setMouseCursorVisible(false);
+	_window->setMouseCursorGrabbed(true);
     std::cout << "Window initialized." << std::endl << std::endl;
 }
 
