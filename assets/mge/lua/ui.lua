@@ -7,15 +7,15 @@ levelcount = 10
 
 -- MenuName = 1, Menu background = 2, 3 = Horizontal movement (true/false)
 Menus = { 
-  {"MAIN",                   "mainmenu/background.png",                  false}, 
-  {"Credits",                "mainmenu/background.png",                  false}, 
-  {"Controls",               "mainmenu/background.png",                  false}, 
+  {"MAIN",                   "background.png",                  false}, 
+  {"Credits",                "background.png",                  false}, 
+  {"Controls",               "background.png",                  false}, 
   {"PAUSE",                  "",                                true},
   {"HUD",                    "",                                false},
   {"HUD_HINT",               "",                                false},
   {"LOADING",                "loading.png",                     false},
-  {"LevelSelect 0",          "mainmenu/background.png",                  true},
-  {"LevelSelect 1",          "mainmenu/background.png",              true},
+  {"LevelSelect 0",          "background.png",                  true},
+  {"LevelSelect 1",          "background.png",              true},
   {"LEVEL 10",               "resolutionscreen/background.png", true},
 }
 
@@ -63,6 +63,8 @@ Images = {
   {"Credits",      	"credits/credits.png",        	280,    238},
   {"Controls",      "controls/controls.png",        150,    212},
   {"PAUSE",         "pausemenu/background.png",     555,    210}, 
+  {"MAIN",          "mainmenu/background.png",      420,    290},  
+  {"MAIN",          "mainmenu/title.png",      630,    0},  
 }
 LevelRating = { 0, 1, 2, 1, 2, 1, 1, 1, 0, 0 }
 

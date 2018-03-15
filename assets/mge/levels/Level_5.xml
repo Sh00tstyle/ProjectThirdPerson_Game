@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SceneContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Playfield Height="10" Width="4" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 6 1 9 1 1 1 1 1 1 1 8 0 1 1 1 0 0 0 2 0" />
+  <Playfield Height="10" Width="4" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 9 1 6 1 1 1 1 1 1 1 8 0 1 1 1 0 0 0 2 0" />
   <HintPlayfields>
-    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 6 4 9 1 1 1 3 1 1 1 8 0 1 1 1 0 0 0 2 0" />
-    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 6 4 9 1 4 1 3 1 4 4 8 0 1 1 1 0 0 0 2 0" />
-    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 6 4 9 1 4 1 3 1 4 4 8 0 1 1 1 0 0 0 2 0" />
-    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 6 4 9 1 4 1 3 1 4 4 8 0 1 1 1 0 0 0 2 0" />
+    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 9 1 6 1 3 1 1 1 3 1 8 0 3 3 3 0 0 0 2 0" />
+    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 9 4 6 1 3 4 1 1 3 4 8 0 3 3 3 0 0 0 2 0" />
+    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 9 4 6 1 3 4 1 1 3 4 8 0 3 3 3 0 0 0 2 0" />
+    <HintPlayfield Height="0" Width="0" Content="5 0 0 0 1 0 0 0 1 0 0 0 7 0 0 0 1 1 1 1 9 4 6 1 3 4 1 1 3 4 8 0 3 3 3 0 0 0 2 0" />
   </HintPlayfields>
   <HintProps TriesPerHint="2" />
   <SceneObjects>
     <SceneObject Name="Level5" xPos="-0.233705342" yPos="-4.74" zPos="-1.55521178" xRot="0" yRot="-2.08616228E-07" zRot="0" wRot="-1" xScale="2.47801447" yScale="2.47801256" zScale="2.47801375" Model="Level5.obj" Texture="Level5.png" />
   </SceneObjects>
   <PressurePlates>
-    <PressurePlate ColPos="0" RowPos="5" ID="0" NeededColor="4" />
+    <PressurePlate ColPos="2" RowPos="5" ID="0" NeededColor="4" />
   </PressurePlates>
   <ActivatableTiles>
     <ActivatableTile ColPos="0" RowPos="3" ID="0" />

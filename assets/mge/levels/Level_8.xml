@@ -6,7 +6,7 @@
   </HintPlayfields>
   <HintProps TriesPerHint="5" />
   <SceneObjects>
-    <SceneObject Name="Scenery" xPos="0.06" yPos="-2.04" zPos="-2.28" xRot="0" yRot="-0.038870357" zRot="0" wRot="0.999244332" xScale="1.08414209" yScale="1.08414209" zScale="1.08414209" Model="Level8.obj" Texture="Level8.png" />
+    <SceneObject Name="default" xPos="-0.77" yPos="-0.59" zPos="2.8" xRot="0" yRot="-0.0246221516" zRot="0" wRot="0.9996968" xScale="1.06999993" yScale="1.06999993" zScale="1.06999993" Model="Level8.obj" Texture="Level8.png" />
   </SceneObjects>
   <PressurePlates>
     <PressurePlate ColPos="0" RowPos="1" ID="0" NeededColor="3" />
